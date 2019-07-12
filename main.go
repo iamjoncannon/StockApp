@@ -1,3 +1,6 @@
+// export GOPATH=/Users/jonathancannon/projects/goTute/dino
+// export GOBIN=/Users/jonathancannon/projects/goTute/dino/bin
+
 package main
 
 import (
@@ -91,3 +94,4 @@ func protectedEndpoint(w http.ResponseWriter, r *http.Request) {
 func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 	return nil
 }
+
