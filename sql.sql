@@ -1,4 +1,4 @@
--- dropdb test && createdb test && psql -U jcannon -d test -a -f sql.sql
+-- dropdb test && createdb test && psql -U jonathancannon -d test -a -f sql.sql
 
 CREATE TABLE users (
   ID SERIAL PRIMARY KEY,
@@ -19,5 +19,3 @@ CREATE TABLE transactions (
   DATE_CONDUCTED TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO users (name, email, password) VALUES ('Jerry', 'jerry@example.com', 'yadayada'), ('George', 'george@example.com', 'imbackbaby'), ('Elaine', 'elaine@example.com', 'yaadayadayaada'), ('Kramer', 'kramer@example.com', 'ugotitmadeintheshade');
-INSERT INTO transactions (userID, TYPE, SYMBOL, QUANTITY, PRICE) VALUES ('0', 'BUY', 'FB', '1', '100');
