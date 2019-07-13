@@ -1,5 +1,3 @@
--- dropdb test && createdb test && psql -U jonathancannon -d test -a -f sql.sql
-
 CREATE TABLE users (
   ID SERIAL PRIMARY KEY,
   name VARCHAR(30) NOT NULL,

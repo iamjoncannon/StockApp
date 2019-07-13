@@ -29,7 +29,8 @@ func main(){
 	go router.HandleFunc("/signup", controller.SignUp(db)).Methods("POST")
 	go router.HandleFunc("/login", controller.LogIn(db)).Methods("POST")
 	go router.HandleFunc("/trans", controllers.TokenVerifyMiddleWare(controller.ConductTransaction(db))).Methods("POST")
-	go router.HandleFunc("/port", controllers.TokenVerifyMiddleWare(controller.ConductTransaction(db))).Methods("POST")
+	go router.HandleFunc("/port", controllers.TokenVerifyMiddleWare(controller.GetPortfolio(db))).Methods("POST")
+	go router.HandleFunc("/allTrans", controllers.TokenVerifyMiddleWare(controller.GetTransactionHistory(db))).Methods("POST")
 
 	log.Println("Listening on part 3000")
 	log.Fatal(http.ListenAndServe(":3000", router))

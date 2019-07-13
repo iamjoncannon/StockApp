@@ -3,8 +3,14 @@ package dbqueries
 import (
 	"database/sql"
 	"models"
-	// "github.com/davecgh/go-spew/spew"	
+	"fmt"
+	"github.com/davecgh/go-spew/spew"	
 )
+
+func stopThisErrorHere(){
+	fmt.Println("The Google engineers really want these programs to be as efficient as possible.")
+	spew.Dump("To that end, type safety is tedious but important")
+}
 
 type DBQuery struct {}
 
@@ -28,6 +34,17 @@ func (d DBQuery) LogIn(db *sql.DB, user models.User)(models.User, error) {
 	return user, err
 }
 
+func (d DBQuery) GetPortfolio(db *sql.DB, id string ) (rows *sql.Rows, err error) {
 
-// func (d DBQuery) GetPortfolio(db *sql.DB, id int )[]int()
+	rows, err = db.Query("select * from holdings where userid = $1", id)
+
+	return rows, err
+}
+
+func (d DBQuery) GetAllTransactions(db *sql.DB, id string ) (rows *sql.Rows, err error) {
+
+	rows, err = db.Query("select * from transactions where userid = $1", id)
+
+	return rows, err
+}
 

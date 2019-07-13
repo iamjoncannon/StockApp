@@ -6,9 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	// jwt "github.com/dgrijalva/jwt-go"
-	// "github.com/davecgh/go-spew/spew"	
-	
 	"models"
 	"dbqueries"
 	"utils"
@@ -19,7 +16,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request){
 	
 		var trans models.Transaction 
-		// var error models.Error
 		var newBalance int
 		var newHoldingAmount int
 		var errorObj models.Error
@@ -115,7 +111,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 
 		fmt.Println("newBalance: ", newBalance)
 		fmt.Println("new Holding: ", newHoldingAmount)
-
 
 		// this next part raises an interesting strategic question:
 		// which party should be given more protections by the

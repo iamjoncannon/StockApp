@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"fmt"
+	// "reflect"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	// "github.com/davecgh/go-spew/spew"	
@@ -20,6 +21,7 @@ func GenerateToken(user models.User)(string, error){
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": user.Email,
+		"id": user.ID,
 		"iss": "broker",
 	})
 
@@ -31,9 +33,6 @@ func GenerateToken(user models.User)(string, error){
 
 	return tokenString, nil
 }
-
-
-// curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1dHR5QGV4YW1wbGUuY29tIiwiaXNzIjoiYnJva2VyIn0.sFCN6BlhfHFkGwSWi1aTPpLOBTU9UnS_dTQ1pRPeg2I" http://localhost:3000/protected
 
 // this is an example of currying- the verification function receives the 
 // handler and, through the mux package, the entire original function is
@@ -67,10 +66,9 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				return nil, fmt.Errorf("There was an error with your token")
 			}
 
-			return []byte("this is my private key"), nil
+			// return []byte("this is my private key"), nil
+			return []byte(os.Getenv("PRIVATE_KEY")), nil
 		})
-
-		// spew.Dump(verifiedToken, error)
 
 		if error != nil {
 
@@ -79,6 +77,19 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		if verifiedToken.Valid {
+
+			// we're going to "decrypt" the email and put it into
+			// the request header for the next function call
+			// these are called type assertions- 
+			// https://tour.golang.org/methods/15
+			claims, _ := verifiedToken.Claims.(jwt.MapClaims)
+			decryptedEmail, _ := claims["email"].(string)
+			floatId, _ := claims["id"].(float64)
+
+			stringId := fmt.Sprintf("%d", int(floatId) )
+
+			r.Header.Set("decryptedEmail",  decryptedEmail)
+			r.Header.Set("decryptedId",  stringId)
 
 			// this just curries into 
 			// whatever the argument function is
