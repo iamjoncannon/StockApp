@@ -19,6 +19,13 @@ type Transaction struct {
 	Price 		int 	`json:"price"`
 }
 
+type Holding struct {
+
+	ID			int 	`json:"id"`
+	Symbol 		string 	`json:"symbol"`
+	Quantity 	int 	`json:"quantity"`
+}
+
 type JWT struct {
 	Token string 	`json:"token"`
 }

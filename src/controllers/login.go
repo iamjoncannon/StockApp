@@ -50,6 +50,7 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 		if err != nil {
 
 			if err == sql.ErrNoRows {
+				
 				error.Message = "User credentials not found in system"
 				utils.RespondWithError(w, http.StatusBadRequest, error)
 				return

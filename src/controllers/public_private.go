@@ -67,7 +67,6 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				return nil, fmt.Errorf("There was an error with your token")
 			}
 
-			// return []byte("secret"), nil
 			return []byte("this is my private key"), nil
 		})
 

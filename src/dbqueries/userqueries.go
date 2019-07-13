@@ -28,5 +28,6 @@ func (d DBQuery) LogIn(db *sql.DB, user models.User)(models.User, error) {
 	return user, err
 }
 
-// func (d DBQuery) GetPortfolio(db *sql.DB, id int )()
+
+// func (d DBQuery) GetPortfolio(db *sql.DB, id int )[]int()
 
