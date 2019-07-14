@@ -10,7 +10,7 @@ import (
 	"fmt"
 
 	"dbqueries"
-	
+	// "github.com/davecgh/go-spew/spew"	
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,13 +18,16 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 	return func (w http.ResponseWriter, r *http.Request) {
 
+		fmt.Println(r)
+		
 		var user models.User 
-		var jwt models.JWT
 		var error models.Error
 
 		json.NewDecoder(r.Body).Decode(&user)
+		
+		// spew.Dump(user)
 
-		fmt.Println(user)
+		// fmt.Println("this is the login callback: ", user)
 
 		if user.Email == "" {
 			error.Message = "Email not found in request"
@@ -78,8 +81,17 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 		w.WriteHeader(http.StatusOK)
 
-		jwt.Token = token
+		returnData := make(map[string]string)
 
-		utils.ResponseJSON(w, jwt)
+		returnData["token"] = token
+		returnData["Name"] = user.Name
+
+		j, err := json.Marshal(returnData)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		utils.ResponseJSON(w, string(j))
 	}
 }

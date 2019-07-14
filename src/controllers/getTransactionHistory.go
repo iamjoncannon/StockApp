@@ -32,7 +32,13 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 		var dateConducted string
 		var errorObj models.Error
 		
-		transactionHistory := make(map[string]models.Holding)
+		type TransactionItem struct {
+			Symbol		string 
+			Quantity	int 	
+			Date 		string
+		}
+
+		transactionHistory := make(map[string]TransactionItem)
 
 		defer rows.Close()
 		
@@ -53,7 +59,7 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 
 			spew.Dump(transID, trans.ID, trans.Symbol, trans.Quantity, dateConducted)
 
-			transactionHistory[fmt.Sprint(transID)] = models.Holding{ ID: trans.ID, Symbol: trans.Symbol, Quantity: trans.Quantity }
+			transactionHistory[fmt.Sprint(transID)] = TransactionItem{ Symbol: trans.Symbol, Quantity: trans.Quantity, Date: dateConducted }
 		}
 
 		j, err := json.Marshal(transactionHistory)

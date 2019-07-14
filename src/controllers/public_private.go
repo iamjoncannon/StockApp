@@ -37,13 +37,13 @@ func GenerateToken(user models.User)(string, error){
 // this is an example of currying- the verification function receives the 
 // handler and, through the mux package, the entire original function is
 // itself actually invoked at the end of the call
-// like, the key is to add () after the mux.router calls- everything
-// after return below is being called, and the w and r arguments
+// conceptually, add () after the mux.router calls- everything
+// after the first return statement will be called, and the w and r arguments
 // refer to the original http request with the token that's being
-// verified- this isn't honestly 100% clear below - 
+// verified 
 
-// whats happening is.. router.HandleFunc takes an endpoint and a callback,
-// when the endpoint is hit it mounts the call back to the route and passes in
+// like Express's app.get()router.HandleFunc takes an endpoint and a callback,
+// when the endpoint is hit it mounts the callback to the route and passes in
 // the original http request object 
 
 func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
@@ -101,5 +101,7 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			utils.RespondWithError(w, http.StatusUnauthorized, errorObj)
 			return
 		}
+
+	
 	})
 }

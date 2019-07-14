@@ -52,7 +52,7 @@ func (c Controller) GetPortfolio (db *sql.DB) http.HandlerFunc {
 
 			spew.Dump(holdingID, holding.ID, holding.Symbol, holding.Quantity)
 
-			portfolio[fmt.Sprint(holdingID)] = models.Holding{ ID: holding.ID, Symbol: holding.Symbol, Quantity: holding.Quantity }
+			portfolio[fmt.Sprint(holding.Symbol)] = models.Holding{ ID: holding.ID, Symbol: holding.Symbol, Quantity: holding.Quantity }
 		}
 
 		j, err := json.Marshal(portfolio)

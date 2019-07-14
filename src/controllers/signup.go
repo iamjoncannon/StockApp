@@ -30,6 +30,7 @@ func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
 
 		var user models.User 
 		var error models.Error
+		var jwt models.JWT
 
 		json.NewDecoder(r.Body).Decode(&user)
 		
@@ -67,13 +68,27 @@ func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
 
 		if err != nil {
 		
-			spew.Dump("there was a server error: ", err)
-			error.Message = "Server error."
+			fmt.Println("there was a server error: ", err)
+			error.Message = err.Error()
 			utils.RespondWithError(w, http.StatusInternalServerError, error)
 			return
 		}
 
-		utils.ResponseJSON(w, user)
+		token, err := GenerateToken(user)
+
+		if err != nil {
+
+			fmt.Println("there was a server error: ", err)
+			error.Message = err.Error()
+			utils.RespondWithError(w, http.StatusInternalServerError, error)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+
+		jwt.Token = token
+
+		utils.ResponseJSON(w, jwt)		
 	}
 }
 
