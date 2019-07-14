@@ -1,11 +1,17 @@
 import React from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 
 export default class MakeTrade extends React.Component {
  
   constructor(props) {
     super(props);
     this.state = {
-
+      selectValue: 'Buy'
     }
   }
 
@@ -13,62 +19,59 @@ export default class MakeTrade extends React.Component {
 
   }
 
-  handleSubmit = async (event) => {
+  defaultPreventer = (evt) => {
 
-    event.preventDefault()
-
-    console.log(event.target.quantity.value, event.target.stock.value)
-
-
+    evt.preventDefault()
+    evt.stopPropagation()
+    // this.props.handleLogIn(this.state.email, this.state.password)
   }
 
   render() {
 
-    console.log('hitting make trade')
-
     return (
+    <form className={'blank'} noValidate autoComplete="off">
+      
+      <TextField
+        required
+        id="standard-required"
+        label="Stock Symbol"
+        defaultValue=""
+        className={'blank'}
+        margin="normal"
+      />
 
-        <div className={'container'}>
+      <TextField
+        required
+        id="standard-required"
+        label="Shares to Purchase"
+        defaultValue=""
+        className={'blank'}
+        margin="normal"
+      />
 
-        <div>
+      <FormControl className={"blank"}>
 
-          <form onSubmit={this.handleSubmit} autoComplete="off">
+        <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
+        <Select
+          value={this.state.selectValue}
+          onChange={ (evt)=> this.setState({selectValue: evt.target.value}) }
+        >
+          <MenuItem value={'Buy'}>Buy</MenuItem>
+          <MenuItem value={'Sell'}>Sell</MenuItem>
+        </Select>
+      </FormControl>
 
-          <div>
+      <Button
+        onClick={this.defaultPreventer}
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={"blank"}
+      >
+        {"Make Trade"}
+      </Button>
 
-            <label htmlFor="quantity">
-
-              <small>Quantity</small>
-            
-            </label>
-          
-            <input
-              name="quantity"
-              type="quantity"
-              type="number"
-            />
-          </div>
-          
-          <div>
-          
-            <label htmlFor="stock">
-              <small>Stock Symbol</small>
-            </label>
-          
-            <input
-              name="stock"
-              type="stock"
-              required
-            />
-          </div>
-          
-          <div>
-            <button type="submit">SUBMIT</button>
-          </div>    
-        </form>
-        </div>
-        
-      </div>
+    </form>  
     );
   }
 }

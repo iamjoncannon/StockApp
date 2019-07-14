@@ -1,5 +1,11 @@
 import React from 'react';
-import TransHistoryItem from './TransHistoryItem'
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 export default class TransactionHistory extends React.Component {
  
@@ -13,11 +19,44 @@ export default class TransactionHistory extends React.Component {
   render() {
 
     return (
+
       <div>
-        { this.props.transactionHistory !== null ? 
-              Object.entries(this.props.transactionHistory).map( (item, i) =>  <TransHistoryItem key={i} data={item[1]} /> ) : ''
-          }
+
+          { this.props.portfolio !== null ? 
+
+          <Paper className={"blank"}>
+            <Table className={"blank"}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Symbol</TableCell>
+                  <TableCell align="right">Current Holdings</TableCell>
+                  <TableCell align="right">Current Value</TableCell>                  
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Object.entries(this.props.transactionHistory).map(row => (
+                  <TableRow key={row.name}>
+                    <TableCell component="th" scope="row">
+                      {row[1].Symbol}
+                    </TableCell>
+                    <TableCell align="right">{row[1].Quantity}</TableCell>
+                    <TableCell align="right">{row[1].Date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+          : ''
+        }
       </div>
-    );
+    );   
   }
 }
+
+
+// <div>
+//         { this.props.transactionHistory !== null ? 
+//               Object.entries(this.props.transactionHistory).map( (item, i) =>  <TransHistoryItem key={i} data={item[1]} /> ) : ''
+//           }
+//       </div>
+//     );

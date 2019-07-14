@@ -1,5 +1,4 @@
 import React from 'react'
-import { render } from 'react-dom'
 import LogIn  from './loginMUI'
 import SignUp from './SignUpMUI'
 import Portfolio from './Portfolio'
@@ -7,6 +6,7 @@ import TransactionHistory from './TransactionHistory'
 import MakeTrade from './MakeTrade'
 import Socket from './Socket'
 import { asyncLogInCall, asyncSignUpCall } from './asyncCalls'
+
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -18,7 +18,6 @@ export default class Root extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {
-
 	    	profile: null,
 	    	isLoggedIn: false,
 	    	hasLoadedData: false,
@@ -135,43 +134,10 @@ export default class Root extends React.Component {
 									    			/>
 				      						   </TabContainer>}
 				      
-				      {this.state.tab === 2 && <TabContainer>Item Three</TabContainer>}
+				      {this.state.tab === 2 && <TabContainer> <MakeTrade /> </TabContainer>}
 				    </div>
 		    	}
 		    </div>
 		 )
 	}
 }
-
-
-{/* <div>
-
-					<span onClick={()=> this.setState({page: 'portfolio'})}> Portfolio </span>
-					<span onClick={()=> this.setState({page: 'transHistory'})}> Transaction History </span>
-					<span onClick={()=> this.setState({page: 'trade'})}> Make A Trade </span>
-
-					 {this.state.page === 'portfolio' ?
-						
-						<div>
-							<Portfolio loadInitialData={this.loadInitialData} 
-			    					   portfolio={this.state.portfolio}
-			    					   hasLoadedData={this.state.hasLoadedData}
-			    					   profile={this.state.profile}
-			    			/>
-			    		</div>
-			    			:
-			    		this.state.page === 'transHistory' ? 
-			    		<div>
-			    			<TransactionHistory 
-			    					   transactionHistory={this.state.transactionHistory}
-			    			/>
-			    		</div>
-			    			: 
-			    		<div>
-			    			<MakeTrade handleTrade={this.handleTrade}/>
-			    		</div>
-			    		}
-		    	
-		    	</div>
-			    */}
-

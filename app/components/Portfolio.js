@@ -70,5 +70,6 @@ export default class Portfolio extends React.Component {
         }
       </div>
     );
+    
   }
 }
