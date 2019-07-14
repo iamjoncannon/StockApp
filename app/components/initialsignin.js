@@ -47,6 +47,7 @@ export default class LogIn extends React.Component {
     // console.log(parsed)
 
     this.props.handleLogin({Name: parsed.Name, email, token: parsed.token})
+  
   }
 
   componentDidMount(){

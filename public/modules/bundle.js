@@ -142,8 +142,6 @@ var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./nod
 
 var _Typography2 = _interopRequireDefault(_Typography);
 
-var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-
 var _Container = __webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js");
 
 var _Container2 = _interopRequireDefault(_Container);
@@ -163,6 +161,13 @@ var SignIn = function (_React$Component) {
     _classCallCheck(this, SignIn);
 
     var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
+
+    _this.defaultPreventer = function (evt) {
+
+      evt.preventDefault();
+      evt.stopPropagation();
+      _this.props.handleLogIn(_this.state.email, _this.state.password);
+    };
 
     _this.state = {
       email: "cuty@example.com",
@@ -224,9 +229,7 @@ var SignIn = function (_React$Component) {
             _react2.default.createElement(
               _Button2.default,
               {
-                onClick: function onClick() {
-                  return _this2.props.handleLogIn(_this2.state.email, _this2.state.password);
-                },
+                onClick: this.defaultPreventer,
                 fullWidth: true,
                 variant: 'contained',
                 color: 'primary',
@@ -239,8 +242,8 @@ var SignIn = function (_React$Component) {
               { container: true },
               _react2.default.createElement(
                 _Link2.default,
-                { href: '#', variant: 'body2' },
-                "Sign Up"
+                { onClick: this.props.toSignUp, href: '#', variant: 'body2' },
+                "Register Account"
               )
             )
           )
@@ -589,6 +592,232 @@ function PortfolioItem(props) {
 
 /***/ }),
 
+/***/ "./app/components/SignUpMUI.js":
+/*!*************************************!*\
+  !*** ./app/components/SignUpMUI.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Button = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _CssBaseline = __webpack_require__(/*! @material-ui/core/CssBaseline */ "./node_modules/@material-ui/core/esm/CssBaseline/index.js");
+
+var _CssBaseline2 = _interopRequireDefault(_CssBaseline);
+
+var _TextField = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _FormControlLabel = __webpack_require__(/*! @material-ui/core/FormControlLabel */ "./node_modules/@material-ui/core/esm/FormControlLabel/index.js");
+
+var _FormControlLabel2 = _interopRequireDefault(_FormControlLabel);
+
+var _Checkbox = __webpack_require__(/*! @material-ui/core/Checkbox */ "./node_modules/@material-ui/core/esm/Checkbox/index.js");
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
+
+var _Link = __webpack_require__(/*! @material-ui/core/Link */ "./node_modules/@material-ui/core/esm/Link/index.js");
+
+var _Link2 = _interopRequireDefault(_Link);
+
+var _Grid = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+
+var _Grid2 = _interopRequireDefault(_Grid);
+
+var _Box = __webpack_require__(/*! @material-ui/core/Box */ "./node_modules/@material-ui/core/esm/Box/index.js");
+
+var _Box2 = _interopRequireDefault(_Box);
+
+var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+
+var _Typography2 = _interopRequireDefault(_Typography);
+
+var _Container = __webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js");
+
+var _Container2 = _interopRequireDefault(_Container);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SignIn = function (_React$Component) {
+  _inherits(SignIn, _React$Component);
+
+  function SignIn(props) {
+    _classCallCheck(this, SignIn);
+
+    var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
+
+    _this.defaultPreventer = function (evt) {
+
+      evt.preventDefault();
+      evt.stopPropagation();
+      _this.props.handleSignUp(_this.state);
+    };
+
+    _this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: ""
+    };
+    return _this;
+  }
+
+  _createClass(SignIn, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        _Container2.default,
+        { component: 'main', maxWidth: 'xs' },
+        _react2.default.createElement(_CssBaseline2.default, null),
+        _react2.default.createElement(
+          'div',
+          { className: "blank" },
+          _react2.default.createElement(
+            _Typography2.default,
+            { component: 'h1', variant: 'h5' },
+            "  Register Account  "
+          ),
+          _react2.default.createElement(
+            'form',
+            { className: "blank", noValidate: true },
+            _react2.default.createElement(
+              _Grid2.default,
+              { container: true, spacing: 2 },
+              _react2.default.createElement(
+                _Grid2.default,
+                { item: true, xs: 12, sm: 6 },
+                _react2.default.createElement(_TextField2.default, {
+                  autoComplete: 'fname',
+                  name: 'firstName',
+                  value: this.state.firstName,
+                  onChange: function onChange(e) {
+                    _this2.setState({ firstName: e.target.value });
+                  },
+                  variant: 'outlined',
+                  required: true,
+                  fullWidth: true,
+                  id: 'firstName',
+                  label: 'First Name',
+                  autoFocus: true
+                })
+              ),
+              _react2.default.createElement(
+                _Grid2.default,
+                { item: true, xs: 12, sm: 6 },
+                _react2.default.createElement(_TextField2.default, {
+                  variant: 'outlined',
+                  required: true,
+                  fullWidth: true,
+                  id: 'lastName',
+                  value: this.state.lastName,
+                  onChange: function onChange(e) {
+                    _this2.setState({ lastName: e.target.value });
+                  },
+                  label: 'Last Name',
+                  name: 'lastName',
+                  autoComplete: 'lname'
+                })
+              ),
+              _react2.default.createElement(
+                _Grid2.default,
+                { item: true, xs: 12 },
+                _react2.default.createElement(_TextField2.default, {
+                  variant: 'outlined',
+                  required: true,
+                  fullWidth: true,
+                  id: 'email',
+                  value: this.state.email,
+                  onChange: function onChange(e) {
+                    _this2.setState({ email: e.target.value });
+                  },
+                  label: 'Email Address',
+                  name: 'email',
+                  autoComplete: 'email'
+                })
+              ),
+              _react2.default.createElement(
+                _Grid2.default,
+                { item: true, xs: 12 },
+                _react2.default.createElement(_TextField2.default, {
+                  variant: 'outlined',
+                  required: true,
+                  fullWidth: true,
+                  name: 'password',
+                  value: this.state.password,
+                  onChange: function onChange(e) {
+                    _this2.setState({ password: e.target.value });
+                  },
+                  label: 'Password',
+                  type: 'password',
+                  id: 'password',
+                  autoComplete: 'current-password'
+                })
+              )
+            ),
+            _react2.default.createElement(
+              _Button2.default,
+              {
+                onClick: this.defaultPreventer,
+                type: 'submit',
+                fullWidth: true,
+                variant: 'contained',
+                color: 'primary',
+                className: "blank"
+              },
+              'Sign Up'
+            ),
+            _react2.default.createElement(
+              _Grid2.default,
+              { container: true, justify: 'flex-end' },
+              _react2.default.createElement(
+                _Grid2.default,
+                { item: true },
+                _react2.default.createElement(
+                  _Link2.default,
+                  { onClick: function onClick() {
+                      return _this2.props.toLogIn();
+                    }, href: '#', variant: 'body2' },
+                  "Sign in"
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SignIn;
+}(_react2.default.Component);
+
+exports.default = SignIn;
+
+/***/ }),
+
 /***/ "./app/components/Socket.js":
 /*!**********************************!*\
   !*** ./app/components/Socket.js ***!
@@ -857,7 +1086,7 @@ exports.default = TransactionHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.asyncLogInCall = undefined;
+exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -922,6 +1151,61 @@ var asyncLogInCall = exports.asyncLogInCall = function () {
   };
 }();
 
+var asyncSignUpCall = exports.asyncSignUpCall = function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(Name, email, password) {
+    var signUpInfo, token, duplicateEmail, returnedToken;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            signUpInfo = { Name: Name, email: email, password: password };
+            token = void 0;
+            _context2.prev = 2;
+            _context2.next = 5;
+            return _axios2.default.post('/signup', signUpInfo);
+
+          case 5:
+            token = _context2.sent;
+            _context2.next = 12;
+            break;
+
+          case 8:
+            _context2.prev = 8;
+            _context2.t0 = _context2['catch'](2);
+            duplicateEmail = _context2.t0.response.data.message === 'pq: duplicate key value violates unique constraint "unique_email"';
+
+
+            if (duplicateEmail) {
+
+              alert("This Email is already on file, please try again with a unique email.");
+            } else {
+
+              console.log(_context2.t0.response.data.message);
+              alert(_context2.t0.response.data.message);
+            }
+
+          case 12:
+
+            signUpInfo.password = null;
+
+            console.log(token);
+
+            returnedToken = token.data.token;
+            return _context2.abrupt('return', { signUpInfo: signUpInfo, returnedToken: returnedToken });
+
+          case 16:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, undefined, [[2, 8]]);
+  }));
+
+  return function asyncSignUpCall(_x3, _x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
 /***/ }),
 
 /***/ "./app/components/loginMUI.js":
@@ -980,8 +1264,6 @@ var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./nod
 
 var _Typography2 = _interopRequireDefault(_Typography);
 
-var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-
 var _Container = __webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js");
 
 var _Container2 = _interopRequireDefault(_Container);
@@ -1001,6 +1283,13 @@ var SignIn = function (_React$Component) {
     _classCallCheck(this, SignIn);
 
     var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
+
+    _this.defaultPreventer = function (evt) {
+
+      evt.preventDefault();
+      evt.stopPropagation();
+      _this.props.handleLogIn(_this.state.email, _this.state.password);
+    };
 
     _this.state = {
       email: "cuty@example.com",
@@ -1062,9 +1351,7 @@ var SignIn = function (_React$Component) {
             _react2.default.createElement(
               _Button2.default,
               {
-                onClick: function onClick() {
-                  return _this2.props.handleLogIn(_this2.state.email, _this2.state.password);
-                },
+                onClick: this.defaultPreventer,
                 fullWidth: true,
                 variant: 'contained',
                 color: 'primary',
@@ -1077,8 +1364,8 @@ var SignIn = function (_React$Component) {
               { container: true },
               _react2.default.createElement(
                 _Link2.default,
-                { href: '#', variant: 'body2' },
-                "Sign Up"
+                { onClick: this.props.toSignUp, href: '#', variant: 'body2' },
+                "Register Account"
               )
             )
           )
@@ -1123,9 +1410,9 @@ var _loginMUI = __webpack_require__(/*! ./loginMUI */ "./app/components/loginMUI
 
 var _loginMUI2 = _interopRequireDefault(_loginMUI);
 
-var _signUp = __webpack_require__(/*! ./signUp */ "./app/components/signUp.js");
+var _SignUpMUI = __webpack_require__(/*! ./SignUpMUI */ "./app/components/SignUpMUI.js");
 
-var _signUp2 = _interopRequireDefault(_signUp);
+var _SignUpMUI2 = _interopRequireDefault(_SignUpMUI);
 
 var _Portfolio = __webpack_require__(/*! ./Portfolio */ "./app/components/Portfolio.js");
 
@@ -1165,26 +1452,60 @@ var Root = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Root.__proto__ || Object.getPrototypeOf(Root)).call(this, props));
 
-		_this.handleSignUp = function (profileValues, token) {
-
-			_this.setState({ profile: profileValues,
-				token: token,
-				isLoggedIn: true
-			});
-		};
-
-		_this.handleLogIn = function () {
-			var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(email, password) {
-				var data;
+		_this.handleSignUp = function () {
+			var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref2) {
+				var firstName = _ref2.firstName,
+				    lastName = _ref2.lastName,
+				    email = _ref2.email,
+				    password = _ref2.password;
+				var name, data;
 				return regeneratorRuntime.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								_context.next = 2;
+
+								console.log("hitting handle signup in root");
+
+								name = firstName + lastName;
+								_context.next = 4;
+								return (0, _asyncCalls.asyncSignUpCall)(name, email, password);
+
+							case 4:
+								data = _context.sent;
+
+
+								console.log(data);
+
+								// this.setState({ profile: profileValues, 
+								// 				token: token, 
+								// 				isLoggedIn: true
+								// 			})
+
+							case 6:
+							case 'end':
+								return _context.stop();
+						}
+					}
+				}, _callee, _this2);
+			}));
+
+			return function (_x) {
+				return _ref.apply(this, arguments);
+			};
+		}();
+
+		_this.handleLogIn = function () {
+			var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(email, password) {
+				var data;
+				return regeneratorRuntime.wrap(function _callee2$(_context2) {
+					while (1) {
+						switch (_context2.prev = _context2.next) {
+							case 0:
+								_context2.next = 2;
 								return (0, _asyncCalls.asyncLogInCall)(email, password);
 
 							case 2:
-								data = _context.sent;
+								data = _context2.sent;
 
 
 								console.log(data);
@@ -1193,19 +1514,20 @@ var Root = function (_React$Component) {
 										email: data.email,
 										token: data.token
 									},
-									isLoggedIn: true
+									isLoggedIn: true,
+									page: 'portfolio'
 								});
 
 							case 5:
 							case 'end':
-								return _context.stop();
+								return _context2.stop();
 						}
 					}
-				}, _callee, _this2);
+				}, _callee2, _this2);
 			}));
 
-			return function (_x, _x2) {
-				return _ref.apply(this, arguments);
+			return function (_x2, _x3) {
+				return _ref3.apply(this, arguments);
 			};
 		}();
 
@@ -1230,7 +1552,7 @@ var Root = function (_React$Component) {
 			profile: null,
 			isLoggedIn: false,
 			hasLoadedData: false,
-			page: 'portfolio',
+			page: 'login',
 			token: null,
 			portfolio: null,
 			transactionHistory: null,
@@ -1255,7 +1577,15 @@ var Root = function (_React$Component) {
 				!this.state.isLoggedIn ? _react2.default.createElement(
 					'div',
 					null,
-					_react2.default.createElement(_loginMUI2.default, { handleLogIn: this.handleLogIn })
+					this.state.page === 'login' ? _react2.default.createElement(_loginMUI2.default, { handleLogIn: this.handleLogIn,
+						toSignUp: function toSignUp() {
+							return _this3.setState({ page: 'signUp' });
+						}
+					}) : _react2.default.createElement(_SignUpMUI2.default, { handleSignUp: this.handleSignUp,
+						toLogIn: function toLogIn() {
+							return _this3.setState({ page: 'login' });
+						}
+					})
 				) : _react2.default.createElement(
 					'div',
 					null,
@@ -1308,221 +1638,6 @@ var Root = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Root;
-
-/***/ }),
-
-/***/ "./app/components/signUp.js":
-/*!**********************************!*\
-  !*** ./app/components/signUp.js ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var _axios2 = _interopRequireDefault(_axios);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SignUp = function (_React$Component) {
-  _inherits(SignUp, _React$Component);
-
-  function SignUp(props) {
-    var _this2 = this;
-
-    _classCallCheck(this, SignUp);
-
-    var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
-
-    _this.handleSubmit = function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
-        var _event$target, firstName, lastName, email, password, signUpInfo, token, duplicateEmail;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-
-                event.preventDefault();
-
-                _event$target = event.target, firstName = _event$target.firstName, lastName = _event$target.lastName, email = _event$target.email, password = _event$target.password;
-
-
-                email = email.value;
-                password = password.value;
-                firstName = firstName.value;
-                lastName = lastName.value;
-
-                signUpInfo = { Name: firstName + " " + lastName, email: email, password: password };
-                token = void 0;
-                _context.prev = 8;
-                _context.next = 11;
-                return _axios2.default.post('/signup', signUpInfo);
-
-              case 11:
-                token = _context.sent;
-                _context.next = 18;
-                break;
-
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context['catch'](8);
-                duplicateEmail = _context.t0.response.data.message === 'pq: duplicate key value violates unique constraint "unique_email"';
-
-
-                if (duplicateEmail) {
-
-                  alert("This Email is already on file, please try again with a unique email.");
-                } else {
-
-                  console.log(_context.t0.response.data.message);
-                  alert(_context.t0.response.data.message);
-                }
-
-              case 18:
-
-                signUpInfo.password = null;
-
-                console.log(token);
-
-                _this.props.handleSignUp(signUpInfo, token.data.token);
-
-              case 21:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, _this2, [[8, 14]]);
-      }));
-
-      return function (_x) {
-        return _ref.apply(this, arguments);
-      };
-    }();
-
-    return _this;
-  }
-
-  _createClass(SignUp, [{
-    key: 'render',
-    value: function render() {
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'form',
-          { onSubmit: this.handleSubmit, autoComplete: 'off' },
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(
-                'label',
-                { htmlFor: 'firstName' },
-                _react2.default.createElement(
-                  'small',
-                  null,
-                  'First Name: '
-                )
-              ),
-              _react2.default.createElement('input', { name: 'firstName', type: 'text', required: true })
-            ),
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(
-                'label',
-                { htmlFor: 'lastName' },
-                _react2.default.createElement(
-                  'small',
-                  null,
-                  ' Last Name: '
-                )
-              ),
-              _react2.default.createElement('input', { name: 'lastName', type: 'text', required: true })
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-              'label',
-              { htmlFor: 'email' },
-              _react2.default.createElement(
-                'small',
-                null,
-                'Email:'
-              )
-            ),
-            _react2.default.createElement('input', {
-              name: 'email',
-              type: 'email',
-              required: true,
-              pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$'
-            })
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-              'label',
-              { htmlFor: 'password' },
-              _react2.default.createElement(
-                'small',
-                null,
-                'Password:'
-              )
-            ),
-            _react2.default.createElement('input', {
-              name: 'password',
-              type: 'password',
-              required: true,
-              pattern: '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
-              title: 'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters'
-            })
-          ),
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-              'button',
-              { type: 'submit' },
-              'SUBMIT'
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SignUp;
-}(_react2.default.Component);
-
-exports.default = SignUp;
 
 /***/ }),
 

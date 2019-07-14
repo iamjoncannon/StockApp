@@ -1,12 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
 import LogIn  from './loginMUI'
-import SignUp from './signUp'
+import SignUp from './SignUpMUI'
 import Portfolio from './Portfolio'
 import TransactionHistory from './TransactionHistory'
 import MakeTrade from './MakeTrade'
 import Socket from './Socket'
-import { asyncLogInCall } from './asyncCalls'
+import { asyncLogInCall, asyncSignUpCall } from './asyncCalls'
 
 export default class Root extends React.Component {
 
@@ -17,7 +17,7 @@ export default class Root extends React.Component {
 	    	profile: null,
 	    	isLoggedIn: false,
 	    	hasLoadedData: false,
-	    	page: 'portfolio',
+	    	page: 'login',
 	    	token: null,
 	    	portfolio: null,
 	    	transactionHistory: null,
@@ -25,12 +25,20 @@ export default class Root extends React.Component {
 	    }
 	}
 
-	handleSignUp = (profileValues, token) => {
+	handleSignUp = async ({ firstName, lastName, email, password} ) => {
 
-		this.setState({ profile: profileValues, 
-						token: token, 
-						isLoggedIn: true
-					})
+		console.log("hitting handle signup in root")
+
+		const name = firstName + lastName
+
+		const data = await asyncSignUpCall(name, email, password)
+
+		console.log(data)
+
+		// this.setState({ profile: profileValues, 
+		// 				token: token, 
+		// 				isLoggedIn: true
+		// 			})
 	}
 
 	handleLogIn = async (email, password) => {
@@ -43,7 +51,8 @@ export default class Root extends React.Component {
 								   email: data.email,
 								   token: data.token
 								 }, 
-						isLoggedIn: true
+						isLoggedIn: true,
+						page: 'portfolio'
 					})
 	}
 
@@ -72,22 +81,34 @@ export default class Root extends React.Component {
 		return ( 
 
 		    <div> 
+
 		    	{ this.state.portfolio ? <Socket portfolio={this.state.portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
 		    							 /> : '' }
 
+
 		    	{ !this.state.isLoggedIn ? 
 
 		    		<div>
-		    			{/* 
-		    				UI component calls the separate async logic with the state
-		    				management callback as the first argument
-		    			*/}
-		    			<LogIn handleLogIn={this.handleLogIn}/> 
+		    			
+		    			{
+		    				this.state.page === 'login' ? 
 
-					    { /*<SignUp handleSignUp={this.handleSignUp}/> */}
+		    			<LogIn handleLogIn={this.handleLogIn} 
+		    				   toSignUp={()=>this.setState({page: 'signUp'})}
+		    			/> 
+		    			: 
+
+					    <SignUp handleSignUp={this.handleSignUp}
+					    		toLogIn={()=>this.setState({page:'login'})}
+					    /> 
+					
+		    			}
+
 					</div>
+					
 					    : 
+				
 				<div>
 
 					<span onClick={()=> this.setState({page: 'portfolio'})}> Portfolio </span>
@@ -114,7 +135,6 @@ export default class Root extends React.Component {
 			    		<div>
 			    			<MakeTrade handleTrade={this.handleTrade}/>
 			    		</div>
-
 			    		}
 		    	</div>
 		    	}

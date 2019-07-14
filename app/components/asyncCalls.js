@@ -7,31 +7,66 @@ import axios from 'axios';
 
 export const asyncLogInCall = async (email, password) => {
 
-    let res 
+  let res 
 
-    try{
+  try{
+
+    res = await axios.post('/login', { email, password} )    
+  }
+
+  catch(error){
+
+    let  duplicateEmail = error.response.data.message === `pq: duplicate key value violates unique constraint "unique_email"`
+
+    if (duplicateEmail){
+
+      alert("This Email is already on file, please try again with a unique email.")
+    }
+    else{
+
+      alert(error.response.data.message)
+    }
+
+  }
+
+  let parsed = JSON.parse(res.data)
   
-      res = await axios.post('/login', { email, password} )    
-    }
+  console.log(parsed)
 
-    catch(error){
- 
-      let  duplicateEmail = error.response.data.message === `pq: duplicate key value violates unique constraint "unique_email"`
- 
-      if (duplicateEmail){
+  return {Name: parsed.Name, email, token: parsed.token}
+}
 
-        alert("This Email is already on file, please try again with a unique email.")
-      }
-      else{
-
-        alert(error.response.data.message)
-      }
-
-    }
-
-    let parsed = JSON.parse(res.data)
+export const asyncSignUpCall = async (Name, email, password) => {
     
-    console.log(parsed)
+  const signUpInfo = { Name, email, password }
 
-    return {Name: parsed.Name, email, token: parsed.token}
+  let token
+  
+  try {
+
+    token = await axios.post('/signup', signUpInfo )
+  }
+  catch(error){
+
+    let  duplicateEmail = error.response.data.message === `pq: duplicate key value violates unique constraint "unique_email"`
+
+    if (duplicateEmail){
+
+      alert("This Email is already on file, please try again with a unique email.")
+    }
+    else{
+
+      console.log(error.response.data.message)
+      alert(error.response.data.message)
+    }
+  }
+  
+  signUpInfo.password = null 
+
+  console.log(token)
+
+  let returnedToken = token.data.token
+
+  return { signUpInfo, returnedToken }
+
 }

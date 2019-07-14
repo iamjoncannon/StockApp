@@ -8,7 +8,6 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 export default class SignIn extends React.Component {
@@ -19,6 +18,13 @@ export default class SignIn extends React.Component {
       email: "cuty@example.com",
       password: "1Yadayadayada"
     }
+  }
+
+  defaultPreventer = (evt) => {
+
+    evt.preventDefault()
+    evt.stopPropagation()
+    this.props.handleLogIn(this.state.email, this.state.password)
   }
 
   render() { 
@@ -59,7 +65,7 @@ export default class SignIn extends React.Component {
                 autoComplete="current-password"
               />
               <Button
-                onClick={()=>this.props.handleLogIn(this.state.email, this.state.password)}
+                onClick={this.defaultPreventer}
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -68,8 +74,8 @@ export default class SignIn extends React.Component {
                 Sign In
               </Button>
               <Grid container>
-                  <Link href="#" variant="body2">
-                    {"Sign Up"}
+                  <Link onClick={this.props.toSignUp} href="#" variant="body2">
+                    {"Register Account"}
                   </Link>            
               </Grid>
             </form>
