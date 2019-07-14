@@ -7,6 +7,11 @@ import TransactionHistory from './TransactionHistory'
 import MakeTrade from './MakeTrade'
 import Socket from './Socket'
 import { asyncLogInCall, asyncSignUpCall } from './asyncCalls'
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import TabContainer from './DashTab'
 
 export default class Root extends React.Component {
 
@@ -18,6 +23,7 @@ export default class Root extends React.Component {
 	    	isLoggedIn: false,
 	    	hasLoadedData: false,
 	    	page: 'login',
+	    	tab: 0,
 	    	token: null,
 	    	portfolio: null,
 	    	transactionHistory: null,
@@ -27,25 +33,19 @@ export default class Root extends React.Component {
 
 	handleSignUp = async ({ firstName, lastName, email, password} ) => {
 
-		console.log("hitting handle signup in root")
-
 		const name = firstName + lastName
 
 		const data = await asyncSignUpCall(name, email, password)
 
-		console.log(data)
-
-		// this.setState({ profile: profileValues, 
-		// 				token: token, 
-		// 				isLoggedIn: true
-		// 			})
+		this.setState({ profile: data.signUpInfo, 
+						token: data.returnedToken, 
+						isLoggedIn: true
+					})
 	}
 
 	handleLogIn = async (email, password) => {
 
 		const data = await asyncLogInCall(email, password)
-
-		console.log(data)
 
 		this.setState({ profile: { name: data.name, 
 								   email: data.email,
@@ -108,8 +108,27 @@ export default class Root extends React.Component {
 					</div>
 					
 					    : 
-				
-				<div>
+
+			    	<div className={"blank"}>
+				      <AppBar position="static">
+				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
+				          <Tab label="Item One" />
+				          <Tab label="Item Two" />
+				          <Tab label="Item Three" />
+				        </Tabs>
+				      </AppBar>
+				      {this.state.tab === 0 && <TabContainer>Item One</TabContainer>}
+				      {this.state.tab === 1 && <TabContainer>Item Two</TabContainer>}
+				      {this.state.tab === 2 && <TabContainer>Item Three</TabContainer>}
+				    </div>
+		    	}
+		    </div>
+		 )
+	}
+}
+
+
+{/* <div>
 
 					<span onClick={()=> this.setState({page: 'portfolio'})}> Portfolio </span>
 					<span onClick={()=> this.setState({page: 'transHistory'})}> Transaction History </span>
@@ -136,10 +155,7 @@ export default class Root extends React.Component {
 			    			<MakeTrade handleTrade={this.handleTrade}/>
 			    		</div>
 			    		}
+		    	
 		    	</div>
-		    	}
-		    </div>
-		 )
-	}
-}
+			    */}
 

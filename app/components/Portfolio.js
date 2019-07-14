@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PortfolioItem from './PortfolioItem'
+import {asyncPopulateData} from './asyncCalls'
 
 export default class Portfolio extends React.Component {
  
@@ -19,32 +20,10 @@ export default class Portfolio extends React.Component {
 
     if (!this.props.hasLoadedData) {
 
-      let portfolio
-      let transactionHistory
+      const { token } = this.props.profile
 
-      try {
-
-        let theHeader = { 
-                          headers: {
-                            "Authorization": 'Bearer ' + this.props.profile.token 
-                          }
-                        }
-        Promise.all( // allows you to run api calls in parallel rather than serially
-          [ 
-            ( portfolio = await axios.post('/getportfolio', {}, theHeader) ),
-            ( transactionHistory = await axios.post('/getallTransactions', {}, theHeader) )
-          ]
-        )
-      }
-      catch(error){
-
-        console.log(error)
-        // alert(error.response.data.message)
-      }
-
-      this.props.loadInitialData(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data))
+      asyncPopulateData(token, this.props.loadInitialData)
     }
-
   }
 
   render() {
