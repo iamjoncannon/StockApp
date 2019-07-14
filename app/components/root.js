@@ -112,13 +112,29 @@ export default class Root extends React.Component {
 			    	<div className={"blank"}>
 				      <AppBar position="static">
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
-				          <Tab label="Item One" />
-				          <Tab label="Item Two" />
-				          <Tab label="Item Three" />
+				          <Tab label="Portfolio" />
+				          <Tab label="Trading History" />
+				          <Tab label="Make a Trade" />
 				        </Tabs>
 				      </AppBar>
-				      {this.state.tab === 0 && <TabContainer>Item One</TabContainer>}
-				      {this.state.tab === 1 && <TabContainer>Item Two</TabContainer>}
+
+				      {this.state.tab === 0 && <TabContainer> 
+				      						
+				      								<Portfolio 
+				      									loadInitialData={this.loadInitialData} 
+									    		   	   	portfolio={this.state.portfolio}
+									    				hasLoadedData={this.state.hasLoadedData}
+									    				profile={this.state.profile}
+									    			/>
+				      						 
+				      						   </TabContainer>}
+
+				      {this.state.tab === 1 && <TabContainer> 
+				      								<TransactionHistory 
+									    				transactionHistory={this.state.transactionHistory}
+									    			/>
+				      						   </TabContainer>}
+				      
 				      {this.state.tab === 2 && <TabContainer>Item Three</TabContainer>}
 				    </div>
 		    	}
