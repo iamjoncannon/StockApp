@@ -342,7 +342,11 @@ var _Select = __webpack_require__(/*! @material-ui/core/Select */ "./node_module
 
 var _Select2 = _interopRequireDefault(_Select);
 
+var _asyncCalls = __webpack_require__(/*! ./asyncCalls */ "./app/components/asyncCalls.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -354,6 +358,8 @@ var MakeTrade = function (_React$Component) {
   _inherits(MakeTrade, _React$Component);
 
   function MakeTrade(props) {
+    var _this2 = this;
+
     _classCallCheck(this, MakeTrade);
 
     var _this = _possibleConstructorReturn(this, (MakeTrade.__proto__ || Object.getPrototypeOf(MakeTrade)).call(this, props));
@@ -364,6 +370,48 @@ var MakeTrade = function (_React$Component) {
       evt.stopPropagation();
       _this.props.handleTrade(_this.state);
     };
+
+    _this.handleSymbol = function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(symbol) {
+        var price;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+
+                _this.setState({ Symbol: symbol });
+
+                if (!(symbol.length > 1)) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _context.next = 4;
+                return (0, _asyncCalls.asyncGetOnePrice)(symbol);
+
+              case 4:
+                price = _context.sent;
+
+                console.log(price);
+                _this.setState({ Price: price });
+                _context.next = 10;
+                break;
+
+              case 9:
+                _this.setState({ Price: 'price' });
+
+              case 10:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
 
     _this.state = {
       Symbol: '',
@@ -379,7 +427,7 @@ var MakeTrade = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         'form',
@@ -390,7 +438,7 @@ var MakeTrade = function (_React$Component) {
           label: 'Stock Symbol',
           value: this.state.Symbol,
           onChange: function onChange(e) {
-            _this2.setState({ Symbol: e.target.value });
+            _this3.handleSymbol(e.target.value);
           },
           className: 'blank',
           margin: 'normal'
@@ -398,10 +446,10 @@ var MakeTrade = function (_React$Component) {
         _react2.default.createElement(_TextField2.default, {
           required: true,
           id: 'standard-required',
-          label: 'Shares to Purchase',
+          label: 'Shares to Trade',
           value: this.state.Quantity,
           onChange: function onChange(e) {
-            _this2.setState({ Quantity: e.target.value });
+            _this3.setState({ Quantity: e.target.value });
           },
           className: 'blank',
           margin: 'normal'
@@ -419,7 +467,7 @@ var MakeTrade = function (_React$Component) {
             {
               value: this.state.Type,
               onChange: function onChange(evt) {
-                return _this2.setState({ Type: evt.target.value });
+                return _this3.setState({ Type: evt.target.value });
               }
             },
             _react2.default.createElement(
@@ -434,6 +482,14 @@ var MakeTrade = function (_React$Component) {
             )
           )
         ),
+        _react2.default.createElement(_TextField2.default, {
+          required: true,
+          id: 'filled-disabled',
+          label: 'Current Value',
+          value: this.state.Price,
+          className: 'blank',
+          margin: 'normal'
+        }),
         _react2.default.createElement(
           _Button2.default,
           {
@@ -1168,7 +1224,7 @@ exports.default = TransactionHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.asyncMakeTrade = exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
+exports.asyncGetOnePrice = exports.asyncMakeTrade = exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -1379,6 +1435,36 @@ var asyncMakeTrade = exports.asyncMakeTrade = function () {
 
   return function asyncMakeTrade(_x8, _x9) {
     return _ref4.apply(this, arguments);
+  };
+}();
+
+var asyncGetOnePrice = exports.asyncGetOnePrice = function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(symbol) {
+    var url, _ref6, data;
+
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            url = 'https://api.iextrading.com/1.0/tops/last?symbols=' + symbol;
+            _context5.next = 3;
+            return _axios2.default.get(url);
+
+          case 3:
+            _ref6 = _context5.sent;
+            data = _ref6.data;
+            return _context5.abrupt('return', data[0].price);
+
+          case 6:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, undefined);
+  }));
+
+  return function asyncGetOnePrice(_x10) {
+    return _ref5.apply(this, arguments);
   };
 }();
 
@@ -1739,9 +1825,10 @@ var Root = function (_React$Component) {
         
         */
 
-								trade.Price = _this.state.portfolio[trade.Symbol].price;
+								// trade.Price = this.state.portfolio[trade.Symbol].price
 
-								console.log(trade, _this.state.token);
+								trade.Quantity = Number(trade.Quantity);
+								console.log(trade);
 
 								_context3.next = 4;
 								return (0, _asyncCalls.asyncMakeTrade)(trade, _this.state.profile.token);

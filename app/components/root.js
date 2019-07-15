@@ -69,9 +69,10 @@ export default class Root extends React.Component {
 		
 		*/
 
-		trade.Price = this.state.portfolio[trade.Symbol].price
+		// trade.Price = this.state.portfolio[trade.Symbol].price
 
-		console.log(trade, this.state.token)
+		trade.Quantity = Number(trade.Quantity)
+		console.log(trade)
 
 		const data = await asyncMakeTrade(trade, this.state.profile.token)
 

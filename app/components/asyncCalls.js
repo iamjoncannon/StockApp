@@ -99,6 +99,12 @@ export const asyncMakeTrade = async (trade, token) => {
 
 }
 
+export const asyncGetOnePrice = async (symbol) => {
 
+  const url = `https://api.iextrading.com/1.0/tops/last?symbols=${symbol}`
+  
+  let { data } = await axios.get(url)
 
+  return data[0].price
+}
 
