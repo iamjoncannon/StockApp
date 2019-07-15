@@ -11,7 +11,7 @@ import allSymbols from './symbolHash.json'
 const initialState = {
       Symbol: '',
       Quantity: '',
-      Type: '',
+      Type: 'Buy',
       // Price: 'price'
 }
 
@@ -80,21 +80,8 @@ export default class MakeTrade extends React.Component {
         className={'blank'}
         margin="normal"
       />
-      <div style={{margin: 5}}>
-        <FormControl className={"blank"}>
-
-          <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
-        
-          <Select
-            value={this.state.Type}
-            onChange={ (evt)=> this.setState({Type: evt.target.value}) }
-          >
-        
-            <MenuItem value={'Buy'}>Buy</MenuItem>
-            <MenuItem value={'Sell'}>Sell</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+      
+      
       
       <TextField
         required
@@ -104,6 +91,20 @@ export default class MakeTrade extends React.Component {
         className={'blank'}
         margin="normal"
       />
+      
+      <FormControl className={"blank"} style={{margin: "3"}}>
+
+        <InputLabel htmlFor="age-simple">Buy/Sell</InputLabel>
+      
+        <Select
+          value={this.state.Type}
+          onChange={ (evt)=> this.setState({Type: evt.target.value}) }
+        >
+      
+          <MenuItem value={'Buy'}>Buy</MenuItem>
+          <MenuItem value={'Sell'}>Sell</MenuItem>
+        </Select>
+      </FormControl>
 
       { ready ? 
 

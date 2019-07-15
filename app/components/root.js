@@ -22,11 +22,12 @@ export default class Root extends React.Component {
 	    	hasLoadedData: false,
 	    	page: 'login',
 	    	tab: 0,
-	    	portfolio: null,
+	    	portfolio: {1:{Symbol: "", Quantity: "", Price: ""}},
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
 	    	socket: null,
 	    	currentPrice: {},
-	    	cachedPriceList: {}
+	    	cachedPriceList: {},
+	    	isDataLoaded: false
 	    }
 	}
 
@@ -73,13 +74,13 @@ export default class Root extends React.Component {
 			if( cachedPriceList ){
 
 				if( cachedPriceList[stock] ){
-					console.log(cachedPriceList[stock])
+					// console.log(cachedPriceList[stock])
 					repopulatedPortfolio[stock]["price"] = cachedPriceList[stock]				
 				}
 			}
 		} 
 
-		this.setState({ portfolio: repopulatedPortfolio, transactionHistory })
+		this.setState({ portfolio: repopulatedPortfolio, transactionHistory, isDataLoaded: true })
 	}
 
 	handleTrade = async (trade) => {
@@ -118,7 +119,7 @@ export default class Root extends React.Component {
 
 		    <div> 
 
-		    	{ this.state.portfolio ? <Socket portfolio={this.state.portfolio} 
+		    	{ this.state.isDataLoaded ? <Socket portfolio={this.state.portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
 		    							 /> : '' }
 
@@ -144,6 +145,9 @@ export default class Root extends React.Component {
 					</div>
 					
 					    : 
+					<div>    
+
+				
 
 			    	<div className={"blank"}>
 				      <AppBar position="static">
@@ -178,6 +182,7 @@ export default class Root extends React.Component {
 				      	   						    /> 
 				      							</TabContainer>}
 				    </div>
+		    		</div>
 		    	}
 		    </div>
 		 )

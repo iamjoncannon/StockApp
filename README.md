@@ -11,3 +11,10 @@ and display it to get an over under
 need to integrate other socket to get opening and closing 
 prices:
 https://iextrading.com/developer/docs/#official-price
+
+need to fix the buy select box- use a separate checkout user flow
+
+https://material-ui.com/getting-started/page-layout-examples/checkout/
+
+
+

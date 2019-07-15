@@ -361,7 +361,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var initialState = {
   Symbol: '',
   Quantity: '',
-  Type: ''
+  Type: 'Buy'
   // Price: 'price'
 };
 
@@ -469,38 +469,6 @@ var MakeTrade = function (_React$Component) {
           className: 'blank',
           margin: 'normal'
         }),
-        _react2.default.createElement(
-          'div',
-          { style: { margin: 5 } },
-          _react2.default.createElement(
-            _FormControl2.default,
-            { className: "blank" },
-            _react2.default.createElement(
-              _InputLabel2.default,
-              { htmlFor: 'age-simple' },
-              'BUY/SELL'
-            ),
-            _react2.default.createElement(
-              _Select2.default,
-              {
-                value: this.state.Type,
-                onChange: function onChange(evt) {
-                  return _this3.setState({ Type: evt.target.value });
-                }
-              },
-              _react2.default.createElement(
-                _MenuItem2.default,
-                { value: 'Buy' },
-                'Buy'
-              ),
-              _react2.default.createElement(
-                _MenuItem2.default,
-                { value: 'Sell' },
-                'Sell'
-              )
-            )
-          )
-        ),
         _react2.default.createElement(_TextField2.default, {
           required: true,
           id: 'filled-disabled',
@@ -509,6 +477,34 @@ var MakeTrade = function (_React$Component) {
           className: 'blank',
           margin: 'normal'
         }),
+        _react2.default.createElement(
+          _FormControl2.default,
+          { className: "blank", style: { margin: "3" } },
+          _react2.default.createElement(
+            _InputLabel2.default,
+            { htmlFor: 'age-simple' },
+            'Buy/Sell'
+          ),
+          _react2.default.createElement(
+            _Select2.default,
+            {
+              value: this.state.Type,
+              onChange: function onChange(evt) {
+                return _this3.setState({ Type: evt.target.value });
+              }
+            },
+            _react2.default.createElement(
+              _MenuItem2.default,
+              { value: 'Buy' },
+              'Buy'
+            ),
+            _react2.default.createElement(
+              _MenuItem2.default,
+              { value: 'Sell' },
+              'Sell'
+            )
+          )
+        ),
         ready ? _react2.default.createElement(
           _Button2.default,
           {
@@ -1912,13 +1908,13 @@ var Root = function (_React$Component) {
 				if (cachedPriceList) {
 
 					if (cachedPriceList[stock]) {
-						console.log(cachedPriceList[stock]);
+						// console.log(cachedPriceList[stock])
 						repopulatedPortfolio[stock]["price"] = cachedPriceList[stock];
 					}
 				}
 			}
 
-			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory });
+			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory, isDataLoaded: true });
 		};
 
 		_this.handleTrade = function () {
@@ -1979,11 +1975,12 @@ var Root = function (_React$Component) {
 			hasLoadedData: false,
 			page: 'login',
 			tab: 0,
-			portfolio: null,
+			portfolio: { 1: { Symbol: "", Quantity: "", Price: "" } },
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
 			socket: null,
 			currentPrice: {},
-			cachedPriceList: {}
+			cachedPriceList: {},
+			isDataLoaded: false
 		};
 		return _this;
 	}
@@ -1996,7 +1993,7 @@ var Root = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				this.state.portfolio ? _react2.default.createElement(_Socket2.default, { portfolio: this.state.portfolio,
+				this.state.isDataLoaded ? _react2.default.createElement(_Socket2.default, { portfolio: this.state.portfolio,
 					handleSocketMessage: this.handleSocketMessage
 				}) : '',
 				!this.state.isLoggedIn ? _react2.default.createElement(
@@ -2013,44 +2010,48 @@ var Root = function (_React$Component) {
 					})
 				) : _react2.default.createElement(
 					'div',
-					{ className: "blank" },
+					null,
 					_react2.default.createElement(
-						_AppBar2.default,
-						{ position: 'static' },
+						'div',
+						{ className: "blank" },
 						_react2.default.createElement(
-							_Tabs2.default,
-							{ value: this.state.tab, onChange: function onChange(x, y) {
-									return _this3.setState({ tab: y });
-								} },
-							_react2.default.createElement(_Tab2.default, { label: 'Portfolio' }),
-							_react2.default.createElement(_Tab2.default, { label: 'Trading History' }),
-							_react2.default.createElement(_Tab2.default, { label: 'Make a Trade' })
+							_AppBar2.default,
+							{ position: 'static' },
+							_react2.default.createElement(
+								_Tabs2.default,
+								{ value: this.state.tab, onChange: function onChange(x, y) {
+										return _this3.setState({ tab: y });
+									} },
+								_react2.default.createElement(_Tab2.default, { label: 'Portfolio' }),
+								_react2.default.createElement(_Tab2.default, { label: 'Trading History' }),
+								_react2.default.createElement(_Tab2.default, { label: 'Make a Trade' })
+							)
+						),
+						this.state.tab === 0 && _react2.default.createElement(
+							_DashTab2.default,
+							null,
+							_react2.default.createElement(_Portfolio2.default, {
+								loadPortfolioData: this.loadPortfolioData,
+								portfolio: this.state.portfolio,
+								hasLoadedData: this.state.hasLoadedData,
+								profile: this.state.profile
+							})
+						),
+						this.state.tab === 1 && _react2.default.createElement(
+							_DashTab2.default,
+							null,
+							_react2.default.createElement(_TransactionHistory2.default, {
+								transactionHistory: this.state.transactionHistory
+							})
+						),
+						this.state.tab === 2 && _react2.default.createElement(
+							_DashTab2.default,
+							null,
+							_react2.default.createElement(_MakeTrade2.default, {
+								handleTrade: this.handleTrade,
+								tradeError: this.state.tradeError
+							})
 						)
-					),
-					this.state.tab === 0 && _react2.default.createElement(
-						_DashTab2.default,
-						null,
-						_react2.default.createElement(_Portfolio2.default, {
-							loadPortfolioData: this.loadPortfolioData,
-							portfolio: this.state.portfolio,
-							hasLoadedData: this.state.hasLoadedData,
-							profile: this.state.profile
-						})
-					),
-					this.state.tab === 1 && _react2.default.createElement(
-						_DashTab2.default,
-						null,
-						_react2.default.createElement(_TransactionHistory2.default, {
-							transactionHistory: this.state.transactionHistory
-						})
-					),
-					this.state.tab === 2 && _react2.default.createElement(
-						_DashTab2.default,
-						null,
-						_react2.default.createElement(_MakeTrade2.default, {
-							handleTrade: this.handleTrade,
-							tradeError: this.state.tradeError
-						})
 					)
 				)
 			);
