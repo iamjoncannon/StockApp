@@ -12,6 +12,12 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import TabContainer from './DashTab'
 
+// this is the root of the application, that defines the management
+// of browser application state based on user input
+
+// as the "controller" layer, the appearance of the elements is 
+// separated into other components, which are held in other files
+
 export default class Root extends React.Component {
 
 	constructor(props) {
@@ -19,7 +25,6 @@ export default class Root extends React.Component {
 	    this.state = {
 	    	profile: null,
 	    	isLoggedIn: false,
-	    	hasLoadedData: false,
 	    	page: 'login',
 	    	tab: 0,
 	    	portfolio: {1:{Symbol: "", Quantity: "", Price: ""}},
@@ -27,7 +32,7 @@ export default class Root extends React.Component {
 	    	socket: null,
 	    	currentPrice: {},
 	    	cachedPriceList: {},
-	    	isDataLoaded: false
+	    	hasLoadedData: false
 	    }
 	}
 
@@ -40,10 +45,10 @@ export default class Root extends React.Component {
 		// console.log(data)
 		alert("Please sign in with your credentials")
 		location.reload()
-		this.setState({ profile: data.signUpInfo, 
-						token: data.returnedToken, 
-						isLoggedIn: true
-					})
+		// this.setState({ profile: data.signUpInfo, 
+		// 				token: data.returnedToken, 
+		// 				isLoggedIn: true
+		// 			})
 
 	}
 
@@ -82,7 +87,7 @@ export default class Root extends React.Component {
 			}
 		} 
 
-		this.setState({ portfolio: repopulatedPortfolio, transactionHistory, isDataLoaded: true })
+		this.setState({ portfolio: repopulatedPortfolio, transactionHistory, hasLoadedData: true })
 	}
 
 	handleTrade = async (trade) => {
@@ -121,7 +126,7 @@ export default class Root extends React.Component {
 
 		    <div> 
 
-		    	{ this.state.isDataLoaded ? <Socket portfolio={this.state.portfolio} 
+		    	{ this.state.hasLoadedData ? <Socket portfolio={this.state.portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
 		    							 /> : '' }
 

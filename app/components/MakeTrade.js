@@ -23,7 +23,7 @@ export default class MakeTrade extends React.Component {
   }
 
   componentDidMount(){
-    console.log(allSymbols)
+  
   }
 
   defaultPreventer = (evt) => {
@@ -42,7 +42,10 @@ export default class MakeTrade extends React.Component {
     if(symbol.length > 0){
 
       let price = await asyncGetOnePrice(symbol)
+
       // console.log(price)
+      
+
       this.setState({Price: price})
     }
     else{
@@ -81,8 +84,6 @@ export default class MakeTrade extends React.Component {
         margin="normal"
       />
       
-      
-      
       <TextField
         required
         id="filled-disabled"
@@ -117,6 +118,7 @@ export default class MakeTrade extends React.Component {
         >
 
           {"Make Trade"}
+
         </Button>
       : ""}
       { allSymbols[this.state.Symbol] }
@@ -130,6 +132,5 @@ export default class MakeTrade extends React.Component {
 }
 
 function filled(field){
-
       return !(field === '')
 }
