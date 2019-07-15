@@ -362,11 +362,13 @@ var MakeTrade = function (_React$Component) {
 
       evt.preventDefault();
       evt.stopPropagation();
-      // this.props.handleLogIn(this.state.email, this.state.password)
+      _this.props.handleTrade(_this.state);
     };
 
     _this.state = {
-      selectValue: 'Buy'
+      Symbol: '',
+      Quantity: '',
+      Type: 'buy'
     };
     return _this;
   }
@@ -386,7 +388,10 @@ var MakeTrade = function (_React$Component) {
           required: true,
           id: 'standard-required',
           label: 'Stock Symbol',
-          defaultValue: '',
+          value: this.state.Symbol,
+          onChange: function onChange(e) {
+            _this2.setState({ Symbol: e.target.value });
+          },
           className: 'blank',
           margin: 'normal'
         }),
@@ -394,7 +399,10 @@ var MakeTrade = function (_React$Component) {
           required: true,
           id: 'standard-required',
           label: 'Shares to Purchase',
-          defaultValue: '',
+          value: this.state.Quantity,
+          onChange: function onChange(e) {
+            _this2.setState({ Quantity: e.target.value });
+          },
           className: 'blank',
           margin: 'normal'
         }),
@@ -409,9 +417,9 @@ var MakeTrade = function (_React$Component) {
           _react2.default.createElement(
             _Select2.default,
             {
-              value: this.state.selectValue,
+              value: this.state.Type,
               onChange: function onChange(evt) {
-                return _this2.setState({ selectValue: evt.target.value });
+                return _this2.setState({ Type: evt.target.value });
               }
             },
             _react2.default.createElement(
@@ -599,10 +607,10 @@ var Portfolio = function (_React$Component) {
             _react2.default.createElement(
               _TableBody2.default,
               null,
-              Object.entries(this.props.portfolio).map(function (row) {
+              Object.entries(this.props.portfolio).map(function (row, i) {
                 return _react2.default.createElement(
                   _TableRow2.default,
-                  { key: row.name },
+                  { key: i },
                   _react2.default.createElement(
                     _TableCell2.default,
                     { component: 'th', scope: 'row' },
@@ -903,16 +911,16 @@ var Socket = function (_React$Component) {
       var dayTimeTrading = 'https://ws-api.iextrading.com/1.0/tops';
       var afterHours = 'https://ws-api.iextrading.com/1.0/last';
       var time = new Date().getUTCHours();
-      var url = time > 12 & time < 21 ? dayTimeTrading : afterHours;
+      // let url = time > 12 & time < 21 ? dayTimeTrading : afterHours ;
+      var url = afterHours;
       var socket = io(url);
       var thisBook = [];
       var currentPortfolio = Object.keys(_this.props.portfolio).length;
 
-      // console.log(this.props)
+      // console.log("socket connecting to: ", url)
 
       for (var stock in _this.props.portfolio) {
 
-        // console.log(stock)
         thisBook.push(_this.props.portfolio[stock].symbol);
       }
 
@@ -1067,6 +1075,8 @@ var TransactionHistory = function (_React$Component) {
     key: 'render',
     value: function render() {
 
+      console.log(this.props.transactionHistory);
+
       return _react2.default.createElement(
         'div',
         null,
@@ -1102,10 +1112,10 @@ var TransactionHistory = function (_React$Component) {
             _react2.default.createElement(
               _TableBody2.default,
               null,
-              Object.entries(this.props.transactionHistory).map(function (row) {
+              Object.entries(this.props.transactionHistory).map(function (row, i) {
                 return _react2.default.createElement(
                   _TableRow2.default,
-                  { key: row.name },
+                  { key: i },
                   _react2.default.createElement(
                     _TableCell2.default,
                     { component: 'th', scope: 'row' },
@@ -1158,7 +1168,7 @@ exports.default = TransactionHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
+exports.asyncMakeTrade = exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -1170,6 +1180,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // define interface with API 
 // to separate concern from UI components
 // akin to the "thunk" pattern 
+
+var makeHeader = function makeHeader(token) {
+
+  return { headers: { "Authorization": 'Bearer ' + token } };
+};
 
 var asyncLogInCall = exports.asyncLogInCall = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(email, password) {
@@ -1266,7 +1281,7 @@ var asyncSignUpCall = exports.asyncSignUpCall = function () {
 
 var asyncPopulateData = exports.asyncPopulateData = function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(token, callback) {
-    var portfolio, transactionHistory, theHeader;
+    var portfolio, transactionHistory;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -1274,49 +1289,96 @@ var asyncPopulateData = exports.asyncPopulateData = function () {
             portfolio = void 0;
             transactionHistory = void 0;
             _context3.prev = 2;
-            theHeader = {
-              headers: {
-                "Authorization": 'Bearer ' + token
-              }
-            };
             _context3.t0 = Promise;
-            _context3.next = 7;
-            return _axios2.default.post('/getportfolio', {}, theHeader);
+            _context3.next = 6;
+            return _axios2.default.post('/getportfolio', {}, makeHeader(token));
 
-          case 7:
+          case 6:
             _context3.t1 = portfolio = _context3.sent;
-            _context3.next = 10;
-            return _axios2.default.post('/getallTransactions', {}, theHeader);
+            _context3.next = 9;
+            return _axios2.default.post('/getallTransactions', {}, makeHeader(token));
 
-          case 10:
+          case 9:
             _context3.t2 = transactionHistory = _context3.sent;
             _context3.t3 = [_context3.t1, _context3.t2];
 
             _context3.t0.all.call(_context3.t0, _context3.t3);
 
-            _context3.next = 18;
+            _context3.next = 17;
             break;
 
-          case 15:
-            _context3.prev = 15;
+          case 14:
+            _context3.prev = 14;
             _context3.t4 = _context3['catch'](2);
 
             console.log(_context3.t4);
             // alert(error.response.data.message)
 
-          case 18:
-            callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data));
+          case 17:
 
-          case 19:
+            if (portfolio.data && transactionHistory.data) {
+
+              callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data));
+            } else {
+              console.log("hitting this condition");
+              callback({}, { 1: { Symbol: "", Quantity: "", Date: "" } });
+            }
+
+          case 18:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, undefined, [[2, 15]]);
+    }, _callee3, undefined, [[2, 14]]);
   }));
 
   return function asyncPopulateData(_x6, _x7) {
     return _ref3.apply(this, arguments);
+  };
+}();
+
+var asyncMakeTrade = exports.asyncMakeTrade = function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(trade, token) {
+    var data;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            data = void 0;
+
+
+            console.log('heres the trade: ', trade);
+
+            _context4.prev = 2;
+            _context4.next = 5;
+            return _axios2.default.post('/maketransaction', trade, makeHeader(token));
+
+          case 5:
+            data = _context4.sent;
+            _context4.next = 11;
+            break;
+
+          case 8:
+            _context4.prev = 8;
+            _context4.t0 = _context4['catch'](2);
+
+            console.log(_context4.t0);
+            // alert(error.response.data.message)
+
+          case 11:
+
+            console.log("here's the data received from the server: ", data);
+
+          case 12:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, undefined, [[2, 8]]);
+  }));
+
+  return function asyncMakeTrade(_x8, _x9) {
+    return _ref4.apply(this, arguments);
   };
 }();
 
@@ -1603,12 +1665,14 @@ var Root = function (_React$Component) {
 								data = _context.sent;
 
 
+								console.log(data);
+
 								_this.setState({ profile: data.signUpInfo,
 									token: data.returnedToken,
 									isLoggedIn: true
 								});
 
-							case 5:
+							case 6:
 							case 'end':
 								return _context.stop();
 						}
@@ -1661,7 +1725,42 @@ var Root = function (_React$Component) {
 			_this.setState({ portfolio: portfolio, transactionHistory: transactionHistory, hasLoadedData: true });
 		};
 
-		_this.handleTrade = function () {};
+		_this.handleTrade = function () {
+			var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(trade) {
+				var data;
+				return regeneratorRuntime.wrap(function _callee3$(_context3) {
+					while (1) {
+						switch (_context3.prev = _context3.next) {
+							case 0:
+
+								/* 
+        	API NEEDS: 
+        '{ "ID": 1, "TYPE": "buy", "SYMBOL": "FB", "QUANTITY":10, "PRICE": 20}'
+        
+        */
+
+								trade.Price = _this.state.portfolio[trade.Symbol].price;
+
+								console.log(trade, _this.state.token);
+
+								_context3.next = 4;
+								return (0, _asyncCalls.asyncMakeTrade)(trade, _this.state.profile.token);
+
+							case 4:
+								data = _context3.sent;
+
+							case 5:
+							case 'end':
+								return _context3.stop();
+						}
+					}
+				}, _callee3, _this2);
+			}));
+
+			return function (_x4) {
+				return _ref4.apply(this, arguments);
+			};
+		}();
 
 		_this.handleSocketMessage = function (stock) {
 
@@ -1678,9 +1777,8 @@ var Root = function (_React$Component) {
 			hasLoadedData: false,
 			page: 'login',
 			tab: 0,
-			token: null,
 			portfolio: null,
-			transactionHistory: null,
+			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
 			socket: null
 		};
 		return _this;
@@ -1691,7 +1789,7 @@ var Root = function (_React$Component) {
 		value: function render() {
 			var _this3 = this;
 
-			console.log(this.state);
+			// console.log(this.state.portfolio)
 
 			return _react2.default.createElement(
 				'div',
@@ -1748,7 +1846,7 @@ var Root = function (_React$Component) {
 						_DashTab2.default,
 						null,
 						' ',
-						_react2.default.createElement(_MakeTrade2.default, null),
+						_react2.default.createElement(_MakeTrade2.default, { handleTrade: this.handleTrade }),
 						' '
 					)
 				)

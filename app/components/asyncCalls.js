@@ -5,6 +5,11 @@
 
 import axios from 'axios';
 
+const makeHeader = (token) => {
+  
+  return { headers: {"Authorization": 'Bearer ' + token}}
+}
+
 export const asyncLogInCall = async (email, password) => {
 
   let res 
@@ -21,7 +26,7 @@ export const asyncLogInCall = async (email, password) => {
     }
   }
   let parsed = JSON.parse(res.data)
-  return {Name: parsed.Name, email, token: parsed.token}
+  return { Name: parsed.Name, email, token: parsed.token }
 }
 
 export const asyncSignUpCall = async (Name, email, password) => {
@@ -53,15 +58,10 @@ export const asyncPopulateData = async (token, callback) => {
 
   try {
 
-    let theHeader = { 
-                      headers: {
-                        "Authorization": 'Bearer ' + token 
-                      }
-                    }
     Promise.all( // allows us to run api calls in parallel rather than serially
       [ 
-        ( portfolio = await axios.post('/getportfolio', {}, theHeader) ),
-        ( transactionHistory = await axios.post('/getallTransactions', {}, theHeader) )
+        ( portfolio = await axios.post('/getportfolio', {}, makeHeader(token)) ),
+        ( transactionHistory = await axios.post('/getallTransactions', {}, makeHeader(token)) )
       ]
     )
   }
@@ -69,9 +69,35 @@ export const asyncPopulateData = async (token, callback) => {
     console.log(error)
     // alert(error.response.data.message)
   }
-  callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data))
+
+  if(portfolio.data && transactionHistory.data){
+
+    callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data))
+  }
+  else{
+    console.log("hitting this condition")
+    callback({}, {1:{Symbol: "", Quantity: "", Date: ""}})
+  }
 }
 
+export const asyncMakeTrade = async (trade, token) => {
+
+  let data
+
+  console.log('heres the trade: ', trade )
+
+  try {
+
+    data = await axios.post('/maketransaction', trade, makeHeader(token)) 
+  }
+  catch(error){
+    console.log(error)
+    // alert(error.response.data.message)
+  }
+
+  console.log("here's the data received from the server: ", data)
+
+}
 
 
 

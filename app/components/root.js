@@ -5,8 +5,7 @@ import Portfolio from './Portfolio'
 import TransactionHistory from './TransactionHistory'
 import MakeTrade from './MakeTrade'
 import Socket from './Socket'
-import { asyncLogInCall, asyncSignUpCall } from './asyncCalls'
-
+import { asyncLogInCall, asyncSignUpCall, asyncMakeTrade } from './asyncCalls'
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -23,18 +22,19 @@ export default class Root extends React.Component {
 	    	hasLoadedData: false,
 	    	page: 'login',
 	    	tab: 0,
-	    	token: null,
 	    	portfolio: null,
-	    	transactionHistory: null,
+	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
 	    	socket: null
 	    }
 	}
 
-	handleSignUp = async ({ firstName, lastName, email, password} ) => {
+	handleSignUp = async ({ firstName, lastName, email, password }) => {
 
 		const name = firstName + lastName
 
 		const data = await asyncSignUpCall(name, email, password)
+
+		console.log(data)
 
 		this.setState({ profile: data.signUpInfo, 
 						token: data.returnedToken, 
@@ -60,7 +60,20 @@ export default class Root extends React.Component {
 		this.setState({portfolio, transactionHistory, hasLoadedData: true})
 	}
 
-	handleTrade = () => {
+	handleTrade = async (trade) => {
+		
+		/* 
+
+		API NEEDS: 
+		'{ "ID": 1, "TYPE": "buy", "SYMBOL": "FB", "QUANTITY":10, "PRICE": 20}'
+		
+		*/
+
+		trade.Price = this.state.portfolio[trade.Symbol].price
+
+		console.log(trade, this.state.token)
+
+		const data = await asyncMakeTrade(trade, this.state.profile.token)
 
 	}
 
@@ -75,7 +88,7 @@ export default class Root extends React.Component {
 
 	render(){
 
-		console.log(this.state)
+		// console.log(this.state.portfolio)
 
 		return ( 
 
@@ -134,7 +147,7 @@ export default class Root extends React.Component {
 									    			/>
 				      						   </TabContainer>}
 				      
-				      {this.state.tab === 2 && <TabContainer> <MakeTrade /> </TabContainer>}
+				      {this.state.tab === 2 && <TabContainer> <MakeTrade handleTrade={this.handleTrade}/> </TabContainer>}
 				    </div>
 		    	}
 		    </div>

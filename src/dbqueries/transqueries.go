@@ -15,7 +15,7 @@ func stopThisError(){
 // pass in the entire model for these calls- the requirements for the database call could alter
 // better to reduce that interface site by eliminating additional arguments required to make the call 
 
-func (d DBQuery) CheckBalance(db *sql.DB, trans models.Transaction) (balance int, err error) {
+func (d DBQuery) CheckBalance(db *sql.DB, trans models.Transaction) (balance float32, err error) {
 
 	var user models.User
 
@@ -26,7 +26,7 @@ func (d DBQuery) CheckBalance(db *sql.DB, trans models.Transaction) (balance int
 	return user.Balance, err
 }
 
-func (d DBQuery) GetCurrentHolding (db *sql.DB, trans models.Transaction) (balance int, err error) {
+func (d DBQuery) GetCurrentHolding (db *sql.DB, trans models.Transaction) (balance float32, err error) {
 
 	var holding models.Holding
 
@@ -37,7 +37,7 @@ func (d DBQuery) GetCurrentHolding (db *sql.DB, trans models.Transaction) (balan
 	return holding.Quantity, err
 }
 
-func (d DBQuery) MakeFirstPurchase (db *sql.DB, trans models.Transaction) (newQuant int, err error) {
+func (d DBQuery) MakeFirstPurchase (db *sql.DB, trans models.Transaction) (newQuant float32, err error) {
 
 	insertCall := "insert into holdings (userID, SYMBOL, CURRENT_HOLDING) values ($1, $2, $3) returning CURRENT_HOLDING;"
 
@@ -46,7 +46,7 @@ func (d DBQuery) MakeFirstPurchase (db *sql.DB, trans models.Transaction) (newQu
 	return trans.Quantity, err
 }
 
-func (d DBQuery) UpdateHolding (db *sql.DB, newSum int, trans models.Transaction) (newQuant int, err error) {
+func (d DBQuery) UpdateHolding (db *sql.DB, newSum float32, trans models.Transaction) (newQuant float32, err error) {
 
 	var holding models.Holding
 
@@ -66,7 +66,7 @@ func (d DBQuery) PostTrade (db *sql.DB, trans models.Transaction) error {
 	return err
 }
 
-func (d DBQuery) UpdateBalance (db *sql.DB, id int, balance int) (updatedBalance int, err error) {
+func (d DBQuery) UpdateBalance (db *sql.DB, id int, balance float32) (updatedBalance float32, err error) {
 
 	var user models.User
 

@@ -18,6 +18,8 @@ export default class TransactionHistory extends React.Component {
 
   render() {
 
+    console.log(this.props.transactionHistory)
+
     return (
 
       <div>
@@ -34,8 +36,8 @@ export default class TransactionHistory extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.entries(this.props.transactionHistory).map(row => (
-                  <TableRow key={row.name}>
+                {Object.entries(this.props.transactionHistory).map((row, i) => (
+                  <TableRow key={i}>
                     <TableCell component="th" scope="row">
                       {row[1].Symbol}
                     </TableCell>

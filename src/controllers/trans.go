@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"github.com/davecgh/go-spew/spew"	
 
 	"models"
 	"dbqueries"
@@ -16,11 +18,16 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request){
 	
 		var trans models.Transaction 
-		var newBalance int
-		var newHoldingAmount int
+		var newBalance float32
+		var newHoldingAmount float32
 		var errorObj models.Error
 
 		json.NewDecoder(r.Body).Decode(&trans)
+
+		// populate the ID for the transaction with the 
+		// id in the client's token
+		parsedID, _ := strconv.ParseInt(r.Header["Decryptedid"][0], 10, 64)
+		trans.ID = int(parsedID) 
 
 		query := dbqueries.DBQuery{}
 
@@ -31,6 +38,8 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 
 		// to handle errors we "respond with error" with the correct
 		// http status 
+
+		spew.Dump(trans)
 
 		currentBalance, err := query.CheckBalance(db, trans)
 
@@ -80,7 +89,7 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 
 		fmt.Println("current holding: ", currentHolding)
 
-		if trans.Type == "buy"{
+		if trans.Type == "Buy"{
 
 			hasFundsToCoverTransaction := currentBalance > trans.Quantity * trans.Price 
 
@@ -91,7 +100,7 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			newBalance = currentBalance - (trans.Quantity * trans.Price)
+			newBalance = currentBalance - ( trans.Quantity * trans.Price)
 			newHoldingAmount = currentHolding + trans.Quantity
 
 		}else{

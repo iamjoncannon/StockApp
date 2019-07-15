@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"encoding/json"
 
-	"github.com/davecgh/go-spew/spew"	
+	// "github.com/davecgh/go-spew/spew"	
 
 	"dbqueries"
 	"models"
@@ -34,7 +34,7 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 		
 		type TransactionItem struct {
 			Symbol		string 
-			Quantity	int 	
+			Quantity	float32 	
 			Date 		string
 		}
 
@@ -57,7 +57,7 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			spew.Dump(transID, trans.ID, trans.Symbol, trans.Quantity, dateConducted)
+			// spew.Dump(transID, trans.ID, trans.Symbol, trans.Quantity, dateConducted)
 
 			transactionHistory[fmt.Sprint(transID)] = TransactionItem{ Symbol: trans.Symbol, Quantity: trans.Quantity, Date: dateConducted }
 		}

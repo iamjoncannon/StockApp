@@ -12,16 +12,16 @@ export default class Socket extends React.Component {
     let dayTimeTrading = 'https://ws-api.iextrading.com/1.0/tops'
     let afterHours = 'https://ws-api.iextrading.com/1.0/last'
     let time = (new Date()).getUTCHours()
-    let url = time > 12 & time < 21 ? dayTimeTrading : afterHours ;
+    // let url = time > 12 & time < 21 ? dayTimeTrading : afterHours ;
+    let url = afterHours
     const socket = io(url)
     const thisBook = []
     let currentPortfolio = Object.keys(this.props.portfolio).length
 
-    // console.log(this.props)
+    // console.log("socket connecting to: ", url)
     
     for (let stock in this.props.portfolio){
 
-      // console.log(stock)
       thisBook.push(this.props.portfolio[stock].symbol)
     }
 

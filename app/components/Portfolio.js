@@ -54,8 +54,8 @@ export default class Portfolio extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.entries(this.props.portfolio).map(row => (
-                  <TableRow key={row.name}>
+                {Object.entries(this.props.portfolio).map((row, i) => (
+                  <TableRow key={i}>
                     <TableCell component="th" scope="row">
                       {row[1].symbol}
                     </TableCell>

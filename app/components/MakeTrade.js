@@ -11,7 +11,9 @@ export default class MakeTrade extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectValue: 'Buy'
+      Symbol: '',
+      Quantity: '',
+      Type: 'buy'
     }
   }
 
@@ -23,7 +25,7 @@ export default class MakeTrade extends React.Component {
 
     evt.preventDefault()
     evt.stopPropagation()
-    // this.props.handleLogIn(this.state.email, this.state.password)
+    this.props.handleTrade(this.state)
   }
 
   render() {
@@ -35,7 +37,8 @@ export default class MakeTrade extends React.Component {
         required
         id="standard-required"
         label="Stock Symbol"
-        defaultValue=""
+        value={this.state.Symbol}
+        onChange={(e)=>{this.setState({Symbol: e.target.value})}}        
         className={'blank'}
         margin="normal"
       />
@@ -44,7 +47,8 @@ export default class MakeTrade extends React.Component {
         required
         id="standard-required"
         label="Shares to Purchase"
-        defaultValue=""
+        value={this.state.Quantity}
+        onChange={(e)=>{this.setState({Quantity: e.target.value})}}        
         className={'blank'}
         margin="normal"
       />
@@ -53,8 +57,8 @@ export default class MakeTrade extends React.Component {
 
         <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
         <Select
-          value={this.state.selectValue}
-          onChange={ (evt)=> this.setState({selectValue: evt.target.value}) }
+          value={this.state.Type}
+          onChange={ (evt)=> this.setState({Type: evt.target.value}) }
         >
           <MenuItem value={'Buy'}>Buy</MenuItem>
           <MenuItem value={'Sell'}>Sell</MenuItem>

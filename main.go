@@ -28,9 +28,9 @@ func main(){
 
 	go router.HandleFunc("/signup", controller.SignUp(db)).Methods("POST")
 	go router.HandleFunc("/login", controller.LogIn(db)).Methods("POST")
-	go router.HandleFunc("/maketransaction", controllers.TokenVerifyMiddleWare(controller.ConductTransaction(db))).Methods("POST")
 	go router.HandleFunc("/getportfolio", controllers.TokenVerifyMiddleWare(controller.GetPortfolio(db))).Methods("POST")
 	go router.HandleFunc("/getallTransactions", controllers.TokenVerifyMiddleWare(controller.GetTransactionHistory(db))).Methods("POST")
+	go router.HandleFunc("/maketransaction", controllers.TokenVerifyMiddleWare(controller.ConductTransaction(db))).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 

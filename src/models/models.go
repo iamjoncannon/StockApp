@@ -7,7 +7,7 @@ type User struct {
 	Name 		string 	`json:"name"`
 	Email		string 	`json:"email`
 	Password	string 	`json:"password"`
-	Balance		int 	`json:"balance"`
+	Balance		float32 `json:"balance"`
 }
 
 type Transaction struct {
@@ -15,15 +15,15 @@ type Transaction struct {
 	ID			int 	`json:"id"`
 	Type 		string 	`json:"type"`
 	Symbol 		string 	`json:"symbol"`
-	Quantity 	int 	`json:"quantity"`
-	Price 		int 	`json:"price"`
+	Quantity 	float32 `json:"quantity"`
+	Price 		float32 `json:"price"`
 }
 
 type Holding struct {
 
 	ID			int 	`json:"id"`
 	Symbol 		string 	`json:"symbol"`
-	Quantity 	int 	`json:"quantity"`
+	Quantity 	float32 `json:"quantity"`
 }
 
 type JWT struct {
