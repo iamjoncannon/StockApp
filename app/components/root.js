@@ -38,11 +38,13 @@ export default class Root extends React.Component {
 		const data = await asyncSignUpCall(name, email, password)
 
 		// console.log(data)
-
+		alert("Please sign in with your credentials")
+		location.reload()
 		this.setState({ profile: data.signUpInfo, 
 						token: data.returnedToken, 
 						isLoggedIn: true
 					})
+
 	}
 
 	handleLogIn = async (email, password) => {
