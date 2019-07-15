@@ -28,12 +28,8 @@ export default class Portfolio extends React.Component {
     // based on the transactions that clear, not by hitting the API
     // each time to get the data
 
-    if (!this.props.hasLoadedData) {
-
-      const { token } = this.props.profile
-
-      asyncPopulateData(token, this.props.loadInitialData)
-    }
+    const { token } = this.props.profile
+    asyncPopulateData(token, this.props.loadInitialData)
   }
 
   render() {

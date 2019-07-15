@@ -84,7 +84,7 @@ export const asyncMakeTrade = async (trade, token) => {
 
   let data
 
-  console.log('heres the trade: ', trade )
+  // console.log('heres the trade: ', trade )
 
   try {
 
@@ -95,8 +95,9 @@ export const asyncMakeTrade = async (trade, token) => {
     // alert(error.response.data.message)
   }
 
-  console.log("here's the data received from the server: ", data)
+  // console.log("here's the data received from the server: ", data)
 
+  return data
 }
 
 export const asyncGetOnePrice = async (symbol) => {

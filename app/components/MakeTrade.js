@@ -6,37 +6,43 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { asyncGetOnePrice } from './asyncCalls'
+import allSymbols from './symbolHash.json'
+
+const initialState = {
+      Symbol: '',
+      Quantity: '',
+      Type: '',
+    }
+
 
 export default class MakeTrade extends React.Component {
  
   constructor(props) {
     super(props);
-    this.state = {
-      Symbol: '',
-      Quantity: '',
-      Type: 'buy'
-    }
+    this.state = initialState
   }
 
   componentDidMount(){
-
+    console.log(allSymbols)
   }
 
   defaultPreventer = (evt) => {
 
     evt.preventDefault()
     evt.stopPropagation()
+
     this.props.handleTrade(this.state)
+    this.setState(initialState)
   }
 
   handleSymbol = async (symbol) =>{
 
     this.setState({Symbol: symbol})
 
-    if(symbol.length > 1){
+    if(symbol.length > 0){
 
       let price = await asyncGetOnePrice(symbol)
-      console.log(price)
+      // console.log(price)
       this.setState({Price: price})
     }
     else{
@@ -46,6 +52,12 @@ export default class MakeTrade extends React.Component {
   }
 
   render() {
+
+    let formComplete = filled(this.state.Type) && filled(this.state.Symbol) && filled(this.state.Quantity)
+
+    let ready = allSymbols[this.state.Symbol] && formComplete
+
+    console.log(this.props)
 
     return (
 
@@ -72,15 +84,19 @@ export default class MakeTrade extends React.Component {
       />
 
       <FormControl className={"blank"}>
+
         <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
+      
         <Select
           value={this.state.Type}
           onChange={ (evt)=> this.setState({Type: evt.target.value}) }
         >
+      
           <MenuItem value={'Buy'}>Buy</MenuItem>
           <MenuItem value={'Sell'}>Sell</MenuItem>
         </Select>
       </FormControl>
+      
       <TextField
         required
         id="filled-disabled"
@@ -90,17 +106,28 @@ export default class MakeTrade extends React.Component {
         margin="normal"
       />
 
-      <Button
-        onClick={this.defaultPreventer}
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={"blank"}
-      >
-        {"Make Trade"}
-      </Button>
+      { ready ? 
+        <Button
+          onClick={this.defaultPreventer}
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={"blank"}
+        >
+          {"Make Trade"}
+        </Button>
+      : ""}
+      { allSymbols[this.state.Symbol] }
+      { this.props.tradeError ? 
 
+        `${this.props.tradeError}` : ''
+      }
     </form>  
     );
   }
+}
+
+function filled(field){
+
+      return !(field === '')
 }

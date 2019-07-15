@@ -61,21 +61,20 @@ export default class Root extends React.Component {
 	}
 
 	handleTrade = async (trade) => {
-		
-		/* 
-
-		API NEEDS: 
-		'{ "ID": 1, "TYPE": "buy", "SYMBOL": "FB", "QUANTITY":10, "PRICE": 20}'
-		
-		*/
-
-		// trade.Price = this.state.portfolio[trade.Symbol].price
 
 		trade.Quantity = Number(trade.Quantity)
-		console.log(trade)
 
 		const data = await asyncMakeTrade(trade, this.state.profile.token)
 
+		console.log(data.data.message)
+
+		if(data.data.message){
+
+			this.setState({ tradeError : data.data.message })
+		}
+		else{
+			this.setState({tradeError: ''})
+		}
 	}
 
 	handleSocketMessage = (stock) => {
@@ -148,7 +147,12 @@ export default class Root extends React.Component {
 									    			/>
 				      						   </TabContainer>}
 				      
-				      {this.state.tab === 2 && <TabContainer> <MakeTrade handleTrade={this.handleTrade}/> </TabContainer>}
+				      {this.state.tab === 2 && <TabContainer> 
+				      								<MakeTrade 
+				      									handleTrade={this.handleTrade}
+				      									tradeError={this.state.tradeError}
+				      	   						    /> 
+				      							</TabContainer>}
 				    </div>
 		    	}
 		    </div>
