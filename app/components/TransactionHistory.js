@@ -31,18 +31,22 @@ export default class TransactionHistory extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell>Symbol</TableCell>
-                  <TableCell align="right">Current Holdings</TableCell>
-                  <TableCell align="right">Current Value</TableCell>                  
+                  <TableCell align="right">Date Trade Conducted</TableCell>                  
+                  <TableCell align="right">Transaction Type</TableCell>                  
+                  <TableCell align="right">Price at Previous Trade</TableCell>                  
+                  <TableCell align="right">Shares Traded</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.entries(this.props.transactionHistory).map((row, i) => (
+                {Object.entries(this.props.transactionHistory).reverse().map((row, i) => (
                   <TableRow key={i}>
                     <TableCell component="th" scope="row">
                       {row[1].Symbol}
                     </TableCell>
-                    <TableCell align="right">{row[1].Quantity}</TableCell>
                     <TableCell align="right">{row[1].Date}</TableCell>
+                    <TableCell align="right">{row[1].Type}</TableCell>
+                    <TableCell align="right">{row[1].Price}</TableCell>
+                    <TableCell align="right">{row[1].Quantity}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -54,11 +58,3 @@ export default class TransactionHistory extends React.Component {
     );   
   }
 }
-
-
-// <div>
-//         { this.props.transactionHistory !== null ? 
-//               Object.entries(this.props.transactionHistory).map( (item, i) =>  <TransHistoryItem key={i} data={item[1]} /> ) : ''
-//           }
-//       </div>
-//     );

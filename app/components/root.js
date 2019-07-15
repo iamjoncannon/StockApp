@@ -24,7 +24,9 @@ export default class Root extends React.Component {
 	    	tab: 0,
 	    	portfolio: null,
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
-	    	socket: null
+	    	socket: null,
+	    	currentPrice: {},
+	    	openingPrice: {}
 	    }
 	}
 
@@ -34,7 +36,7 @@ export default class Root extends React.Component {
 
 		const data = await asyncSignUpCall(name, email, password)
 
-		console.log(data)
+		// console.log(data)
 
 		this.setState({ profile: data.signUpInfo, 
 						token: data.returnedToken, 
@@ -48,16 +50,21 @@ export default class Root extends React.Component {
 
 		this.setState({ profile: { name: data.name, 
 								   email: data.email,
-								   token: data.token
+								   token: data.token,
+								   Balance: data.Balance
 								 }, 
 						isLoggedIn: true,
 						page: 'portfolio'
 					})
 	}
 
-	loadInitialData = (portfolio, transactionHistory) => {
+	loadPortfolioData = (portfolio, transactionHistory) => {
 
-		this.setState({portfolio, transactionHistory, hasLoadedData: true})
+		// when we load data here, check if its in the 
+		// current price list
+		// if so, append to the portfolio entry
+
+		this.setState({portfolio, transactionHistory})
 	}
 
 	handleTrade = async (trade) => {
@@ -66,29 +73,35 @@ export default class Root extends React.Component {
 
 		const data = await asyncMakeTrade(trade, this.state.profile.token)
 
-		console.log(data.data.message)
+		// console.log(data.data.message)
 
 		if(data.data.message){
 
 			this.setState({ tradeError : data.data.message })
 		}
 		else{
-			this.setState({tradeError: ''})
+			this.setState({tradeError: '', tab: 0})
 		}
 	}
 
 	handleSocketMessage = (stock) => {
 
-		let newPortfolio = this.state.portfolio
+		// here we will continuously 
 
-		newPortfolio[stock.symbol]["price"] = stock.price
+		// let openingPriceList = this.state.portfolio
+		let openingPriceList = {}
 
-		this.setState(newPortfolio)
+		console.log(stock.symbol, stock.price)
+
+		openingPriceList[stock.symbol]["price"] = stock.price
+		openingPriceList[stock.symbol] = stock.price
+
+		this.setState({openingPriceList})
 	}
 
 	render(){
 
-		// console.log(this.state.portfolio)
+		// console.log(this.state)
 
 		return ( 
 

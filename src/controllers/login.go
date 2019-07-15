@@ -10,7 +10,7 @@ import (
 	"fmt"
 
 	"dbqueries"
-	// "github.com/davecgh/go-spew/spew"	
+	"github.com/davecgh/go-spew/spew"	
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -83,14 +83,33 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 		returnData := make(map[string]string)
 
+		// type ReturnData struct {
+
+		// 	returnToken string 	`json:"returnToken"` 
+		// 	Name 		string 	`json:"Name"`
+		// 	Balance 	float32 `json:"Balance"`
+		// }
+
+		// I was having a hard time converting a struct to
+		// a json- converting the map was working for me though
+		// have to type coerce this and then coerce back on the client
+		stringBalance := fmt.Sprintf("%f", user.Balance)
+
 		returnData["token"] = token
 		returnData["Name"] = user.Name
+		returnData["Balance"] = stringBalance
+
+		// returnData := ReturnData{ returnToken: token, Name: user.Name, Balance: user.Balance}
+
+		spew.Dump(returnData)
 
 		j, err := json.Marshal(returnData)
 
 		if err != nil {
 			fmt.Println(err)
 		}
+
+		spew.Dump(string(j))
 
 		utils.ResponseJSON(w, string(j))
 	}

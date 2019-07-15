@@ -36,6 +36,8 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 			Symbol		string 
 			Quantity	float32 	
 			Date 		string
+			Price		float32
+			Type 		string
 		}
 
 		transactionHistory := make(map[string]TransactionItem)
@@ -59,7 +61,7 @@ func (c Controller) GetTransactionHistory (db *sql.DB) http.HandlerFunc {
 
 			// spew.Dump(transID, trans.ID, trans.Symbol, trans.Quantity, dateConducted)
 
-			transactionHistory[fmt.Sprint(transID)] = TransactionItem{ Symbol: trans.Symbol, Quantity: trans.Quantity, Date: dateConducted }
+			transactionHistory[fmt.Sprint(transID)] = TransactionItem{ Type: trans.Type, Symbol: trans.Symbol, Quantity: trans.Quantity, Date: dateConducted, Price: trans.Price}
 		}
 
 		j, err := json.Marshal(transactionHistory)

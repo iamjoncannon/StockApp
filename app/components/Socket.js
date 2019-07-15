@@ -1,4 +1,5 @@
 import React from 'react';
+import symbolHash from './symbolHash.json'
 
 export default class Socket extends React.Component {
  
@@ -15,25 +16,29 @@ export default class Socket extends React.Component {
     // let url = time > 12 & time < 21 ? dayTimeTrading : afterHours ;
     let url = afterHours
     const socket = io(url)
-    const thisBook = []
+    const myBook = []
     let currentPortfolio = Object.keys(this.props.portfolio).length
-
-    // console.log("socket connecting to: ", url)
     
+    let fullList = Object.keys(symbolHash)
+
+    // console.log(fullList)
+
     for (let stock in this.props.portfolio){
 
-      thisBook.push(this.props.portfolio[stock].symbol)
+      myBook.push(this.props.portfolio[stock].symbol)
     }
 
     socket.on('connect', () => {
 
-      thisBook.forEach( stock=>{
-
-        // console.log(stock)
-
+      myBook.forEach( stock=>{
         socket.emit('subscribe', stock)
       })
-      // console.log('subscribed to ', socket)
+
+
+      // fullList.forEach( stock=>{
+      //   socket.emit('subscribe', stock)
+      // })
+
     })
 
     socket.on('message', message => {

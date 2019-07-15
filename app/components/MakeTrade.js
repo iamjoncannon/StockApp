@@ -12,8 +12,7 @@ const initialState = {
       Symbol: '',
       Quantity: '',
       Type: '',
-    }
-
+}
 
 export default class MakeTrade extends React.Component {
  
@@ -57,8 +56,6 @@ export default class MakeTrade extends React.Component {
 
     let ready = allSymbols[this.state.Symbol] && formComplete
 
-    console.log(this.props)
-
     return (
 
     <form className={'blank'} noValidate autoComplete="off">
@@ -82,20 +79,21 @@ export default class MakeTrade extends React.Component {
         className={'blank'}
         margin="normal"
       />
+      <div style={{margin: 5}}>
+        <FormControl className={"blank"}>
 
-      <FormControl className={"blank"}>
-
-        <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
-      
-        <Select
-          value={this.state.Type}
-          onChange={ (evt)=> this.setState({Type: evt.target.value}) }
-        >
-      
-          <MenuItem value={'Buy'}>Buy</MenuItem>
-          <MenuItem value={'Sell'}>Sell</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel htmlFor="age-simple">BUY/SELL</InputLabel>
+        
+          <Select
+            value={this.state.Type}
+            onChange={ (evt)=> this.setState({Type: evt.target.value}) }
+          >
+        
+            <MenuItem value={'Buy'}>Buy</MenuItem>
+            <MenuItem value={'Sell'}>Sell</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
       
       <TextField
         required
@@ -107,6 +105,7 @@ export default class MakeTrade extends React.Component {
       />
 
       { ready ? 
+
         <Button
           onClick={this.defaultPreventer}
           fullWidth
@@ -114,6 +113,7 @@ export default class MakeTrade extends React.Component {
           color="primary"
           className={"blank"}
         >
+
           {"Make Trade"}
         </Button>
       : ""}

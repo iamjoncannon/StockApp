@@ -29,7 +29,11 @@ export default class Portfolio extends React.Component {
     // each time to get the data
 
     const { token } = this.props.profile
-    asyncPopulateData(token, this.props.loadInitialData)
+    asyncPopulateData(token, this.props.loadPortfolioData)
+  }
+
+  componentWillUnMount(){
+
   }
 
   render() {
@@ -46,7 +50,8 @@ export default class Portfolio extends React.Component {
                 <TableRow>
                   <TableCell>Symbol</TableCell>
                   <TableCell align="right">Current Holdings</TableCell>
-                  <TableCell align="right">Current Value</TableCell>                  
+                  <TableCell align="right">Current Price</TableCell>                  
+                  <TableCell align="right">Opening Price</TableCell>                  
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -56,6 +61,7 @@ export default class Portfolio extends React.Component {
                       {row[1].symbol}
                     </TableCell>
                     <TableCell align="right">{row[1].quantity}</TableCell>
+                    <TableCell align="right">{row[1].price}</TableCell>
                     <TableCell align="right">{row[1].price}</TableCell>
                   </TableRow>
                 ))}

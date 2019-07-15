@@ -443,8 +443,6 @@ var MakeTrade = function (_React$Component) {
 
       var ready = _symbolHash2.default[this.state.Symbol] && formComplete;
 
-      console.log(this.props);
-
       return _react2.default.createElement(
         'form',
         { className: 'blank', noValidate: true, autoComplete: 'off' },
@@ -471,30 +469,34 @@ var MakeTrade = function (_React$Component) {
           margin: 'normal'
         }),
         _react2.default.createElement(
-          _FormControl2.default,
-          { className: "blank" },
+          'div',
+          { style: { margin: 5 } },
           _react2.default.createElement(
-            _InputLabel2.default,
-            { htmlFor: 'age-simple' },
-            'BUY/SELL'
-          ),
-          _react2.default.createElement(
-            _Select2.default,
-            {
-              value: this.state.Type,
-              onChange: function onChange(evt) {
-                return _this3.setState({ Type: evt.target.value });
-              }
-            },
+            _FormControl2.default,
+            { className: "blank" },
             _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'Buy' },
-              'Buy'
+              _InputLabel2.default,
+              { htmlFor: 'age-simple' },
+              'BUY/SELL'
             ),
             _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'Sell' },
-              'Sell'
+              _Select2.default,
+              {
+                value: this.state.Type,
+                onChange: function onChange(evt) {
+                  return _this3.setState({ Type: evt.target.value });
+                }
+              },
+              _react2.default.createElement(
+                _MenuItem2.default,
+                { value: 'Buy' },
+                'Buy'
+              ),
+              _react2.default.createElement(
+                _MenuItem2.default,
+                { value: 'Sell' },
+                'Sell'
+              )
             )
           )
         ),
@@ -629,7 +631,7 @@ var Portfolio = function (_React$Component) {
 
                 token = this.props.profile.token;
 
-                (0, _asyncCalls.asyncPopulateData)(token, this.props.loadInitialData);
+                (0, _asyncCalls.asyncPopulateData)(token, this.props.loadPortfolioData);
 
               case 2:
               case 'end':
@@ -645,6 +647,9 @@ var Portfolio = function (_React$Component) {
 
       return componentDidMount;
     }()
+  }, {
+    key: 'componentWillUnMount',
+    value: function componentWillUnMount() {}
   }, {
     key: 'render',
     value: function render() {
@@ -677,7 +682,12 @@ var Portfolio = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Current Value'
+                  'Current Price'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { align: 'right' },
+                  'Opening Price'
                 )
               )
             ),
@@ -697,6 +707,11 @@ var Portfolio = function (_React$Component) {
                     _TableCell2.default,
                     { align: 'right' },
                     row[1].quantity
+                  ),
+                  _react2.default.createElement(
+                    _TableCell2.default,
+                    { align: 'right' },
+                    row[1].price
                   ),
                   _react2.default.createElement(
                     _TableCell2.default,
@@ -965,6 +980,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _symbolHash = __webpack_require__(/*! ./symbolHash.json */ "./app/components/symbolHash.json");
+
+var _symbolHash2 = _interopRequireDefault(_symbolHash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -991,25 +1010,27 @@ var Socket = function (_React$Component) {
       // let url = time > 12 & time < 21 ? dayTimeTrading : afterHours ;
       var url = afterHours;
       var socket = io(url);
-      var thisBook = [];
+      var myBook = [];
       var currentPortfolio = Object.keys(_this.props.portfolio).length;
 
-      // console.log("socket connecting to: ", url)
+      var fullList = Object.keys(_symbolHash2.default);
+
+      // console.log(fullList)
 
       for (var stock in _this.props.portfolio) {
 
-        thisBook.push(_this.props.portfolio[stock].symbol);
+        myBook.push(_this.props.portfolio[stock].symbol);
       }
 
       socket.on('connect', function () {
 
-        thisBook.forEach(function (stock) {
-
-          // console.log(stock)
-
+        myBook.forEach(function (stock) {
           socket.emit('subscribe', stock);
         });
-        // console.log('subscribed to ', socket)
+
+        // fullList.forEach( stock=>{
+        //   socket.emit('subscribe', stock)
+        // })
       });
 
       socket.on('message', function (message) {
@@ -1177,19 +1198,29 @@ var TransactionHistory = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Current Holdings'
+                  'Date Trade Conducted'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Current Value'
+                  'Transaction Type'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { align: 'right' },
+                  'Price at Previous Trade'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { align: 'right' },
+                  'Shares Traded'
                 )
               )
             ),
             _react2.default.createElement(
               _TableBody2.default,
               null,
-              Object.entries(this.props.transactionHistory).map(function (row, i) {
+              Object.entries(this.props.transactionHistory).reverse().map(function (row, i) {
                 return _react2.default.createElement(
                   _TableRow2.default,
                   { key: i },
@@ -1201,12 +1232,22 @@ var TransactionHistory = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { align: 'right' },
-                    row[1].Quantity
+                    row[1].Date
                   ),
                   _react2.default.createElement(
                     _TableCell2.default,
                     { align: 'right' },
-                    row[1].Date
+                    row[1].Type
+                  ),
+                  _react2.default.createElement(
+                    _TableCell2.default,
+                    { align: 'right' },
+                    row[1].Price
+                  ),
+                  _react2.default.createElement(
+                    _TableCell2.default,
+                    { align: 'right' },
+                    row[1].Quantity
                   )
                 );
               })
@@ -1219,14 +1260,6 @@ var TransactionHistory = function (_React$Component) {
 
   return TransactionHistory;
 }(_react2.default.Component);
-
-// <div>
-//         { this.props.transactionHistory !== null ? 
-//               Object.entries(this.props.transactionHistory).map( (item, i) =>  <TransHistoryItem key={i} data={item[1]} /> ) : ''
-//           }
-//       </div>
-//     );
-
 
 exports.default = TransactionHistory;
 
@@ -1245,7 +1278,7 @@ exports.default = TransactionHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.asyncGetOnePrice = exports.asyncMakeTrade = exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
+exports.asyncGetOpeningPrice = exports.asyncGetOnePrice = exports.asyncMakeTrade = exports.asyncPopulateData = exports.asyncSignUpCall = exports.asyncLogInCall = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -1255,8 +1288,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 // define interface with API 
-// to separate concern from UI components
-// akin to the "thunk" pattern 
+// as separate concern from UI components
 
 var makeHeader = function makeHeader(token) {
 
@@ -1293,9 +1325,13 @@ var asyncLogInCall = exports.asyncLogInCall = function () {
 
           case 11:
             parsed = JSON.parse(res.data);
+
+
+            console.log(parsed);
+
             return _context.abrupt('return', { Name: parsed.Name, email: email, token: parsed.token });
 
-          case 13:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -1397,7 +1433,7 @@ var asyncPopulateData = exports.asyncPopulateData = function () {
 
               callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data));
             } else {
-              console.log("hitting this condition");
+
               callback({}, { 1: { Symbol: "", Quantity: "", Date: "" } });
             }
 
@@ -1422,9 +1458,6 @@ var asyncMakeTrade = exports.asyncMakeTrade = function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             data = void 0;
-
-            // console.log('heres the trade: ', trade )
-
             _context4.prev = 1;
             _context4.next = 4;
             return _axios2.default.post('/maketransaction', trade, makeHeader(token));
@@ -1484,6 +1517,36 @@ var asyncGetOnePrice = exports.asyncGetOnePrice = function () {
 
   return function asyncGetOnePrice(_x10) {
     return _ref5.apply(this, arguments);
+  };
+}();
+
+var asyncGetOpeningPrice = exports.asyncGetOpeningPrice = function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(symbol) {
+    var url, _ref8, data;
+
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            url = 'https://api.iextrading.com/1.0/deep/official-price?symbols=' + symbol;
+            _context6.next = 3;
+            return _axios2.default.get(url);
+
+          case 3:
+            _ref8 = _context6.sent;
+            data = _ref8.data;
+            return _context6.abrupt('return', data[0].price);
+
+          case 6:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, undefined);
+  }));
+
+  return function asyncGetOpeningPrice(_x11) {
+    return _ref7.apply(this, arguments);
   };
 }();
 
@@ -1770,14 +1833,14 @@ var Root = function (_React$Component) {
 								data = _context.sent;
 
 
-								console.log(data);
+								// console.log(data)
 
 								_this.setState({ profile: data.signUpInfo,
 									token: data.returnedToken,
 									isLoggedIn: true
 								});
 
-							case 6:
+							case 5:
 							case 'end':
 								return _context.stop();
 						}
@@ -1806,7 +1869,8 @@ var Root = function (_React$Component) {
 
 								_this.setState({ profile: { name: data.name,
 										email: data.email,
-										token: data.token
+										token: data.token,
+										Balance: data.Balance
 									},
 									isLoggedIn: true,
 									page: 'portfolio'
@@ -1825,9 +1889,13 @@ var Root = function (_React$Component) {
 			};
 		}();
 
-		_this.loadInitialData = function (portfolio, transactionHistory) {
+		_this.loadPortfolioData = function (portfolio, transactionHistory) {
 
-			_this.setState({ portfolio: portfolio, transactionHistory: transactionHistory, hasLoadedData: true });
+			// when we load data here, check if its in the 
+			// current price list
+			// if so, append to the portfolio entry
+
+			_this.setState({ portfolio: portfolio, transactionHistory: transactionHistory });
 		};
 
 		_this.handleTrade = function () {
@@ -1847,16 +1915,16 @@ var Root = function (_React$Component) {
 								data = _context3.sent;
 
 
-								console.log(data.data.message);
+								// console.log(data.data.message)
 
 								if (data.data.message) {
 
 									_this.setState({ tradeError: data.data.message });
 								} else {
-									_this.setState({ tradeError: '' });
+									_this.setState({ tradeError: '', tab: 0 });
 								}
 
-							case 6:
+							case 5:
 							case 'end':
 								return _context3.stop();
 						}
@@ -1871,11 +1939,17 @@ var Root = function (_React$Component) {
 
 		_this.handleSocketMessage = function (stock) {
 
-			var newPortfolio = _this.state.portfolio;
+			// here we will continuously 
 
-			newPortfolio[stock.symbol]["price"] = stock.price;
+			// let openingPriceList = this.state.portfolio
+			var openingPriceList = {};
 
-			_this.setState(newPortfolio);
+			console.log(stock.symbol, stock.price);
+
+			openingPriceList[stock.symbol]["price"] = stock.price;
+			openingPriceList[stock.symbol] = stock.price;
+
+			_this.setState({ openingPriceList: openingPriceList });
 		};
 
 		_this.state = {
@@ -1886,7 +1960,9 @@ var Root = function (_React$Component) {
 			tab: 0,
 			portfolio: null,
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
-			socket: null
+			socket: null,
+			currentPrice: {},
+			openingPrice: {}
 		};
 		return _this;
 	}
@@ -1896,7 +1972,7 @@ var Root = function (_React$Component) {
 		value: function render() {
 			var _this3 = this;
 
-			// console.log(this.state.portfolio)
+			// console.log(this.state)
 
 			return _react2.default.createElement(
 				'div',

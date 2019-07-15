@@ -1,7 +1,6 @@
 
 // define interface with API 
-// to separate concern from UI components
-// akin to the "thunk" pattern 
+// as separate concern from UI components
 
 import axios from 'axios';
 
@@ -25,7 +24,11 @@ export const asyncLogInCall = async (email, password) => {
       alert(error.response.data.message)
     }
   }
+  
   let parsed = JSON.parse(res.data)
+
+  console.log(parsed)
+  
   return { Name: parsed.Name, email, token: parsed.token }
 }
 
@@ -71,11 +74,11 @@ export const asyncPopulateData = async (token, callback) => {
   }
 
   if(portfolio.data && transactionHistory.data){
-
+  
     callback(JSON.parse(portfolio.data), JSON.parse(transactionHistory.data))
   }
   else{
-    console.log("hitting this condition")
+  
     callback({}, {1:{Symbol: "", Quantity: "", Date: ""}})
   }
 }
@@ -83,8 +86,6 @@ export const asyncPopulateData = async (token, callback) => {
 export const asyncMakeTrade = async (trade, token) => {
 
   let data
-
-  // console.log('heres the trade: ', trade )
 
   try {
 
@@ -95,14 +96,21 @@ export const asyncMakeTrade = async (trade, token) => {
     // alert(error.response.data.message)
   }
 
-  // console.log("here's the data received from the server: ", data)
-
   return data
 }
 
 export const asyncGetOnePrice = async (symbol) => {
 
   const url = `https://api.iextrading.com/1.0/tops/last?symbols=${symbol}`
+  
+  let { data } = await axios.get(url)
+
+  return data[0].price
+}
+
+export const asyncGetOpeningPrice = async (symbol) => {
+
+  const url = `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbol}`
   
   let { data } = await axios.get(url)
 
