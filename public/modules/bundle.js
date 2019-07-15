@@ -653,6 +653,7 @@ var Portfolio = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
 
       // console.log("props for portfolio: ", this.props.portfolio)
 
@@ -718,7 +719,7 @@ var Portfolio = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { align: 'right' },
-                    row[1].price
+                    _this2.props.openingPriceCache[row[1].symbol]
                   )
                 );
               })
@@ -1301,7 +1302,7 @@ var makeHeader = function makeHeader(token) {
 
 var asyncLogInCall = exports.asyncLogInCall = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(email, password) {
-    var res, duplicateEmail, parsed;
+    var res, duplicateEmail;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -1328,13 +1329,9 @@ var asyncLogInCall = exports.asyncLogInCall = function () {
             }
 
           case 11:
-            parsed = JSON.parse(res.data);
+            return _context.abrupt('return', res.data);
 
-            // console.log(parsed)
-
-            return _context.abrupt('return', { Name: parsed.Name, email: email, token: parsed.token });
-
-          case 13:
+          case 12:
           case 'end':
             return _context.stop();
         }
@@ -1524,31 +1521,41 @@ var asyncGetOnePrice = exports.asyncGetOnePrice = function () {
 }();
 
 var asyncGetOpeningPrice = exports.asyncGetOpeningPrice = function () {
-  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(symbol) {
-    var url, _ref8, data;
-
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(symbol, token) {
+    var url, data;
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            url = 'https://api.iextrading.com/1.0/deep/official-price?symbols=' + symbol;
-            _context6.next = 3;
-            return _axios2.default.get(url);
+            url = '/ohlc/' + symbol;
+            data = void 0;
+            _context6.prev = 2;
+            _context6.next = 5;
+            return _axios2.default.post(url, {}, makeHeader(token));
 
-          case 3:
-            _ref8 = _context6.sent;
-            data = _ref8.data;
-            return _context6.abrupt('return', data[0].price);
+          case 5:
+            data = _context6.sent;
+            _context6.next = 11;
+            break;
 
-          case 6:
+          case 8:
+            _context6.prev = 8;
+            _context6.t0 = _context6['catch'](2);
+
+            console.log(_context6.t0);
+
+          case 11:
+            return _context6.abrupt('return', data.data[symbol]);
+
+          case 12:
           case 'end':
             return _context6.stop();
         }
       }
-    }, _callee6, undefined);
+    }, _callee6, undefined, [[2, 8]]);
   }));
 
-  return function asyncGetOpeningPrice(_x11) {
+  return function asyncGetOpeningPrice(_x11, _x12) {
     return _ref7.apply(this, arguments);
   };
 }();
@@ -1874,11 +1881,7 @@ var Root = function (_React$Component) {
 								data = _context2.sent;
 
 
-								_this.setState({ profile: { name: data.name,
-										email: data.email,
-										token: data.token,
-										Balance: data.Balance
-									},
+								_this.setState({ profile: JSON.parse(data),
 									isLoggedIn: true,
 									page: 'portfolio'
 								});
@@ -1896,46 +1899,92 @@ var Root = function (_React$Component) {
 			};
 		}();
 
-		_this.loadPortfolioData = function (portfolio, transactionHistory) {
+		_this.loadPortfolioData = function () {
+			var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(portfolio, transactionHistory) {
+				var _this$state, cachedPriceList, openingPriceCache, repopulatedPortfolio, updatedOpeningPriceCach, stock;
 
-			// when we load data here, check if its in the 
-			// current price list
-			// if so, append to the portfolio entry
-
-			var cachedPriceList = _this.state.cachedPriceList;
-
-
-			var repopulatedPortfolio = _extends({}, portfolio);
-
-			for (var stock in repopulatedPortfolio) {
-
-				if (cachedPriceList) {
-
-					if (cachedPriceList[stock]) {
-						// console.log(cachedPriceList[stock])
-						repopulatedPortfolio[stock]["price"] = cachedPriceList[stock];
-					}
-				}
-			}
-
-			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory, hasLoadedData: true });
-		};
-
-		_this.handleTrade = function () {
-			var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(trade) {
-				var data;
 				return regeneratorRuntime.wrap(function _callee3$(_context3) {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
 
+								// when we load data here, check if its in the 
+								// current price list
+								// if so, append to the portfolio entry
+
+								_this$state = _this.state, cachedPriceList = _this$state.cachedPriceList, openingPriceCache = _this$state.openingPriceCache;
+								repopulatedPortfolio = _extends({}, portfolio);
+								updatedOpeningPriceCach = _extends({}, openingPriceCache);
+								_context3.t0 = regeneratorRuntime.keys(repopulatedPortfolio);
+
+							case 4:
+								if ((_context3.t1 = _context3.t0()).done) {
+									_context3.next = 13;
+									break;
+								}
+
+								stock = _context3.t1.value;
+
+
+								if (cachedPriceList) {
+
+									if (cachedPriceList[stock]) {
+										// console.log(cachedPriceList[stock])
+										repopulatedPortfolio[stock]["price"] = cachedPriceList[stock];
+									}
+								}
+
+								if (updatedOpeningPriceCach[stock]) {
+									_context3.next = 11;
+									break;
+								}
+
+								_context3.next = 10;
+								return (0, _asyncCalls.asyncGetOpeningPrice)(stock, _this.state.profile.token);
+
+							case 10:
+								updatedOpeningPriceCach[stock] = _context3.sent;
+
+							case 11:
+								_context3.next = 4;
+								break;
+
+							case 13:
+
+								_this.setState({ portfolio: repopulatedPortfolio,
+									transactionHistory: transactionHistory,
+									hasLoadedData: true,
+									openingPriceCache: updatedOpeningPriceCach
+								});
+
+							case 14:
+							case 'end':
+								return _context3.stop();
+						}
+					}
+				}, _callee3, _this2);
+			}));
+
+			return function (_x4, _x5) {
+				return _ref4.apply(this, arguments);
+			};
+		}();
+
+		_this.handleTrade = function () {
+			var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(trade) {
+				var data;
+				return regeneratorRuntime.wrap(function _callee4$(_context4) {
+					while (1) {
+						switch (_context4.prev = _context4.next) {
+							case 0:
+
 								trade.Quantity = Number(trade.Quantity);
 
-								_context3.next = 3;
+								_context4.next = 3;
 								return (0, _asyncCalls.asyncMakeTrade)(trade, _this.state.profile.token);
 
 							case 3:
-								data = _context3.sent;
+								data = _context4.sent;
 
 
 								if (data.data.message) {
@@ -1947,14 +1996,14 @@ var Root = function (_React$Component) {
 
 							case 5:
 							case 'end':
-								return _context3.stop();
+								return _context4.stop();
 						}
 					}
-				}, _callee3, _this2);
+				}, _callee4, _this2);
 			}));
 
-			return function (_x4) {
-				return _ref4.apply(this, arguments);
+			return function (_x6) {
+				return _ref5.apply(this, arguments);
 			};
 		}();
 
@@ -1981,7 +2030,8 @@ var Root = function (_React$Component) {
 			portfolio: { 1: { Symbol: "", Quantity: "", Price: "" } },
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
 			socket: null,
-			currentPrice: {},
+			currentPrices: {},
+			openingPriceCache: {},
 			cachedPriceList: {},
 			hasLoadedData: false
 		};
@@ -1992,6 +2042,8 @@ var Root = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _this3 = this;
+
+			// console.log(this.state)
 
 			return _react2.default.createElement(
 				'div',
@@ -2020,6 +2072,7 @@ var Root = function (_React$Component) {
 						_react2.default.createElement(
 							_AppBar2.default,
 							{ position: 'static' },
+							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + " Balance: " + this.state.profile.Balance }),
 							_react2.default.createElement(
 								_Tabs2.default,
 								{ value: this.state.tab, onChange: function onChange(x, y) {
@@ -2037,7 +2090,8 @@ var Root = function (_React$Component) {
 								loadPortfolioData: this.loadPortfolioData,
 								portfolio: this.state.portfolio,
 								hasLoadedData: this.state.hasLoadedData,
-								profile: this.state.profile
+								profile: this.state.profile,
+								openingPriceCache: this.state.openingPriceCache
 							})
 						),
 						this.state.tab === 1 && _react2.default.createElement(

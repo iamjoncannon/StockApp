@@ -17,8 +17,6 @@ import (
 func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 	return func (w http.ResponseWriter, r *http.Request) {
-
-		fmt.Println(r)
 		
 		var user models.User 
 		var error models.Error
@@ -95,13 +93,13 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 		// have to type coerce this and then coerce back on the client
 		stringBalance := fmt.Sprintf("%f", user.Balance)
 
+		spew.Dump(stringBalance)
+
 		returnData["token"] = token
 		returnData["Name"] = user.Name
 		returnData["Balance"] = stringBalance
 
 		// returnData := ReturnData{ returnToken: token, Name: user.Name, Balance: user.Balance}
-
-		spew.Dump(returnData)
 
 		j, err := json.Marshal(returnData)
 

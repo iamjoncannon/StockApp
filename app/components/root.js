@@ -5,7 +5,7 @@ import Portfolio from './Portfolio'
 import TransactionHistory from './TransactionHistory'
 import MakeTrade from './MakeTrade'
 import Socket from './Socket'
-import { asyncLogInCall, asyncSignUpCall, asyncMakeTrade } from './asyncCalls'
+import { asyncLogInCall, asyncSignUpCall, asyncMakeTrade, asyncGetOpeningPrice } from './asyncCalls'
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -30,7 +30,8 @@ export default class Root extends React.Component {
 	    	portfolio: {1:{Symbol: "", Quantity: "", Price: ""}},
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
 	    	socket: null,
-	    	currentPrice: {},
+	    	currentPrices: {},
+	    	openingPriceCache: {},
 	    	cachedPriceList: {},
 	    	hasLoadedData: false
 	    }
@@ -50,25 +51,23 @@ export default class Root extends React.Component {
 
 		const data = await asyncLogInCall(email, password)
 
-		this.setState({ profile: { name: data.name, 
-								   email: data.email,
-								   token: data.token,
-								   Balance: data.Balance
-								 }, 
+		this.setState({ profile: JSON.parse(data), 
 						isLoggedIn: true,
 						page: 'portfolio'
 					})
 	}
 
-	loadPortfolioData = (portfolio, transactionHistory) => {
+	loadPortfolioData = async (portfolio, transactionHistory) => {
 
 		// when we load data here, check if its in the 
 		// current price list
 		// if so, append to the portfolio entry
 
-		let { cachedPriceList } = this.state
+		let { cachedPriceList, openingPriceCache } = this.state
 
 		let repopulatedPortfolio = {...portfolio }
+
+		let updatedOpeningPriceCach = {... openingPriceCache}
 
 		for(let stock in repopulatedPortfolio){
 			
@@ -79,9 +78,18 @@ export default class Root extends React.Component {
 					repopulatedPortfolio[stock]["price"] = cachedPriceList[stock]				
 				}
 			}
+
+			if(!updatedOpeningPriceCach[stock]){
+				updatedOpeningPriceCach[stock] = await asyncGetOpeningPrice(stock, this.state.profile.token)
+			}
+
 		} 
 
-		this.setState({ portfolio: repopulatedPortfolio, transactionHistory, hasLoadedData: true })
+		this.setState({ portfolio: repopulatedPortfolio, 
+						transactionHistory, 
+						hasLoadedData: true, 
+						openingPriceCache: updatedOpeningPriceCach
+					  })
 	
 	}
 
@@ -116,6 +124,8 @@ export default class Root extends React.Component {
 	}
 
 	render(){
+
+		// console.log(this.state)
 
 		return ( 
 
@@ -153,6 +163,7 @@ export default class Root extends React.Component {
 
 			    	<div className={"blank"}>
 				      <AppBar position="static">
+				          <Tab label={this.state.profile.Name + " Balance: " + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
 				          <Tab label="Portfolio" />
 				          <Tab label="Trading History" />
@@ -167,6 +178,7 @@ export default class Root extends React.Component {
 									    		   	   	portfolio={this.state.portfolio}
 									    				hasLoadedData={this.state.hasLoadedData}
 									    				profile={this.state.profile}
+									    				openingPriceCache={this.state.openingPriceCache}
 									    			/>
 				      						 
 				      						   </TabContainer>}
@@ -183,6 +195,7 @@ export default class Root extends React.Component {
 				      									tradeError={this.state.tradeError}
 				      	   						    /> 
 				      							</TabContainer>}
+				     
 				    </div>
 		    		</div>
 		    	}

@@ -65,7 +65,7 @@ export default class Portfolio extends React.Component {
                     </TableCell>
                     <TableCell align="right">{row[1].quantity}</TableCell>
                     <TableCell align="right">{row[1].price}</TableCell>
-                    <TableCell align="right">{row[1].price}</TableCell>
+                    <TableCell align="right">{this.props.openingPriceCache[row[1].symbol]}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -73,6 +73,7 @@ export default class Portfolio extends React.Component {
           </Paper>
           : ''
         }
+        
       </div>
     );
     

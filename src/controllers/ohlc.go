@@ -3,8 +3,9 @@ package controllers
 import (
 
 	"net/http"
-	"fmt"
+	// "fmt"
 	// "encoding/json"
+
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -23,7 +24,6 @@ func FetchOpeningPrice() http.HandlerFunc {
 		allParams := mux.Vars(r)
 
 		param := allParams["symbol"]
-		fmt.Println(param)
 
 		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/open?token=sk_5c1a1ec78f534b179da588b787245fe6"}
 
@@ -53,8 +53,6 @@ func FetchOpeningPrice() http.HandlerFunc {
 		}
 
 		formatted, _ := strconv.ParseFloat(string(body), 32)
-
-		fmt.Println(param, formatted)
 
 		returnJason := make(map[string]float64) 
 

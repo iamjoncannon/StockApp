@@ -25,11 +25,7 @@ export const asyncLogInCall = async (email, password) => {
     }
   }
   
-  let parsed = JSON.parse(res.data)
-
-  // console.log(parsed)
-  
-  return { Name: parsed.Name, email, token: parsed.token }
+  return res.data
 }
 
 export const asyncSignUpCall = async (Name, email, password) => {
@@ -108,12 +104,22 @@ export const asyncGetOnePrice = async (symbol) => {
   return data[0].price
 }
 
-export const asyncGetOpeningPrice = async (symbol) => {
-
-  const url = `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbol}`
+export const asyncGetOpeningPrice = async (symbol, token) => {
   
-  let { data } = await axios.get(url)
+  const url = '/ohlc/' + symbol
 
-  return data[0].price
+  let data  
+
+  try {
+
+    data = await axios.post(url, {}, makeHeader(token)) 
+
+  }
+  catch(error){
+    console.log(error)
+  }
+
+  return data.data[symbol]
 }
+
 
