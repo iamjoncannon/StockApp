@@ -31,7 +31,7 @@ export default class Root extends React.Component {
 	    	
 	    	socket: null,
 	    	
-	    	profile: null,
+	    	profile: null, // Balance, Name, token
 	    	portfolio: {1:{Symbol: "", Quantity: "", Price: ""}},
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
 	    	openingPriceCache: {},
@@ -126,7 +126,7 @@ export default class Root extends React.Component {
 
 	render(){
 
-		// console.log(this.state)
+		console.log(this.state)
 
 		return ( 
 
@@ -162,7 +162,7 @@ export default class Root extends React.Component {
 
 			    	<div className={"blank"}>
 				      <AppBar position="static">
-				          <Tab label={this.state.profile.Name + "     Balance: " + this.state.profile.Balance} />
+				          <Tab label={this.state.profile.Name + "     Balance: $" + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
 				          <Tab label="Portfolio" />
 				          <Tab label="Trading History" />
@@ -189,7 +189,9 @@ export default class Root extends React.Component {
 				      						   </TabContainer>}
 				      
 				      {this.state.tab === 2 && <TabContainer> 
-				      								<MakeTrade 
+				      								<MakeTrade
+				      									Balance={this.state.profile.Balance} 
+				      									portfolio={this.state.portfolio}
 				      									handleTrade={this.handleTrade}
 				      									tradeError={this.state.tradeError}
 				      	   						    /> 

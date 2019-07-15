@@ -12,7 +12,7 @@ const initialState = {
       Symbol: '',
       Quantity: '',
       Type: 'Buy',
-      // Price: 'price'
+      ErrorStatus: ''
 }
 
 export default class MakeTrade extends React.Component {
@@ -24,6 +24,11 @@ export default class MakeTrade extends React.Component {
 
   componentDidMount(){
   
+  }
+
+  componentDidUpdate(){
+
+
   }
 
   defaultPreventer = (evt) => {
@@ -43,9 +48,6 @@ export default class MakeTrade extends React.Component {
 
       let price = await asyncGetOnePrice(symbol)
 
-      // console.log(price)
-      
-
       this.setState({Price: price})
     }
     else{
@@ -54,11 +56,43 @@ export default class MakeTrade extends React.Component {
 
   }
 
+  validateTrade = () => {
+
+    if(!this.state.Symbol) return false
+
+    const { Price, Quantity, Type } = this.state
+
+    let formComplete = allSymbols[this.state.Symbol] && filled(Type) && filled(this.state.Symbol) && filled(Quantity)
+
+    let canCoverSale = true
+
+    if(Type == 'Sell'){
+
+      if(!this.props.portfolio[this.state.Symbol]){
+        return false
+      }
+      else{
+
+        canCoverSale = this.props.portfolio[this.state.Symbol].quantity >= Quantity
+      }
+    }
+
+    let canCoverPurchase = true
+
+    if(Type == "Buy"){
+
+      Price * Quantity  <= this.props.Balance 
+    }
+
+    return formComplete && canCoverPurchase && canCoverSale
+  }
+
+  currentHoldingsMessage = () => {
+
+    return "You currently hold " + this.props.portfolio[this.state.Symbol].quantity + ' shares of this stock.'
+  }
+
   render() {
-
-    let formComplete = filled(this.state.Type) && filled(this.state.Symbol) && filled(this.state.Quantity)
-
-    let ready = allSymbols[this.state.Symbol] && formComplete
 
     return (
 
@@ -107,7 +141,7 @@ export default class MakeTrade extends React.Component {
         </Select>
       </FormControl>
 
-      { ready ? 
+      { this.validateTrade() ? 
 
         <Button
           onClick={this.defaultPreventer}
@@ -121,11 +155,20 @@ export default class MakeTrade extends React.Component {
 
         </Button>
       : ""}
-      { allSymbols[this.state.Symbol] }
-      { this.props.tradeError ? 
+      <div>
+        { allSymbols[this.state.Symbol] }
+      </div>
+      <div>
+        { this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 
+          'You currently hold 0 shares of this stock.'}
+      </div>
+      <div>
 
-        `${this.props.tradeError}` : ''
-      }
+        { this.props.tradeError ? 
+
+          `${this.props.tradeError}` : ''
+        }
+      </div>
     </form>  
     );
   }

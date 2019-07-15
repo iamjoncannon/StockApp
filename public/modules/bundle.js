@@ -403,8 +403,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var initialState = {
   Symbol: '',
   Quantity: '',
-  Type: 'Buy'
-  // Price: 'price'
+  Type: 'Buy',
+  ErrorStatus: ''
 };
 
 var MakeTrade = function (_React$Component) {
@@ -448,9 +448,6 @@ var MakeTrade = function (_React$Component) {
                 price = _context.sent;
 
 
-                // console.log(price)
-
-
                 _this.setState({ Price: price });
                 _context.next = 9;
                 break;
@@ -471,6 +468,45 @@ var MakeTrade = function (_React$Component) {
       };
     }();
 
+    _this.validateTrade = function () {
+
+      if (!_this.state.Symbol) return false;
+
+      var _this$state = _this.state,
+          Price = _this$state.Price,
+          Quantity = _this$state.Quantity,
+          Type = _this$state.Type;
+
+
+      var formComplete = _symbolHash2.default[_this.state.Symbol] && filled(Type) && filled(_this.state.Symbol) && filled(Quantity);
+
+      var canCoverSale = true;
+
+      if (Type == 'Sell') {
+
+        if (!_this.props.portfolio[_this.state.Symbol]) {
+          return false;
+        } else {
+
+          canCoverSale = _this.props.portfolio[_this.state.Symbol].quantity >= Quantity;
+        }
+      }
+
+      var canCoverPurchase = true;
+
+      if (Type == "Buy") {
+
+        Price * Quantity <= _this.props.Balance;
+      }
+
+      return formComplete && canCoverPurchase && canCoverSale;
+    };
+
+    _this.currentHoldingsMessage = function () {
+
+      return "You currently hold " + _this.props.portfolio[_this.state.Symbol].quantity + ' shares of this stock.';
+    };
+
     _this.state = initialState;
     return _this;
   }
@@ -479,13 +515,12 @@ var MakeTrade = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {}
   }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {}
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
-
-      var formComplete = filled(this.state.Type) && filled(this.state.Symbol) && filled(this.state.Quantity);
-
-      var ready = _symbolHash2.default[this.state.Symbol] && formComplete;
 
       return _react2.default.createElement(
         'form',
@@ -548,7 +583,7 @@ var MakeTrade = function (_React$Component) {
             )
           )
         ),
-        ready ? _react2.default.createElement(
+        this.validateTrade() ? _react2.default.createElement(
           _Button2.default,
           {
             onClick: this.defaultPreventer,
@@ -559,8 +594,21 @@ var MakeTrade = function (_React$Component) {
           },
           "Make Trade"
         ) : "",
-        _symbolHash2.default[this.state.Symbol],
-        this.props.tradeError ? '' + this.props.tradeError : ''
+        _react2.default.createElement(
+          'div',
+          null,
+          _symbolHash2.default[this.state.Symbol]
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 'You currently hold 0 shares of this stock.'
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          this.props.tradeError ? '' + this.props.tradeError : ''
+        )
       );
     }
   }]);
@@ -748,7 +796,9 @@ var Portfolio = function (_React$Component) {
             _react2.default.createElement(
               _TableBody2.default,
               null,
-              Object.entries(this.props.portfolio).map(function (row, i) {
+              Object.entries(this.props.portfolio).filter(function (row) {
+                return row[1].quantity > 0;
+              }).map(function (row, i) {
                 return _react2.default.createElement(
                   _TableRow2.default,
                   { key: i },
@@ -2087,7 +2137,7 @@ var Root = function (_React$Component) {
 
 			socket: null,
 
-			profile: null,
+			profile: null, // Balance, Name, token
 			portfolio: { 1: { Symbol: "", Quantity: "", Price: "" } },
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
 			openingPriceCache: {},
@@ -2101,7 +2151,7 @@ var Root = function (_React$Component) {
 		value: function render() {
 			var _this3 = this;
 
-			// console.log(this.state)
+			console.log(this.state);
 
 			return _react2.default.createElement(
 				'div',
@@ -2130,7 +2180,7 @@ var Root = function (_React$Component) {
 						_react2.default.createElement(
 							_AppBar2.default,
 							{ position: 'static' },
-							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + "     Balance: " + this.state.profile.Balance }),
+							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + "     Balance: $" + this.state.profile.Balance }),
 							_react2.default.createElement(
 								_Tabs2.default,
 								{ value: this.state.tab, onChange: function onChange(x, y) {
@@ -2163,6 +2213,8 @@ var Root = function (_React$Component) {
 							_DashTab2.default,
 							null,
 							_react2.default.createElement(_MakeTrade2.default, {
+								Balance: this.state.profile.Balance,
+								portfolio: this.state.portfolio,
 								handleTrade: this.handleTrade,
 								tradeError: this.state.tradeError
 							})

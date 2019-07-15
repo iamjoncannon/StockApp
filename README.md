@@ -1,6 +1,6 @@
 items to fix:
 
-1. implement the color changing thing
+xxx 1. implement the color changing thing
 
 2. trade validation- pass portfolio into make trade and have it display the current holdings when a stock is selected, if buy, validate with balance, if sale, validate with holding
 
@@ -11,6 +11,7 @@ items to fix:
 think about using this for trade screen:
 
 https://material-ui.com/getting-started/page-layout-examples/checkout/
+
 
 
 
