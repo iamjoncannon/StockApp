@@ -12,6 +12,7 @@ const initialState = {
       Symbol: '',
       Quantity: '',
       Type: '',
+      // Price: 'price'
 }
 
 export default class MakeTrade extends React.Component {

@@ -362,6 +362,7 @@ var initialState = {
   Symbol: '',
   Quantity: '',
   Type: ''
+  // Price: 'price'
 };
 
 var MakeTrade = function (_React$Component) {
@@ -649,10 +650,15 @@ var Portfolio = function (_React$Component) {
     }()
   }, {
     key: 'componentWillUnMount',
-    value: function componentWillUnMount() {}
+    value: function componentWillUnMount() {
+
+      console.log("portfolio unmounted");
+    }
   }, {
     key: 'render',
     value: function render() {
+
+      // console.log("props for portfolio: ", this.props.portfolio)
 
       return _react2.default.createElement(
         'div',
@@ -1173,7 +1179,7 @@ var TransactionHistory = function (_React$Component) {
     key: 'render',
     value: function render() {
 
-      console.log(this.props.transactionHistory);
+      // console.log(this.props.transactionHistory)
 
       return _react2.default.createElement(
         'div',
@@ -1208,7 +1214,7 @@ var TransactionHistory = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Price at Previous Trade'
+                  'Price at Trade'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
@@ -1326,12 +1332,11 @@ var asyncLogInCall = exports.asyncLogInCall = function () {
           case 11:
             parsed = JSON.parse(res.data);
 
-
-            console.log(parsed);
+            // console.log(parsed)
 
             return _context.abrupt('return', { Name: parsed.Name, email: email, token: parsed.token });
 
-          case 14:
+          case 13:
           case 'end':
             return _context.stop();
         }
@@ -1742,6 +1747,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -1895,7 +1902,23 @@ var Root = function (_React$Component) {
 			// current price list
 			// if so, append to the portfolio entry
 
-			_this.setState({ portfolio: portfolio, transactionHistory: transactionHistory });
+			var cachedPriceList = _this.state.cachedPriceList;
+
+
+			var repopulatedPortfolio = _extends({}, portfolio);
+
+			for (var stock in repopulatedPortfolio) {
+
+				if (cachedPriceList) {
+
+					if (cachedPriceList[stock]) {
+						console.log(cachedPriceList[stock]);
+						repopulatedPortfolio[stock]["price"] = cachedPriceList[stock];
+					}
+				}
+			}
+
+			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory });
 		};
 
 		_this.handleTrade = function () {
@@ -1914,8 +1937,6 @@ var Root = function (_React$Component) {
 							case 3:
 								data = _context3.sent;
 
-
-								// console.log(data.data.message)
 
 								if (data.data.message) {
 
@@ -1939,17 +1960,17 @@ var Root = function (_React$Component) {
 
 		_this.handleSocketMessage = function (stock) {
 
-			// here we will continuously 
+			// continuously update previous price List
 
-			// let openingPriceList = this.state.portfolio
-			var openingPriceList = {};
+			var updatedPortfolio = _extends({}, _this.state.portfolio);
 
-			console.log(stock.symbol, stock.price);
+			var cachedPriceList = _extends({}, _this.state.cachedPriceList);
 
-			openingPriceList[stock.symbol]["price"] = stock.price;
-			openingPriceList[stock.symbol] = stock.price;
+			cachedPriceList[stock.symbol] = stock.price;
 
-			_this.setState({ openingPriceList: openingPriceList });
+			updatedPortfolio[stock.symbol]["price"] = stock.price;
+
+			_this.setState({ portfolio: updatedPortfolio, cachedPriceList: cachedPriceList });
 		};
 
 		_this.state = {
@@ -1962,7 +1983,7 @@ var Root = function (_React$Component) {
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
 			socket: null,
 			currentPrice: {},
-			openingPrice: {}
+			cachedPriceList: {}
 		};
 		return _this;
 	}
@@ -1971,8 +1992,6 @@ var Root = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _this3 = this;
-
-			// console.log(this.state)
 
 			return _react2.default.createElement(
 				'div',
@@ -2012,7 +2031,7 @@ var Root = function (_React$Component) {
 						_DashTab2.default,
 						null,
 						_react2.default.createElement(_Portfolio2.default, {
-							loadInitialData: this.loadInitialData,
+							loadPortfolioData: this.loadPortfolioData,
 							portfolio: this.state.portfolio,
 							hasLoadedData: this.state.hasLoadedData,
 							profile: this.state.profile

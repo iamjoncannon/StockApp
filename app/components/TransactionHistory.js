@@ -18,7 +18,7 @@ export default class TransactionHistory extends React.Component {
 
   render() {
 
-    console.log(this.props.transactionHistory)
+    // console.log(this.props.transactionHistory)
 
     return (
 
@@ -33,7 +33,7 @@ export default class TransactionHistory extends React.Component {
                   <TableCell>Symbol</TableCell>
                   <TableCell align="right">Date Trade Conducted</TableCell>                  
                   <TableCell align="right">Transaction Type</TableCell>                  
-                  <TableCell align="right">Price at Previous Trade</TableCell>                  
+                  <TableCell align="right">Price at Trade</TableCell>                  
                   <TableCell align="right">Shares Traded</TableCell>
                 </TableRow>
               </TableHead>

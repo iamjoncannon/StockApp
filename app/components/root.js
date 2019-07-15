@@ -26,7 +26,7 @@ export default class Root extends React.Component {
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
 	    	socket: null,
 	    	currentPrice: {},
-	    	openingPrice: {}
+	    	cachedPriceList: {}
 	    }
 	}
 
@@ -64,7 +64,22 @@ export default class Root extends React.Component {
 		// current price list
 		// if so, append to the portfolio entry
 
-		this.setState({portfolio, transactionHistory})
+		let { cachedPriceList } = this.state
+
+		let repopulatedPortfolio = {...portfolio }
+
+		for(let stock in repopulatedPortfolio){
+			
+			if( cachedPriceList ){
+
+				if( cachedPriceList[stock] ){
+					console.log(cachedPriceList[stock])
+					repopulatedPortfolio[stock]["price"] = cachedPriceList[stock]				
+				}
+			}
+		} 
+
+		this.setState({ portfolio: repopulatedPortfolio, transactionHistory })
 	}
 
 	handleTrade = async (trade) => {
@@ -72,8 +87,6 @@ export default class Root extends React.Component {
 		trade.Quantity = Number(trade.Quantity)
 
 		const data = await asyncMakeTrade(trade, this.state.profile.token)
-
-		// console.log(data.data.message)
 
 		if(data.data.message){
 
@@ -86,22 +99,20 @@ export default class Root extends React.Component {
 
 	handleSocketMessage = (stock) => {
 
-		// here we will continuously 
+		// continuously update previous price List
 
-		// let openingPriceList = this.state.portfolio
-		let openingPriceList = {}
+		let updatedPortfolio = {...this.state.portfolio } 
 
-		console.log(stock.symbol, stock.price)
+		let cachedPriceList = {...this.state.cachedPriceList }
 
-		openingPriceList[stock.symbol]["price"] = stock.price
-		openingPriceList[stock.symbol] = stock.price
+		cachedPriceList[stock.symbol] = stock.price
 
-		this.setState({openingPriceList})
+		updatedPortfolio[stock.symbol]["price"] = stock.price
+
+		this.setState({portfolio: updatedPortfolio, cachedPriceList})
 	}
 
 	render(){
-
-		// console.log(this.state)
 
 		return ( 
 
@@ -146,7 +157,7 @@ export default class Root extends React.Component {
 				      {this.state.tab === 0 && <TabContainer> 
 				      						
 				      								<Portfolio 
-				      									loadInitialData={this.loadInitialData} 
+				      									loadPortfolioData={this.loadPortfolioData} 
 									    		   	   	portfolio={this.state.portfolio}
 									    				hasLoadedData={this.state.hasLoadedData}
 									    				profile={this.state.profile}

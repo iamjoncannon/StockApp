@@ -27,7 +27,7 @@ export const asyncLogInCall = async (email, password) => {
   
   let parsed = JSON.parse(res.data)
 
-  console.log(parsed)
+  // console.log(parsed)
   
   return { Name: parsed.Name, email, token: parsed.token }
 }

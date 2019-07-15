@@ -33,10 +33,13 @@ export default class Portfolio extends React.Component {
   }
 
   componentWillUnMount(){
-
+    
+    console.log("portfolio unmounted")
   }
 
   render() {
+
+    // console.log("props for portfolio: ", this.props.portfolio)
 
     return (
 
