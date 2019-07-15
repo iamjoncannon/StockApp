@@ -405,7 +405,10 @@ var MakeTrade = function (_React$Component) {
               case 4:
                 price = _context.sent;
 
+
                 // console.log(price)
+
+
                 _this.setState({ Price: price });
                 _context.next = 9;
                 break;
@@ -432,9 +435,7 @@ var MakeTrade = function (_React$Component) {
 
   _createClass(MakeTrade, [{
     key: 'componentDidMount',
-    value: function componentDidMount() {
-      console.log(_symbolHash2.default);
-    }
+    value: function componentDidMount() {}
   }, {
     key: 'render',
     value: function render() {
@@ -529,7 +530,6 @@ exports.default = MakeTrade;
 
 
 function filled(field) {
-
   return !(field === '');
 }
 
@@ -1042,6 +1042,8 @@ var Socket = function (_React$Component) {
         _this.props.handleSocketMessage(JSON.parse(message));
       });
 
+      console.log(socket);
+
       _this.setState({ socket: socket, portfolioSize: Object.keys(_this.props.portfolio).length });
     };
 
@@ -1071,7 +1073,7 @@ var Socket = function (_React$Component) {
                 return this.state.socket.close();
 
               case 5:
-                this.connectToSocket;
+                this.connectToSocket();
 
               case 6:
               case 'end':
@@ -1807,6 +1809,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// this is the root of the application, that defines the management
+// of browser application state based on user input
+
+// as the "controller" layer, the appearance of the elements is 
+// separated into other components, which are held in other files
+
 var Root = function (_React$Component) {
 	_inherits(Root, _React$Component);
 
@@ -1836,15 +1844,10 @@ var Root = function (_React$Component) {
 								data = _context.sent;
 
 
-								// console.log(data)
 								alert("Please sign in with your credentials");
 								location.reload();
-								_this.setState({ profile: data.signUpInfo,
-									token: data.returnedToken,
-									isLoggedIn: true
-								});
 
-							case 7:
+							case 6:
 							case 'end':
 								return _context.stop();
 						}
@@ -1915,7 +1918,7 @@ var Root = function (_React$Component) {
 				}
 			}
 
-			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory, isDataLoaded: true });
+			_this.setState({ portfolio: repopulatedPortfolio, transactionHistory: transactionHistory, hasLoadedData: true });
 		};
 
 		_this.handleTrade = function () {
@@ -1973,7 +1976,6 @@ var Root = function (_React$Component) {
 		_this.state = {
 			profile: null,
 			isLoggedIn: false,
-			hasLoadedData: false,
 			page: 'login',
 			tab: 0,
 			portfolio: { 1: { Symbol: "", Quantity: "", Price: "" } },
@@ -1981,7 +1983,7 @@ var Root = function (_React$Component) {
 			socket: null,
 			currentPrice: {},
 			cachedPriceList: {},
-			isDataLoaded: false
+			hasLoadedData: false
 		};
 		return _this;
 	}
@@ -1994,7 +1996,7 @@ var Root = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				this.state.isDataLoaded ? _react2.default.createElement(_Socket2.default, { portfolio: this.state.portfolio,
+				this.state.hasLoadedData ? _react2.default.createElement(_Socket2.default, { portfolio: this.state.portfolio,
 					handleSocketMessage: this.handleSocketMessage
 				}) : '',
 				!this.state.isLoggedIn ? _react2.default.createElement(
@@ -17874,7 +17876,7 @@ var defaultTheme = Object(_createMuiTheme__WEBPACK_IMPORTED_MODULE_0__["default"
 /*!************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/styles/index.js ***!
   \************************************************************/
-/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, useTheme, withStyles, withTheme, easing, duration, formatMs, isString, isNumber */
+/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, easing, duration, formatMs, isString, isNumber, useTheme, withStyles, withTheme */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23288,7 +23290,7 @@ var flexbox = Object(_compose__WEBPACK_IMPORTED_MODULE_1__["default"])(flexBasis
 /*!*******************************************************!*\
   !*** ./node_modules/@material-ui/system/esm/index.js ***!
   \*******************************************************/
-/*! exports provided: borders, breakpoints, compose, css, display, flexbox, palette, positions, shadows, sizing, spacing, style, typography, border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderRadius, flexBasis, flexDirection, flexWrap, justifyContent, alignItems, alignContent, order, flex, flexGrow, flexShrink, alignSelf, justifyItems, justifySelf, color, bgcolor, position, zIndex, top, right, bottom, left, width, maxWidth, minWidth, height, maxHeight, minHeight, sizeWidth, sizeHeight, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign */
+/*! exports provided: borders, border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderRadius, breakpoints, compose, css, display, flexbox, flexBasis, flexDirection, flexWrap, justifyContent, alignItems, alignContent, order, flex, flexGrow, flexShrink, alignSelf, justifyItems, justifySelf, palette, color, bgcolor, positions, position, zIndex, top, right, bottom, left, shadows, sizing, width, maxWidth, minWidth, height, maxHeight, minHeight, sizeWidth, sizeHeight, spacing, style, typography, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

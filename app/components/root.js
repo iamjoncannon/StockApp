@@ -44,11 +44,6 @@ export default class Root extends React.Component {
 
 		alert("Please sign in with your credentials")
 		location.reload()
-		// this.setState({ profile: data.signUpInfo, 
-		// 				token: data.returnedToken, 
-		// 				isLoggedIn: true
-		// 			})
-
 	}
 
 	handleLogIn = async (email, password) => {
@@ -87,6 +82,7 @@ export default class Root extends React.Component {
 		} 
 
 		this.setState({ portfolio: repopulatedPortfolio, transactionHistory, hasLoadedData: true })
+	
 	}
 
 	handleTrade = async (trade) => {

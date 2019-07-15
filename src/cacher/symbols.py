@@ -36,12 +36,30 @@ def getOpeningPrices():
 
 	with open("symbolHash.json") as jsonInFile:
 
-		data = json.load(jsonInfile)
-		
-		for symbol in jsonInFile:
+		allSymbols = json.load(jsonInFile)
+		openingPriceCache = {}
+		count = 0
+		whichSubfile = 1
+		for symbol in allSymbols:
+			url = F'https://cloud.iexapis.com/beta/stock/{symbol}/quote/open?token=sk_5c1a1ec78f534b179da588b787245fe6'
+			response = requests.get(url)
 
-			print(symbol)
+			if response is not None: 
+				# print(symbol, response.json())
+				openingPriceCache[symbol] = response.json()
+		
+			count += 1
+
+			if count == 50:
+
+				with open(F'openingPriceCache-{whichSubfile}.json', "w") as jsonOutfile:
+					json.dump(openingPriceCache, jsonOutfile)
+
+				openingPriceCache = {}
+				count = 0
+				whichSubfile += 1
 
 # makeSymbolsFile()
 # processSymbols()
 getOpeningPrices()
+

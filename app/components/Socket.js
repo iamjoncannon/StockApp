@@ -48,6 +48,8 @@ export default class Socket extends React.Component {
       this.props.handleSocketMessage(JSON.parse(message))
     })
 
+    console.log(socket)
+
     this.setState({ socket, portfolioSize: Object.keys(this.props.portfolio).length })
   }
 
@@ -62,7 +64,7 @@ export default class Socket extends React.Component {
 
     if( portfolioChanged ){
       await this.state.socket.close()
-      this.connectToSocket
+      this.connectToSocket()
     }
   }
 
