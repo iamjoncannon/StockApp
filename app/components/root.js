@@ -100,12 +100,14 @@ export default class Root extends React.Component {
 
 		const data = await asyncMakeTrade(trade, this.state.profile.token)
 
+		console.log(data)
+
 		if(data.data.message){
 
 			this.setState({ tradeError : data.data.message })
 		}
 		else{
-			this.setState({tradeError: '', tab: 0})
+			this.setState({tradeError: '', tab: 0, profile:{...this.state.profile, Balance: data.data}})
 		}
 	}
 
@@ -126,8 +128,6 @@ export default class Root extends React.Component {
 
 	render(){
 
-		console.log(this.state)
-
 		return ( 
 
 		    <div> 
@@ -135,7 +135,6 @@ export default class Root extends React.Component {
 		    	{ this.state.hasLoadedData ? <Socket portfolio={this.state.portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
 		    							 /> : '' }
-
 
 		    	{ !this.state.isLoggedIn ? 
 

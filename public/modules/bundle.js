@@ -496,7 +496,7 @@ var MakeTrade = function (_React$Component) {
 
       if (Type == "Buy") {
 
-        Price * Quantity <= _this.props.Balance;
+        canCoverPurchase = Price * Quantity <= _this.props.Balance;
       }
 
       return formComplete && canCoverPurchase && canCoverSale;
@@ -505,6 +505,13 @@ var MakeTrade = function (_React$Component) {
     _this.currentHoldingsMessage = function () {
 
       return "You currently hold " + _this.props.portfolio[_this.state.Symbol].quantity + ' shares of this stock.';
+    };
+
+    _this.currentOrderPrice = function () {
+
+      var direction = _this.state.Type === "Buy" ? 'cost' : 'yeild';
+
+      return 'This would ' + direction + ' $' + _this.state.Quantity * _this.state.Price;
     };
 
     _this.state = initialState;
@@ -602,12 +609,22 @@ var MakeTrade = function (_React$Component) {
         _react2.default.createElement(
           'div',
           null,
-          this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 'You currently hold 0 shares of this stock.'
+          this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : this.state.Symbol ? 'You currently hold 0 shares of this stock.' : '',
+          _react2.default.createElement(
+            'div',
+            null,
+            this.state.Price && this.state.Quantity ? this.currentOrderPrice() : ''
+          )
         ),
         _react2.default.createElement(
           'div',
           null,
-          this.props.tradeError ? '' + this.props.tradeError : ''
+          this.props.tradeError ? _react2.default.createElement(
+            'h2',
+            null,
+            ' ',
+            this.props.tradeError
+          ) : ''
         )
       );
     }
@@ -2093,14 +2110,16 @@ var Root = function (_React$Component) {
 								data = _context4.sent;
 
 
+								console.log(data);
+
 								if (data.data.message) {
 
 									_this.setState({ tradeError: data.data.message });
 								} else {
-									_this.setState({ tradeError: '', tab: 0 });
+									_this.setState({ tradeError: '', tab: 0, profile: _extends({}, _this.state.profile, { Balance: data.data }) });
 								}
 
-							case 5:
+							case 6:
 							case 'end':
 								return _context4.stop();
 						}
@@ -2150,8 +2169,6 @@ var Root = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _this3 = this;
-
-			console.log(this.state);
 
 			return _react2.default.createElement(
 				'div',

@@ -183,6 +183,9 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 			utils.RespondWithError(w, http.StatusInternalServerError, errorObj)
 			return
 		}
+
+		fmt.Println(newBalance)
+		utils.ResponseJSON(w, newBalance)
 	}
 }
 

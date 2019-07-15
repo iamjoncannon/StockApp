@@ -81,7 +81,7 @@ export default class MakeTrade extends React.Component {
 
     if(Type == "Buy"){
 
-      Price * Quantity  <= this.props.Balance 
+      canCoverPurchase = Price * Quantity  <= this.props.Balance 
     }
 
     return formComplete && canCoverPurchase && canCoverSale
@@ -90,6 +90,13 @@ export default class MakeTrade extends React.Component {
   currentHoldingsMessage = () => {
 
     return "You currently hold " + this.props.portfolio[this.state.Symbol].quantity + ' shares of this stock.'
+  }
+
+  currentOrderPrice = () => {
+
+    let direction = this.state.Type === "Buy" ? 'cost' : 'yeild';
+
+    return `This would ${direction} $${this.state.Quantity * this.state.Price}`
   }
 
   render() {
@@ -159,14 +166,19 @@ export default class MakeTrade extends React.Component {
         { allSymbols[this.state.Symbol] }
       </div>
       <div>
+
+
         { this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 
-          'You currently hold 0 shares of this stock.'}
+          this.state.Symbol ? 'You currently hold 0 shares of this stock.' : ''}
+      <div>
+        {this.state.Price && this.state.Quantity ? this.currentOrderPrice() : ''}
+      </div>
       </div>
       <div>
 
         { this.props.tradeError ? 
 
-          `${this.props.tradeError}` : ''
+          <h2> {this.props.tradeError}</h2> : ''
         }
       </div>
     </form>  
