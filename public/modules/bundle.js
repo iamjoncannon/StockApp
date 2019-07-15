@@ -86,6 +86,48 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./app/components/ColoredStock.js":
+/*!****************************************!*\
+  !*** ./app/components/ColoredStock.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ColoredStock;
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ColoredStock(props) {
+
+  var whichColor = void 0;
+
+  if (props.openingPrice < props.cell.price) {
+    whichColor = "green";
+  } else if (props.openingPrice > props.cell.price) {
+    whichColor = "red";
+  } else {
+    whichColor = "grey";
+  }
+
+  return _react2.default.createElement(
+    "div",
+    { style: { color: whichColor } },
+    props.cell.symbol
+  );
+};
+
+/***/ }),
+
 /***/ "./app/components/DashTab.js":
 /*!***********************************!*\
   !*** ./app/components/DashTab.js ***!
@@ -561,6 +603,10 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _asyncCalls = __webpack_require__(/*! ./asyncCalls */ "./app/components/asyncCalls.js");
 
+var _ColoredStock = __webpack_require__(/*! ./ColoredStock */ "./app/components/ColoredStock.js");
+
+var _ColoredStock2 = _interopRequireDefault(_ColoredStock);
+
 var _Table = __webpack_require__(/*! @material-ui/core/Table */ "./node_modules/@material-ui/core/esm/Table/index.js");
 
 var _Table2 = _interopRequireDefault(_Table);
@@ -680,17 +726,22 @@ var Portfolio = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Current Holdings'
+                  'Opening Price USD'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Current Price'
+                  'Current Holdings USD'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
                   { align: 'right' },
-                  'Opening Price'
+                  'Current Price USD'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { align: 'right' },
+                  'Current Total Value USD '
                 )
               )
             ),
@@ -704,7 +755,12 @@ var Portfolio = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { component: 'th', scope: 'row' },
-                    row[1].symbol
+                    _react2.default.createElement(_ColoredStock2.default, { cell: row[1], openingPrice: _this2.props.openingPriceCache[row[1].symbol] })
+                  ),
+                  _react2.default.createElement(
+                    _TableCell2.default,
+                    { align: 'right' },
+                    _this2.props.openingPriceCache[row[1].symbol]
                   ),
                   _react2.default.createElement(
                     _TableCell2.default,
@@ -719,7 +775,7 @@ var Portfolio = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { align: 'right' },
-                    _this2.props.openingPriceCache[row[1].symbol]
+                    row[1].price * row[1].quantity
                   )
                 );
               })
@@ -2023,17 +2079,19 @@ var Root = function (_React$Component) {
 		};
 
 		_this.state = {
-			profile: null,
 			isLoggedIn: false,
+			hasLoadedData: false,
+
 			page: 'login',
 			tab: 0,
+
+			socket: null,
+
+			profile: null,
 			portfolio: { 1: { Symbol: "", Quantity: "", Price: "" } },
 			transactionHistory: { 1: { Symbol: "", Quantity: "", Date: "" } },
-			socket: null,
-			currentPrices: {},
 			openingPriceCache: {},
-			cachedPriceList: {},
-			hasLoadedData: false
+			cachedPriceList: {}
 		};
 		return _this;
 	}
@@ -2072,7 +2130,7 @@ var Root = function (_React$Component) {
 						_react2.default.createElement(
 							_AppBar2.default,
 							{ position: 'static' },
-							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + " Balance: " + this.state.profile.Balance }),
+							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + "     Balance: " + this.state.profile.Balance }),
 							_react2.default.createElement(
 								_Tabs2.default,
 								{ value: this.state.tab, onChange: function onChange(x, y) {

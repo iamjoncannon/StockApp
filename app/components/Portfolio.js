@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { asyncPopulateData } from './asyncCalls'
-
+import ColoredStock from './ColoredStock'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -52,20 +52,22 @@ export default class Portfolio extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell>Symbol</TableCell>
-                  <TableCell align="right">Current Holdings</TableCell>
-                  <TableCell align="right">Current Price</TableCell>                  
-                  <TableCell align="right">Opening Price</TableCell>                  
+                  <TableCell align="right">Opening Price USD</TableCell>                  
+                  <TableCell align="right">Current Holdings USD</TableCell>
+                  <TableCell align="right">Current Price USD</TableCell>                  
+                  <TableCell align="right">Current Total Value USD </TableCell>                  
                 </TableRow>
               </TableHead>
               <TableBody>
                 {Object.entries(this.props.portfolio).map((row, i) => (
                   <TableRow key={i}>
                     <TableCell component="th" scope="row">
-                      {row[1].symbol}
+                      <ColoredStock cell={row[1]} openingPrice={this.props.openingPriceCache[row[1].symbol]}/>
                     </TableCell>
+                    <TableCell align="right">{this.props.openingPriceCache[row[1].symbol]}</TableCell>
                     <TableCell align="right">{row[1].quantity}</TableCell>
                     <TableCell align="right">{row[1].price}</TableCell>
-                    <TableCell align="right">{this.props.openingPriceCache[row[1].symbol]}</TableCell>
+                    <TableCell align="right">{row[1].price * row[1].quantity}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -73,7 +75,7 @@ export default class Portfolio extends React.Component {
           </Paper>
           : ''
         }
-        
+
       </div>
     );
     

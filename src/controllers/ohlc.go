@@ -29,7 +29,7 @@ func FetchOpeningPrice() http.HandlerFunc {
 
 		openingPriceEndpoint := http.Client{
 
-			Timeout: time.Second * 20, // Maximum of 2 secs
+			Timeout: time.Second * 20,
 		}
 
 		req, err := http.NewRequest(http.MethodGet, strings.Join(url, ""), nil)

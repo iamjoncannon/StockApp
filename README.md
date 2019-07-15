@@ -1,31 +1,39 @@
 items to fix:
 
-pass portfolio into make trade and have it display the current holdings when a
-stock is selected
+1. implement the color changing thing
 
-1) need to populate balance on ongoing basis- part of populating data
+2. trade validation- pass portfolio into make trade and have it display the current holdings when a stock is selected, if buy, validate with balance, if sale, validate with holding
 
+3. populate balance from trade completion
 
+4. implement redis cache for external api calls
 
-2) need to move the trade screen to the portfolio screen, or else populate
-the current shares when the trade displays
-
-
-
-need to record the price the trade was conducted in the transaction
-and display it to get an over under
-
-
-
-need to integrate other socket to get opening and closing 
-prices:
-https://iextrading.com/developer/docs/#official-price
-
-
-need to fix the buy select box- use a separate checkout user flow
-
+think about using this for trade screen:
 
 https://material-ui.com/getting-started/page-layout-examples/checkout/
 
+
+
+USER STORIES:
+
+1. sign up with name, email password
+- 5k in account
+- user only registers once
+
+2. login with email and password
+
+3. buy stocks at current price with symbol and number of shares
+- validates balance
+- validates stock symbol
+
+4. lists transactions 
+
+5. lists all stocks owned with current values
+- values = latest price and quantity owned
+
+6.  color of stock in portfolio changes during the day
+	- red if lost against opening price
+	- grey if same
+	- green if gained against opening price
 
 

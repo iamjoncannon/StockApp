@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	"github.com/davecgh/go-spew/spew"	
+	// "github.com/davecgh/go-spew/spew"	
 
 	"models"
 	"dbqueries"
@@ -39,7 +39,7 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 		// to handle errors we "respond with error" with the correct
 		// http status 
 
-		spew.Dump(trans)
+		// spew.Dump(trans)
 
 		currentBalance, err := query.CheckBalance(db, trans)
 

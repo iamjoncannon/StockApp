@@ -23,17 +23,19 @@ export default class Root extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	    	profile: null,
 	    	isLoggedIn: false,
+	    	hasLoadedData: false,
+	    	
 	    	page: 'login',
 	    	tab: 0,
+	    	
+	    	socket: null,
+	    	
+	    	profile: null,
 	    	portfolio: {1:{Symbol: "", Quantity: "", Price: ""}},
 	    	transactionHistory: {1:{Symbol: "", Quantity: "", Date: ""}},
-	    	socket: null,
-	    	currentPrices: {},
 	    	openingPriceCache: {},
 	    	cachedPriceList: {},
-	    	hasLoadedData: false
 	    }
 	}
 
@@ -90,7 +92,6 @@ export default class Root extends React.Component {
 						hasLoadedData: true, 
 						openingPriceCache: updatedOpeningPriceCach
 					  })
-	
 	}
 
 	handleTrade = async (trade) => {
@@ -159,11 +160,9 @@ export default class Root extends React.Component {
 					    : 
 					<div>    
 
-				
-
 			    	<div className={"blank"}>
 				      <AppBar position="static">
-				          <Tab label={this.state.profile.Name + " Balance: " + this.state.profile.Balance} />
+				          <Tab label={this.state.profile.Name + "     Balance: " + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
 				          <Tab label="Portfolio" />
 				          <Tab label="Trading History" />
