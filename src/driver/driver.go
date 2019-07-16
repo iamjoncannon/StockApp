@@ -15,7 +15,7 @@ var db *sql.DB
 const (
   host     = "localhost"
   port     = 5432
-  user     = "jcannon"
+  user     = "jonathancannon"
   dbname   = "test"
 )
 
