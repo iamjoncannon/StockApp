@@ -20,6 +20,7 @@
     "pg": "^7.9.0",
     "react": "^16.8.4",
     "react-dom": "^16.3.2",
+    "react-material-ui-form-validator": "^2.0.9",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {

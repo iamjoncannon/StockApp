@@ -7,6 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { asyncGetOnePrice } from './asyncCalls'
 import allSymbols from './symbolHash.json'
+import { filled } from './util'
 
 const initialState = {
       Symbol: '',
@@ -62,7 +63,7 @@ export default class MakeTrade extends React.Component {
 
     const { Price, Quantity, Type } = this.state
 
-    let formComplete = allSymbols[this.state.Symbol] && filled(Type) && filled(this.state.Symbol) && filled(Quantity)
+    let formComplete = allSymbols[this.state.Symbol] && filled(Type, Quantity, this.state.Symbol)
 
     let canCoverSale = true
 
@@ -184,8 +185,4 @@ export default class MakeTrade extends React.Component {
     </form>  
     );
   }
-}
-
-function filled(field){
-      return !(field === '')
 }

@@ -1,18 +1,10 @@
-items to fix:
+# TTP-FP
 
-xxx 1. implement the color changing thing
+This repo is my stock portfolio app for TTP. 
 
-2. trade validation- pass portfolio into make trade and have it display the current holdings when a stock is selected, if buy, validate with balance, if sale, validate with holding
+The front end web application uses React as well as Socket.io to establish a web socket connection to the IEX data service.
 
-3. populate balance from trade completion
-
-4. implement redis cache for external api calls
-
-think about using this for trade screen:
-
-https://material-ui.com/getting-started/page-layout-examples/checkout/
-
-
+The backend server is written in Golang, uses JWT (JSON Web Tokens) to implement user authentication, as well as PostgreSQL.  In order to complete the last user story, data for the opening price must be obtained from the IEX Cloud, an API that requires authentication. In order to prevent the client from calling the service with my private token, I established an API endpoint in my server, which then called the IEX endpoint with my token, and relayed the data back to the client.  In a production environment, this data would be cached to prevent duplicate API calls, as the opening price does not fluctuate during the day.  
 
 
 USER STORIES:
@@ -38,3 +30,11 @@ USER STORIES:
 	- green if gained against opening price
 
 
+items to fix:
+
+
+4. implement redis cache for external api calls
+
+think about using this for trade screen:
+
+https://material-ui.com/getting-started/page-layout-examples/checkout/

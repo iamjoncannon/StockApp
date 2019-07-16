@@ -2,13 +2,12 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { filled } from './util'
 
 export default class SignIn extends React.Component {
 
@@ -24,10 +23,23 @@ export default class SignIn extends React.Component {
   }
 
   defaultPreventer = (evt) => {
-
+    
     evt.preventDefault()
     evt.stopPropagation()
-    this.props.handleSignUp(this.state)
+    const {email, password, lastName, firstName} = this.state
+    const re = /\S+@\S+\.\S+/;
+    const completed = filled(email, password, firstName, lastName)
+
+    if(completed && re.test(this.state.email)){
+      this.props.handleSignUp(this.state)
+    }
+    else{
+      return
+    }
+  }
+
+  errorHandler = (error) => { 
+    console.log(error)
   }
 
   render(){
@@ -40,10 +52,16 @@ export default class SignIn extends React.Component {
             <Typography component="h1" variant="h5">
               {"  Register Account  "}
             </Typography>
-            <form className={"blank"} noValidate>
+            
+            <ValidatorForm
+              ref="form"
+              onSubmit={this.defaultPreventer}
+              onError={this.errorHandler}
+            >
+
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                <TextValidator
                     autoComplete="fname"
                     name="firstName"
                     value={this.state.firstName}
@@ -57,7 +75,7 @@ export default class SignIn extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                <TextValidator
                     variant="outlined"
                     required
                     fullWidth
@@ -67,25 +85,23 @@ export default class SignIn extends React.Component {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
-
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                <TextValidator
                     variant="outlined"
                     required
                     fullWidth
-                    id="email"
                     value={this.state.email}
                     onChange={(e)=>{this.setState({email: e.target.value})}}
-                    label="Email Address"
+                    label="Email"
                     name="email"
-                    autoComplete="email"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    validators={['required', 'isEmail']}
+                    errorMessages={['this field is required', 'email is not valid']}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                <TextValidator
                     variant="outlined"
                     required
                     fullWidth
@@ -96,7 +112,6 @@ export default class SignIn extends React.Component {
                     type="password"
                     id="password"
                     autoComplete="current-password"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   />
                 </Grid>
                 
@@ -120,7 +135,7 @@ export default class SignIn extends React.Component {
                 </Grid>
               </Grid>
 
-            </form>
+            </ValidatorForm>
           </div>
           
         </Container>

@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 	"os"
-	"fmt"
 
 	"github.com/gorilla/mux"
 	"utils"
@@ -25,8 +24,6 @@ func FetchOpeningPrice() http.HandlerFunc {
 		param := allParams["symbol"]
 
 		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/open?token=", os.Getenv("IEX_API_KEY")}
-
-		fmt.Println(strings.Join(url, ""))
 
 		openingPriceEndpoint := http.Client{
 
