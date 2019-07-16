@@ -1,3 +1,4 @@
+// #
 package controllers
 
 import (
@@ -10,7 +11,6 @@ import (
 	"utils"
 	"dbqueries"
 	
-	"github.com/davecgh/go-spew/spew"	
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -34,10 +34,6 @@ func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
 
 		json.NewDecoder(r.Body).Decode(&user)
 		
-		fmt.Println("signup")
-
-		spew.Dump(user)
-
 		if user.Name == "" {
 			error.Message = "Name not found in request"
 			utils.RespondWithError(w, http.StatusBadRequest, error)

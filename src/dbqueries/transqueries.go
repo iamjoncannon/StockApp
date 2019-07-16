@@ -1,16 +1,11 @@
+// #
 package dbqueries
 
 import (
 	"database/sql"
 	"models"
-	"fmt"
-	"github.com/davecgh/go-spew/spew"	
 )
 
-func stopThisError(){
-	fmt.Println("The Google engineers really want these programs to be as efficient as possible.")
-	spew.Dump("To that end, type safety is tedious but important")
-}
 
 // pass in the entire model for these calls- the requirements for the database call could alter
 // better to reduce that interface site by eliminating additional arguments required to make the call 

@@ -1,3 +1,5 @@
+// #
+
 package controllers
 
 import (
@@ -6,8 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	// "github.com/davecgh/go-spew/spew"	
-
 	"models"
 	"dbqueries"
 	"utils"
@@ -39,8 +39,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 		// to handle errors we "respond with error" with the correct
 		// http status 
 
-		// spew.Dump(trans)
-
 		currentBalance, err := query.CheckBalance(db, trans)
 
 		if err != nil {
@@ -50,8 +48,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 			utils.RespondWithError(w, http.StatusInternalServerError, errorObj)
 			return
 		}
-
-		fmt.Println("current balance: ", currentBalance)
 
 		currentHolding, err := query.GetCurrentHolding(db, trans)
 
@@ -87,8 +83,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 			}
 		}
 
-		fmt.Println("current holding: ", currentHolding)
-
 		if trans.Type == "Buy"{
 
 			hasFundsToCoverTransaction := currentBalance > trans.Quantity * trans.Price 
@@ -117,9 +111,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 			newBalance = currentBalance + trans.Quantity * trans.Price
 			newHoldingAmount = currentHolding - trans.Quantity
 		}
-
-		fmt.Println("newBalance: ", newBalance)
-		fmt.Println("new Holding: ", newHoldingAmount)
 
 		// this next part raises an interesting strategic question:
 		// which party should be given more protections by the
@@ -184,7 +175,6 @@ func (c Controller) ConductTransaction (db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		fmt.Println(newBalance)
 		utils.ResponseJSON(w, newBalance)
 	}
 }

@@ -1,16 +1,10 @@
+// #
 package dbqueries
 
 import (
 	"database/sql"
 	"models"
-	"fmt"
-	"github.com/davecgh/go-spew/spew"	
 )
-
-func stopThisErrorHere(){
-	fmt.Println("The Google engineers really want these programs to be as efficient as possible.")
-	spew.Dump("To that end, type safety is tedious but important")
-}
 
 type DBQuery struct {}
 

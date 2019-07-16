@@ -67,6 +67,7 @@ export default class SignIn extends React.Component {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
+
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -80,6 +81,7 @@ export default class SignIn extends React.Component {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -94,6 +96,7 @@ export default class SignIn extends React.Component {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                   />
                 </Grid>
                 

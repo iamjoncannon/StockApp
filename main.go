@@ -30,8 +30,9 @@ func main(){
 	go router.HandleFunc("/login", controller.LogIn(db)).Methods("POST")
 
 
-	// why define the callback inside TokenVerify as a method on a controller struct?
-	// otherwise you will lose reference to the db pointer
+	// Question: why define the callback inside TokenVerify as a method on a controller struct?
+	// Answer: otherwise you will lose reference to the db pointer
+
 	// When the Token middleware gets called, it is passed r and w by handlefunc.
 	// The argument signature of mux' Handlefunc method is "http.HandlerFunc", meaning
 	// we can't add a db pointer variable as a argument to the middleware, otherwise

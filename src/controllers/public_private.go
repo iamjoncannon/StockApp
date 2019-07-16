@@ -1,3 +1,4 @@
+// #
 package controllers
 
 import (
@@ -6,10 +7,8 @@ import (
 	"net/http"
 	"strings"
 	"fmt"
-	// "reflect"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	// "github.com/davecgh/go-spew/spew"	
 	
 	"models"
 	"utils"
@@ -33,18 +32,6 @@ func GenerateToken(user models.User)(string, error){
 
 	return tokenString, nil
 }
-
-// this is an example of currying- the verification function receives the 
-// handler and, through the mux package, the entire original function is
-// itself actually invoked at the end of the call
-// conceptually, add () after the mux.router calls- everything
-// after the first return statement will be called, and the w and r arguments
-// refer to the original http request with the token that's being
-// verified 
-
-// like Express's app.get()router.HandleFunc takes an endpoint and a callback,
-// when the endpoint is hit it mounts the callback to the route and passes in
-// the original http request object 
 
 func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 
@@ -83,12 +70,11 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			// these are called type assertions- 
 			// https://tour.golang.org/methods/15
 			claims, _ := verifiedToken.Claims.(jwt.MapClaims)
-			decryptedEmail, _ := claims["email"].(string)
+		
 			floatId, _ := claims["id"].(float64)
 
 			stringId := fmt.Sprintf("%d", int(floatId) )
 
-			r.Header.Set("decryptedEmail",  decryptedEmail)
 			r.Header.Set("decryptedId",  stringId)
 
 			// this just curries into 
@@ -101,7 +87,5 @@ func TokenVerifyMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			utils.RespondWithError(w, http.StatusUnauthorized, errorObj)
 			return
 		}
-
-	
 	})
 }

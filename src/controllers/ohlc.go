@@ -1,18 +1,15 @@
 package controllers
 
 import (
-
 	"net/http"
-	// "fmt"
-	// "encoding/json"
-
 	"io/ioutil"
 	"log"
 	"strconv"
 	"strings"
 	"time"
+	"os"
+	"fmt"
 
-	// "github.com/davecgh/go-spew/spew"	
 	"github.com/gorilla/mux"
 	"utils"
 )
@@ -25,7 +22,9 @@ func FetchOpeningPrice() http.HandlerFunc {
 
 		param := allParams["symbol"]
 
-		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/open?token=sk_5c1a1ec78f534b179da588b787245fe6"}
+		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/open?token=", os.Getenv("IEX_API_KEY")}
+
+		fmt.Println(strings.Join(url, ""))
 
 		openingPriceEndpoint := http.Client{
 
