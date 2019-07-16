@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"encoding/json"
 
-	// "github.com/davecgh/go-spew/spew"	
-
 	"dbqueries"
 	"models"
 	"utils"
@@ -49,8 +47,6 @@ func (c Controller) GetPortfolio (db *sql.DB) http.HandlerFunc {
 				utils.RespondWithError(w, http.StatusInternalServerError, errorObj)
 				return
 			}
-
-			// spew.Dump(holdingID, holding.ID, holding.Symbol, holding.Quantity)
 
 			portfolio[fmt.Sprint(holding.Symbol)] = models.Holding{ ID: holding.ID, Symbol: holding.Symbol, Quantity: holding.Quantity }
 		}
