@@ -17,7 +17,7 @@ export default function ColoredStock (props){
   return (
 
     <div style={{color:whichColor}}>
-    	{props.cell.symbol}
+    	{props.cell[props.display]}
     </div>
   );
 };

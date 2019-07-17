@@ -47,11 +47,13 @@ export default class Portfolio extends React.Component {
                 {Object.entries(this.props.portfolio).filter(row => row[1].quantity > 0).map((row, i) => (
                   <TableRow key={i}>
                     <TableCell component="th" scope="row">
-                      <ColoredStock cell={row[1]} openingPrice={this.props.openingPriceCache[row[1].symbol]}/>
+                      <ColoredStock cell={row[1]} display={'symbol'} openingPrice={this.props.openingPriceCache[row[1].symbol]}/>
                     </TableCell>
                     <TableCell align="right">{this.props.openingPriceCache[row[1].symbol]}</TableCell>
                     <TableCell align="right">{row[1].quantity}</TableCell>
-                    <TableCell align="right">{row[1].price}</TableCell>
+                    <TableCell align="right">
+                      <ColoredStock cell={row[1]} display={'price'} openingPrice={this.props.openingPriceCache[row[1].symbol]}/>
+                    </TableCell>
                     <TableCell align="right">{row[1].price * row[1].quantity}</TableCell>
                   </TableRow>
                 ))}

@@ -159,7 +159,7 @@ export default class Root extends React.Component {
 
 			    	<div>
 				      <AppBar position="static">
-				          <Tab label={this.state.profile.Name + "Balance: $" + this.state.profile.Balance} />
+				          <Tab label={this.state.profile.Name + "   Balance: $" + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
 				          <Tab label="Portfolio" />
 				          <Tab label="Trading History" />

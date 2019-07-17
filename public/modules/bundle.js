@@ -122,7 +122,7 @@ function ColoredStock(props) {
   return _react2.default.createElement(
     "div",
     { style: { color: whichColor } },
-    props.cell.symbol
+    props.cell[props.display]
   );
 };
 
@@ -789,7 +789,7 @@ var Portfolio = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { component: 'th', scope: 'row' },
-                    _react2.default.createElement(_ColoredStock2.default, { cell: row[1], openingPrice: _this2.props.openingPriceCache[row[1].symbol] })
+                    _react2.default.createElement(_ColoredStock2.default, { cell: row[1], display: 'symbol', openingPrice: _this2.props.openingPriceCache[row[1].symbol] })
                   ),
                   _react2.default.createElement(
                     _TableCell2.default,
@@ -804,7 +804,7 @@ var Portfolio = function (_React$Component) {
                   _react2.default.createElement(
                     _TableCell2.default,
                     { align: 'right' },
-                    row[1].price
+                    _react2.default.createElement(_ColoredStock2.default, { cell: row[1], display: 'price', openingPrice: _this2.props.openingPriceCache[row[1].symbol] })
                   ),
                   _react2.default.createElement(
                     _TableCell2.default,
@@ -1968,7 +1968,7 @@ var Root = function (_React$Component) {
 						_react2.default.createElement(
 							_AppBar2.default,
 							{ position: 'static' },
-							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + "Balance: $" + this.state.profile.Balance }),
+							_react2.default.createElement(_Tab2.default, { label: this.state.profile.Name + "   Balance: $" + this.state.profile.Balance }),
 							_react2.default.createElement(
 								_Tabs2.default,
 								{ value: this.state.tab, onChange: function onChange(x, y) {
@@ -2080,10 +2080,6 @@ var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/i
 var _root = __webpack_require__(/*! ./components/root */ "./app/components/root.js");
 
 var _root2 = _interopRequireDefault(_root);
-
-var _LoginMUI = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/LoginMUI'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-var _LoginMUI2 = _interopRequireDefault(_LoginMUI);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16781,7 +16777,7 @@ var defaultTheme = Object(_createMuiTheme__WEBPACK_IMPORTED_MODULE_0__["default"
 /*!************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/styles/index.js ***!
   \************************************************************/
-/*! exports provided: createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, useTheme, withStyles, withTheme, hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, easing, duration, formatMs, isString, isNumber */
+/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, easing, duration, formatMs, isString, isNumber, useTheme, withStyles, withTheme */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17589,7 +17585,7 @@ function createChainedFunction() {
 /*!***********************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/utils/index.js ***!
   \***********************************************************/
-/*! exports provided: deprecatedPropType, capitalize, createChainedFunction, useIsFocusVisible, ownerDocument, ownerWindow, requirePropFactory, unsupportedProp, useEventCallback, withForwardedRef, isMuiElement, setRef, useForkRef */
+/*! exports provided: deprecatedPropType, capitalize, createChainedFunction, isMuiElement, setRef, useForkRef, useIsFocusVisible, ownerDocument, ownerWindow, requirePropFactory, unsupportedProp, useEventCallback, withForwardedRef */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
