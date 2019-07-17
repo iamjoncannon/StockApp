@@ -9,32 +9,15 @@ The backend server is written in Golang, uses JWT (JSON Web Tokens) to implement
 
 USER STORIES:
 
-1. sign up with name, email password
-- 5k in account
-- user only registers once
+1. Sign up with name, email password
 
-2. login with email and password
+2. Login with email and password 
 
-3. buy stocks at current price with symbol and number of shares
-- validates balance
-- validates stock symbol
+3. Buy stocks at current price with symbol and number of shares 
 
-4. lists transactions 
+4. View list of transactions 
 
-5. lists all stocks owned with current values
-- values = latest price and quantity owned
+5. View portfolio of all stocks owned with current values
 
-6.  color of stock in portfolio changes during the day
-	- red if lost against opening price
-	- grey if same
-	- green if gained against opening price
+6. On Portfolio, color of stocks changes during the day based on current value against opening value
 
-
-items to fix:
-
-
-4. implement redis cache for external api calls
-
-think about using this for trade screen:
-
-https://material-ui.com/getting-started/page-layout-examples/checkout/
