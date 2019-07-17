@@ -164,10 +164,10 @@ function TabContainer(props) {
 
 /***/ }),
 
-/***/ "./app/components/LoginMUI.js":
-/*!************************************!*\
-  !*** ./app/components/LoginMUI.js ***!
-  \************************************/
+/***/ "./app/components/Login.js":
+/*!*********************************!*\
+  !*** ./app/components/Login.js ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -236,8 +236,8 @@ var SignIn = function (_React$Component) {
     };
 
     _this.state = {
-      email: "cuty@example.com",
-      password: "1Yadayadayada"
+      email: "",
+      password: ""
     };
     return _this;
   }
@@ -827,10 +827,10 @@ exports.default = Portfolio;
 
 /***/ }),
 
-/***/ "./app/components/SignUpMUI.js":
-/*!*************************************!*\
-  !*** ./app/components/SignUpMUI.js ***!
-  \*************************************/
+/***/ "./app/components/SignUp.js":
+/*!**********************************!*\
+  !*** ./app/components/SignUp.js ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1636,170 +1636,6 @@ var asyncGetOpeningPrice = exports.asyncGetOpeningPrice = function () {
 
 /***/ }),
 
-/***/ "./app/components/loginMUI.js":
-/*!************************************!*\
-  !*** ./app/components/loginMUI.js ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Button = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-
-var _Button2 = _interopRequireDefault(_Button);
-
-var _CssBaseline = __webpack_require__(/*! @material-ui/core/CssBaseline */ "./node_modules/@material-ui/core/esm/CssBaseline/index.js");
-
-var _CssBaseline2 = _interopRequireDefault(_CssBaseline);
-
-var _TextField = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
-var _Link = __webpack_require__(/*! @material-ui/core/Link */ "./node_modules/@material-ui/core/esm/Link/index.js");
-
-var _Link2 = _interopRequireDefault(_Link);
-
-var _Grid = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
-
-var _Grid2 = _interopRequireDefault(_Grid);
-
-var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-
-var _Typography2 = _interopRequireDefault(_Typography);
-
-var _Container = __webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js");
-
-var _Container2 = _interopRequireDefault(_Container);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SignIn = function (_React$Component) {
-  _inherits(SignIn, _React$Component);
-
-  function SignIn(props) {
-    _classCallCheck(this, SignIn);
-
-    var _this = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
-
-    _this.defaultPreventer = function (evt) {
-
-      evt.preventDefault();
-      evt.stopPropagation();
-      _this.props.handleLogIn(_this.state.email, _this.state.password);
-    };
-
-    _this.state = {
-      email: "cuty@example.com",
-      password: "1Yadayadayada"
-    };
-    return _this;
-  }
-
-  _createClass(SignIn, [{
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        _Container2.default,
-        { component: 'main', maxWidth: 'xs' },
-        _react2.default.createElement(_CssBaseline2.default, null),
-        _react2.default.createElement(
-          'div',
-          { className: "blank" },
-          _react2.default.createElement(
-            _Typography2.default,
-            { component: 'h1', variant: 'h5' },
-            'Log Into Trading Account'
-          ),
-          _react2.default.createElement(
-            'form',
-            { className: "blank", noValidate: true },
-            _react2.default.createElement(_TextField2.default, {
-              variant: 'outlined',
-              value: this.state.email,
-              margin: 'normal',
-              required: true,
-              fullWidth: true,
-              id: 'email',
-              label: 'Email Address',
-              name: 'email',
-              autoComplete: 'email',
-              onChange: function onChange(e) {
-                _this2.setState({ email: e.target.value });
-              },
-              autoFocus: true
-            }),
-            _react2.default.createElement(_TextField2.default, {
-              variant: 'outlined',
-              value: this.state.password,
-              onChange: function onChange(e) {
-                _this2.setState({ password: e.target.value });
-              },
-              margin: 'normal',
-              required: true,
-              fullWidth: true,
-              name: 'password',
-              label: 'Password',
-              type: 'password',
-              id: 'password',
-              autoComplete: 'current-password'
-            }),
-            _react2.default.createElement(
-              _Button2.default,
-              {
-                onClick: this.defaultPreventer,
-                fullWidth: true,
-                variant: 'contained',
-                color: 'primary',
-                className: "blank"
-              },
-              'Sign In'
-            ),
-            _react2.default.createElement(
-              _Grid2.default,
-              { container: true },
-              _react2.default.createElement(
-                _Link2.default,
-                { onClick: this.props.toSignUp, href: '#', variant: 'body2' },
-                "Register Account"
-              )
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SignIn;
-}(_react2.default.Component);
-
-// source: https://github.com/mui-org/material-ui/blob/master/docs/src/pages/getting-started/page-layout-examples/sign-in/SignIn.js
-
-
-exports.default = SignIn;
-
-/***/ }),
-
 /***/ "./app/components/root.js":
 /*!********************************!*\
   !*** ./app/components/root.js ***!
@@ -1822,13 +1658,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _loginMUI = __webpack_require__(/*! ./loginMUI */ "./app/components/loginMUI.js");
+var _Login = __webpack_require__(/*! ./Login */ "./app/components/Login.js");
 
-var _loginMUI2 = _interopRequireDefault(_loginMUI);
+var _Login2 = _interopRequireDefault(_Login);
 
-var _SignUpMUI = __webpack_require__(/*! ./SignUpMUI */ "./app/components/SignUpMUI.js");
+var _SignUp = __webpack_require__(/*! ./SignUp */ "./app/components/SignUp.js");
 
-var _SignUpMUI2 = _interopRequireDefault(_SignUpMUI);
+var _SignUp2 = _interopRequireDefault(_SignUp);
 
 var _Portfolio = __webpack_require__(/*! ./Portfolio */ "./app/components/Portfolio.js");
 
@@ -2114,11 +1950,11 @@ var Root = function (_React$Component) {
 				!this.state.isLoggedIn ? _react2.default.createElement(
 					'div',
 					null,
-					this.state.page === 'login' ? _react2.default.createElement(_loginMUI2.default, { handleLogIn: this.handleLogIn,
+					this.state.page === 'login' ? _react2.default.createElement(_Login2.default, { handleLogIn: this.handleLogIn,
 						toSignUp: function toSignUp() {
 							return _this3.setState({ page: 'signUp' });
 						}
-					}) : _react2.default.createElement(_SignUpMUI2.default, { handleSignUp: this.handleSignUp,
+					}) : _react2.default.createElement(_SignUp2.default, { handleSignUp: this.handleSignUp,
 						toLogIn: function toLogIn() {
 							return _this3.setState({ page: 'login' });
 						}
@@ -2245,7 +2081,7 @@ var _root = __webpack_require__(/*! ./components/root */ "./app/components/root.
 
 var _root2 = _interopRequireDefault(_root);
 
-var _LoginMUI = __webpack_require__(/*! ./components/LoginMUI */ "./app/components/LoginMUI.js");
+var _LoginMUI = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/LoginMUI'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _LoginMUI2 = _interopRequireDefault(_LoginMUI);
 
@@ -16945,7 +16781,7 @@ var defaultTheme = Object(_createMuiTheme__WEBPACK_IMPORTED_MODULE_0__["default"
 /*!************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/styles/index.js ***!
   \************************************************************/
-/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, easing, duration, formatMs, isString, isNumber, useTheme, withStyles, withTheme */
+/*! exports provided: createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, useTheme, withStyles, withTheme, hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, easing, duration, formatMs, isString, isNumber */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17753,7 +17589,7 @@ function createChainedFunction() {
 /*!***********************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/utils/index.js ***!
   \***********************************************************/
-/*! exports provided: deprecatedPropType, capitalize, createChainedFunction, isMuiElement, setRef, useForkRef, useIsFocusVisible, ownerDocument, ownerWindow, requirePropFactory, unsupportedProp, useEventCallback, withForwardedRef */
+/*! exports provided: deprecatedPropType, capitalize, createChainedFunction, useIsFocusVisible, ownerDocument, ownerWindow, requirePropFactory, unsupportedProp, useEventCallback, withForwardedRef, isMuiElement, setRef, useForkRef */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
