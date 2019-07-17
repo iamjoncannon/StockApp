@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
+    "sh": "cd ~/.ssh & ssh -i $key ubuntu@$stock_app_ec2",
     "start-dev": "npm run start-server & npm run build",
     "start-server": "go run main.go",
     "build": "webpack -w --progress",

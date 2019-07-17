@@ -21,3 +21,8 @@ In order to complete the last user story, data for the opening price must be obt
 5. View portfolio of all stocks owned with current values
 
 6. On Portfolio, color of stocks changes during the day based on current value against opening value
+
+
+Deployed: 
+
+ec2-34-214-1-49.us-west-2.compute.amazonaws.com
