@@ -7,7 +7,8 @@
     "start-dev": "npm run start-server & npm run build",
     "start-server": "go run main.go",
     "build": "webpack -w --progress",
-    "compile": "NODE_ENV=production webpack -p --progress"
+    "compile": "NODE_ENV=production webpack -p --progress",
+    "go-compile": "GOOS=linux GOARACH=amd64 go build"
   },
   "keywords": [],
   "author": "",
