@@ -6,7 +6,6 @@ The front end web application uses React as well as Socket.io to establish a web
 
 The backend server is written in Golang, uses JWT (JSON Web Tokens) to implement user authentication, as well as PostgreSQL.  In order to complete the last user story, data for the opening price must be obtained from the IEX Cloud, an API that requires authentication. In order to prevent the client from calling the service with my private token, I established an API endpoint in my server, which then called the IEX endpoint with my token, and relayed the data back to the client.  In a production environment, this data would be cached to prevent duplicate API calls, as the opening price does not fluctuate during the day.  
 
-
 USER STORIES:
 
 1. Sign up with name, email password
@@ -20,4 +19,3 @@ USER STORIES:
 5. View portfolio of all stocks owned with current values
 
 6. On Portfolio, color of stocks changes during the day based on current value against opening value
-
