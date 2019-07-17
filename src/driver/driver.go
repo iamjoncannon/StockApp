@@ -4,6 +4,7 @@ package driver
 import (
 	"database/sql"
 	"fmt"
+
 	// "models"
 
 	_ "github.com/lib/pq"
@@ -14,17 +15,17 @@ var db *sql.DB
 
 // database connection info:
 const (
-  host     = "localhost"
-  port     = 5432
-  user     = "jcannon"
-  dbname   = "test"
+	host   = "localhost"
+	port   = 5432
+	user   = "jonathancannon"
+	dbname = "test"
 )
 
-func SQLConnect()*sql.DB{
+func SQLConnect() *sql.DB {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-    "dbname=%s sslmode=disable",
-    host, port, user, dbname)
+		"dbname=%s sslmode=disable",
+		host, port, user, dbname)
 
 	db, _ = sql.Open("postgres", psqlInfo)
 
