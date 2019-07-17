@@ -1,27 +1,28 @@
 package controllers
 
 import (
-	"net/http"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
+	"fmt"
 	"log"
 	"models"
+	"net/http"
 	"utils"
-	"fmt"
 
 	"dbqueries"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
+func (c Controller) LogIn(db *sql.DB) http.HandlerFunc {
 
-	return func (w http.ResponseWriter, r *http.Request) {
-		
-		var user models.User 
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		var user models.User
 		var error models.Error
 
 		json.NewDecoder(r.Body).Decode(&user)
-		
+
 		if user.Email == "" {
 			error.Message = "Email not found in request"
 			utils.RespondWithError(w, http.StatusBadRequest, error)
@@ -35,27 +36,28 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 		}
 
 		// store submitted password to check against decrypted
-		// password in the database 
+		// password in the database
 
-		password := user.Password 
+		password := user.Password
 
 		query := dbqueries.DBQuery{}
-		
+
 		user, err := query.LogIn(db, user)
 
 		if err != nil {
 
 			if err == sql.ErrNoRows {
-				
+
 				error.Message = "User credentials not found in system"
 				utils.RespondWithError(w, http.StatusBadRequest, error)
 				return
-			}else{
+
+			} else {
 				log.Fatal(err)
 			}
 		}
 
-		hashedPassword := user.Password 
+		hashedPassword := user.Password
 
 		err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
@@ -63,7 +65,7 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 			error.Message = "Invalid Password"
 			utils.RespondWithError(w, http.StatusUnauthorized, error)
-			return 
+			return
 		}
 
 		token, err := GenerateToken(user)
@@ -76,9 +78,6 @@ func (c Controller) LogIn (db *sql.DB) http.HandlerFunc {
 
 		returnData := make(map[string]string)
 
-		// I was having a hard time converting a struct to
-		// a json- converting the map was working for me though
-		// have to type coerce this and then coerce back on the client
 		stringBalance := fmt.Sprintf("%f", user.Balance)
 
 		returnData["token"] = token

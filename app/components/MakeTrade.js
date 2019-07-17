@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import { asyncGetOnePrice } from './asyncCalls'
 import allSymbols from './symbolHash.json'
 import { filled } from './util'
+import Grid from '@material-ui/core/Grid';
 
 const initialState = {
       Symbol: '',
@@ -21,15 +22,6 @@ export default class MakeTrade extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState
-  }
-
-  componentDidMount(){
-  
-  }
-
-  componentDidUpdate(){
-
-
   }
 
   defaultPreventer = (evt) => {
@@ -54,7 +46,6 @@ export default class MakeTrade extends React.Component {
     else{
       this.setState({Price: 'price'})
     }
-
   }
 
   validateTrade = () => {
@@ -104,85 +95,87 @@ export default class MakeTrade extends React.Component {
 
     return (
 
-    <form className={'blank'} noValidate autoComplete="off">
-      
-      <TextField
-        required
-        id="standard-required"
-        label="Stock Symbol"
-        value={this.state.Symbol}
-        onChange={(e)=>{this.handleSymbol(e.target.value)}}        
-        className={'blank'}
-        margin="normal"
-      />
+      <form className={'blank'} noValidate autoComplete="off">
+        
+        <TextField
+          required
+          id="standard-required"
+          label="Stock Symbol"
+          value={this.state.Symbol}
+          onChange={(e)=>{this.handleSymbol(e.target.value)}}        
+          className={'blank'}
+          margin="normal"
+        />
 
-      <TextField
-        required
-        id="standard-required"
-        label="Shares to Trade"
-        value={this.state.Quantity}
-        onChange={(e)=>{this.setState({Quantity: e.target.value})}}        
-        className={'blank'}
-        margin="normal"
-      />
-      
-      <TextField
-        required
-        id="filled-disabled"
-        label="Current Value"
-        value={this.state.Price}
-        className={'blank'}
-        margin="normal"
-      />
-      
-      <FormControl className={"blank"} style={{margin: "3"}}>
+        <TextField
+          required
+          id="standard-required"
+          label="Shares to Trade"
+          value={this.state.Quantity}
+          onChange={(e)=>{this.setState({Quantity: e.target.value})}}        
+          className={'blank'}
+          margin="normal"
+        />
+        
+        <TextField
+          required
+          id="filled-disabled"
+          label="Current Value"
+          value={this.state.Price}
+          className={'blank'}
+          margin="normal"
+        />
+        
+        <Grid container>
+          <FormControl className={"blank"} style={{margin: "3"}}>
 
-        <InputLabel htmlFor="age-simple">Buy/Sell</InputLabel>
-      
-        <Select
-          value={this.state.Type}
-          onChange={ (evt)=> this.setState({Type: evt.target.value}) }
-        >
-      
-          <MenuItem value={'Buy'}>Buy</MenuItem>
-          <MenuItem value={'Sell'}>Sell</MenuItem>
-        </Select>
-      </FormControl>
+            <InputLabel htmlFor="age-simple">Buy/Sell</InputLabel>
+          
+            <Select
+              value={this.state.Type}
+              onChange={ (evt)=> this.setState({Type: evt.target.value}) }
+            >
+          
+              <MenuItem value={'Buy'}>Buy</MenuItem>
+              <MenuItem value={'Sell'}>Sell</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        
+        { this.validateTrade() ? 
 
-      { this.validateTrade() ? 
+          <Button
+            onClick={this.defaultPreventer}
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={"blank"}
+          >
 
-        <Button
-          onClick={this.defaultPreventer}
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={"blank"}
-        >
+            {"Make Trade"}
 
-          {"Make Trade"}
-
-        </Button>
-      : ""}
-      <div>
-        { allSymbols[this.state.Symbol] }
-      </div>
-      <div>
+          </Button>
+        : ""}
+        <div>
+          { allSymbols[this.state.Symbol] }
+        </div>
+        <div>
 
 
-        { this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 
-          this.state.Symbol ? 'You currently hold 0 shares of this stock.' : ''}
-      <div>
-        {this.state.Price && this.state.Quantity ? this.currentOrderPrice() : ''}
-      </div>
-      </div>
-      <div>
+          { this.props.portfolio[this.state.Symbol] ? this.currentHoldingsMessage() : 
+            this.state.Symbol ? 'You currently hold 0 shares of this stock.' : ''}
+        <div>
+          {this.state.Price && this.state.Quantity ? this.currentOrderPrice() : ''}
+        </div>
+        </div>
+        <div>
 
-        { this.props.tradeError ? 
+          { this.props.tradeError ? 
 
-          <h2> {this.props.tradeError}</h2> : ''
-        }
-      </div>
-    </form>  
+            <h2> {this.props.tradeError}</h2> : ''
+          }
+        </div>
+      </form>  
     );
   }
 }

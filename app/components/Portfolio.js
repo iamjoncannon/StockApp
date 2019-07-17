@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { asyncPopulateData } from './asyncCalls'
 import ColoredStock from './ColoredStock'
 import Table from '@material-ui/core/Table';
@@ -21,25 +20,11 @@ export default class Portfolio extends React.Component {
 
   async componentDidMount(){
 
-    // we only want to load the portfolio and transaction
-    // data once- when we log in and navigate to this window
-
-    // after that, the client application will update its state
-    // based on the transactions that clear, not by hitting the API
-    // each time to get the data
-
     const { token } = this.props.profile
     asyncPopulateData(token, this.props.loadPortfolioData)
   }
 
-  componentWillUnMount(){
-    
-    console.log("portfolio unmounted")
-  }
-
   render() {
-
-    // console.log("props for portfolio: ", this.props.portfolio)
 
     return (
 
@@ -69,16 +54,13 @@ export default class Portfolio extends React.Component {
                     <TableCell align="right">{row[1].price}</TableCell>
                     <TableCell align="right">{row[1].price * row[1].quantity}</TableCell>
                   </TableRow>
-                  
                 ))}
               </TableBody>
             </Table>
           </Paper>
           : ''
         }
-
       </div>
     );
-    
   }
 }

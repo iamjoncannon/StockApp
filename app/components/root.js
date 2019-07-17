@@ -9,14 +9,7 @@ import { asyncLogInCall, asyncSignUpCall, asyncMakeTrade, asyncGetOpeningPrice }
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import TabContainer from './DashTab'
-
-// this is the root of the application, that defines the management
-// of browser application state based on user input
-
-// as the "controller" layer, the appearance of the elements is 
-// separated into other components, which are held in other files
 
 export default class Root extends React.Component {
 
@@ -69,28 +62,27 @@ export default class Root extends React.Component {
 
 		let repopulatedPortfolio = {...portfolio }
 
-		let updatedOpeningPriceCach = {... openingPriceCache}
+		let updatedOpeningPriceCache = {... openingPriceCache}
 
 		for(let stock in repopulatedPortfolio){
 			
 			if( cachedPriceList ){
 
 				if( cachedPriceList[stock] ){
-					// console.log(cachedPriceList[stock])
+				
 					repopulatedPortfolio[stock]["price"] = cachedPriceList[stock]				
 				}
 			}
 
-			if(!updatedOpeningPriceCach[stock]){
-				updatedOpeningPriceCach[stock] = await asyncGetOpeningPrice(stock, this.state.profile.token)
+			if(!updatedOpeningPriceCache[stock]){
+				updatedOpeningPriceCache[stock] = await asyncGetOpeningPrice(stock, this.state.profile.token)
 			}
-
 		} 
 
 		this.setState({ portfolio: repopulatedPortfolio, 
 						transactionHistory, 
 						hasLoadedData: true, 
-						openingPriceCache: updatedOpeningPriceCach
+						openingPriceCache: updatedOpeningPriceCache
 					  })
 	}
 
@@ -107,13 +99,16 @@ export default class Root extends React.Component {
 			this.setState({ tradeError : data.data.message })
 		}
 		else{
-			this.setState({tradeError: '', tab: 0, profile:{...this.state.profile, Balance: data.data}})
+			this.setState({ tradeError: '', 
+							tab: 0, 
+							profile:{...this.state.profile, Balance: data.data}
+					   	 })
 		}
 	}
 
 	handleSocketMessage = (stock) => {
 
-		// continuously update previous price List
+		// continuously update price List
 
 		let updatedPortfolio = {...this.state.portfolio } 
 
@@ -127,12 +122,15 @@ export default class Root extends React.Component {
 	}
 
 	render(){
-
+		
+		const { portfolio } = this.state
+		
 		return ( 
+
 
 		    <div> 
 
-		    	{ this.state.hasLoadedData ? <Socket portfolio={this.state.portfolio} 
+		    	{ this.state.hasLoadedData ? <Socket portfolio={portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
 		    							 /> : '' }
 
@@ -159,9 +157,9 @@ export default class Root extends React.Component {
 					    : 
 					<div>    
 
-			    	<div className={"blank"}>
+			    	<div>
 				      <AppBar position="static">
-				          <Tab label={this.state.profile.Name + "     Balance: $" + this.state.profile.Balance} />
+				          <Tab label={this.state.profile.Name + "Balance: $" + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>
 				          <Tab label="Portfolio" />
 				          <Tab label="Trading History" />
@@ -173,7 +171,7 @@ export default class Root extends React.Component {
 				      						
 				      								<Portfolio 
 				      									loadPortfolioData={this.loadPortfolioData} 
-									    		   	   	portfolio={this.state.portfolio}
+									    		   	   	portfolio={ portfolio }
 									    				hasLoadedData={this.state.hasLoadedData}
 									    				profile={this.state.profile}
 									    				openingPriceCache={this.state.openingPriceCache}
@@ -190,12 +188,11 @@ export default class Root extends React.Component {
 				      {this.state.tab === 2 && <TabContainer> 
 				      								<MakeTrade
 				      									Balance={this.state.profile.Balance} 
-				      									portfolio={this.state.portfolio}
+				      									portfolio={ portfolio }
 				      									handleTrade={this.handleTrade}
 				      									tradeError={this.state.tradeError}
 				      	   						    /> 
 				      							</TabContainer>}
-				     
 				    </div>
 		    		</div>
 		    	}

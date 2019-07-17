@@ -16,13 +16,8 @@ export const asyncLogInCall = async (email, password) => {
     res = await axios.post('/login', { email, password} )    
   }
   catch(error){
-    let  duplicateEmail = error.response.data.message === `pq: duplicate key value violates unique constraint "unique_email"`
-    if (duplicateEmail){
-      alert("This Email is already on file, please try again with a unique email.")
-    }
-    else{
+
       alert(error.response.data.message)
-    }
   }
   
   return res.data
@@ -32,6 +27,7 @@ export const asyncSignUpCall = async (Name, email, password) => {
     
   const signUpInfo = { Name, email, password }
   let token
+
   try {
     token = await axios.post('/signup', signUpInfo )
   }
@@ -65,8 +61,8 @@ export const asyncPopulateData = async (token, callback) => {
     )
   }
   catch(error){
+
     console.log(error)
-    // alert(error.response.data.message)
   }
 
   if(portfolio.data && transactionHistory.data){
@@ -88,8 +84,8 @@ export const asyncMakeTrade = async (trade, token) => {
     data = await axios.post('/maketransaction', trade, makeHeader(token)) 
   }
   catch(error){
+   
     console.log(error)
-    // alert(error.response.data.message)
   }
 
   return data

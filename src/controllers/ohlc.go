@@ -1,23 +1,22 @@
-// #
-
 package controllers
 
 import (
-	"net/http"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
-	"os"
+
+	"utils"
 
 	"github.com/gorilla/mux"
-	"utils"
 )
 
 func FetchOpeningPrice() http.HandlerFunc {
 
-	return func (w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 
 		allParams := mux.Vars(r)
 
@@ -52,10 +51,10 @@ func FetchOpeningPrice() http.HandlerFunc {
 
 		formatted, _ := strconv.ParseFloat(string(body), 32)
 
-		returnJason := make(map[string]float64) 
+		returnJason := make(map[string]float64)
 
 		returnJason[param] = formatted
 
-		utils.ResponseJSON(w, returnJason) 
+		utils.ResponseJSON(w, returnJason)
 	}
-}	
+}

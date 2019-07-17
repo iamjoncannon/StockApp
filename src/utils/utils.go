@@ -1,5 +1,3 @@
-// #
-
 package utils
 
 import (
@@ -8,7 +6,7 @@ import (
 	"net/http"
 )
 
-func RespondWithError(w http.ResponseWriter, status int, error models.Error ){
+func RespondWithError(w http.ResponseWriter, status int, error models.Error) {
 
 	w.WriteHeader(http.StatusBadRequest)
 	json.NewEncoder(w).Encode(error)

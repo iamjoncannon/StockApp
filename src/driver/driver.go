@@ -1,11 +1,8 @@
-// #
 package driver
 
 import (
 	"database/sql"
 	"fmt"
-
-	// "models"
 
 	_ "github.com/lib/pq"
 )

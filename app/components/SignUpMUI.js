@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -26,6 +25,7 @@ export default class SignIn extends React.Component {
     
     evt.preventDefault()
     evt.stopPropagation()
+    
     const {email, password, lastName, firstName} = this.state
     const re = /\S+@\S+\.\S+/;
     const completed = filled(email, password, firstName, lastName)
@@ -137,7 +137,6 @@ export default class SignIn extends React.Component {
 
             </ValidatorForm>
           </div>
-          
         </Container>
       );
   }

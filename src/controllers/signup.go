@@ -1,39 +1,29 @@
-// #
 package controllers
 
 import (
-	"net/http"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"net/http"
 
+	"dbqueries"
 	"models"
 	"utils"
-	"dbqueries"
-	
+
 	"golang.org/x/crypto/bcrypt"
 )
 
-
-// we need access to the database, but that's defined
-// in the driver file- solution - export the controller
-// package as a struct, then define as the
-// receiver of the SignUp handler function
-// instantiate the struct in the main package to expose
-// the handler function
-
 type Controller struct{}
 
-func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
+func (c Controller) SignUp(db *sql.DB) http.HandlerFunc {
 
-	return func (w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 
-		var user models.User 
+		var user models.User
 		var error models.Error
-		var jwt models.JWT
 
 		json.NewDecoder(r.Body).Decode(&user)
-		
+
 		if user.Name == "" {
 			error.Message = "Name not found in request"
 			utils.RespondWithError(w, http.StatusBadRequest, error)
@@ -52,18 +42,18 @@ func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		hash, err := bcrypt.GenerateFromPassword( []byte(user.Password), 10 )
+		hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 		if err != nil {
 			panic(err)
 		}
 
 		query := dbqueries.DBQuery{}
-				
+
 		user, err = query.SignUp(db, user, string(hash))
 
 		if err != nil {
-		
+
 			fmt.Println("there was a server error: ", err)
 			error.Message = err.Error()
 			utils.RespondWithError(w, http.StatusInternalServerError, error)
@@ -82,11 +72,6 @@ func (c Controller) SignUp (db *sql.DB) http.HandlerFunc {
 
 		w.WriteHeader(http.StatusOK)
 
-		jwt.Token = token
-
-		utils.ResponseJSON(w, jwt)		
+		utils.ResponseJSON(w, token)
 	}
 }
-
-
-
