@@ -1,21 +1,21 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
-	"database/sql"
 
-	_ "github.com/lib/pq"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"github.com/subosito/gotenv"
-	
-	"driver"
+
 	"controllers"
+	"driver"
 )
 
 var db *sql.DB
 
-func main(){
+func main() {
 
 	gotenv.Load()
 
@@ -29,7 +29,6 @@ func main(){
 	go router.HandleFunc("/signup", controller.SignUp(db)).Methods("POST")
 	go router.HandleFunc("/login", controller.LogIn(db)).Methods("POST")
 
-
 	// Question: why define the callback inside TokenVerify as a method on a controller struct?
 	// Answer: otherwise you will lose reference to the db pointer
 
@@ -40,8 +39,8 @@ func main(){
 
 	// when TokenVal.. resolves it calls its argument function with r and w, but the argument function
 	// now exists in the controllers package namespace. Because its call site is no longer
-	// the main package, therefore, if the method were invoked directly, as the controllers above, 
-	// it would in essence not really be "imported" from that package namespace at all. 
+	// the main package, therefore, if the method were invoked directly, as the controllers above,
+	// it would in essence not really be "imported" from that package namespace at all.
 	// Defining Token's callback as a struct inside this package means it has reference
 	// to this package's variable environment, including the db pointer
 
