@@ -12,10 +12,11 @@ var db *sql.DB
 
 // database connection info:
 const (
-	host   = "localhost"
-	port   = 5432
-	user   = "jonathancannon"
-	dbname = "test"
+	host     = "localhost"
+	port     = 5432
+	user     = "jonathancannon"
+	dbname   = "test"
+	password = "password"
 )
 
 func SQLConnect() *sql.DB {
