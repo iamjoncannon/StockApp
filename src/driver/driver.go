@@ -22,8 +22,8 @@ const (
 func SQLConnect() *sql.DB {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"dbname=%s sslmode=disable",
-		host, port, user, dbname)
+		"dbname=%s sslmode=disable password=%s",
+		host, port, user, dbname, password)
 
 	db, _ = sql.Open("postgres", psqlInfo)
 
