@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
-
 	"utils"
 
 	"github.com/gorilla/mux"
@@ -22,7 +22,7 @@ func FetchOpeningPrice() http.HandlerFunc {
 
 		param := allParams["symbol"]
 
-		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/open?token=", os.Getenv("IEX_API_KEY")}
+		url := []string{"https://cloud.iexapis.com/beta/stock/", param, "/quote/ohlc?token=", os.Getenv("IEX_API_KEY")}
 
 		openingPriceEndpoint := http.Client{
 
@@ -49,11 +49,19 @@ func FetchOpeningPrice() http.HandlerFunc {
 			log.Fatal(readErr)
 		}
 
-		formatted, _ := strconv.ParseFloat(string(body), 32)
+		var f interface{}
 
-		returnJason := make(map[string]float64)
+		err = json.Unmarshal(body, &f)
 
-		returnJason[param] = formatted
+		theJason := f.(map[string]interface{})
+
+		fmt.Println(theJason["previousClose"])
+
+		previousClose := theJason["previousClose"]
+
+		returnJason := make(map[string]interface{})
+
+		returnJason[param] = previousClose
 
 		utils.ResponseJSON(w, returnJason)
 	}
