@@ -115,7 +115,13 @@ export const asyncGetOpeningPrice = async (symbol, token) => {
     console.log(error)
   }
 
-  return data.data[symbol]
+  console.log(data.data)
+
+  if(!data.data["open"]){
+    return data.data["previousClose"]
+  }
+
+  return data.data["open"]
 }
 
 

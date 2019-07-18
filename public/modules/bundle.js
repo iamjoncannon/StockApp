@@ -1619,9 +1619,20 @@ var asyncGetOpeningPrice = exports.asyncGetOpeningPrice = function () {
             console.log(_context6.t0);
 
           case 11:
-            return _context6.abrupt('return', data.data[symbol]);
 
-          case 12:
+            console.log(data.data);
+
+            if (data.data["open"]) {
+              _context6.next = 14;
+              break;
+            }
+
+            return _context6.abrupt('return', data.data["previousClose"]);
+
+          case 14:
+            return _context6.abrupt('return', data.data["open"]);
+
+          case 15:
           case 'end':
             return _context6.stop();
         }
@@ -16777,7 +16788,7 @@ var defaultTheme = Object(_createMuiTheme__WEBPACK_IMPORTED_MODULE_0__["default"
 /*!************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/styles/index.js ***!
   \************************************************************/
-/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, useTheme, withStyles, withTheme, easing, duration, formatMs, isString, isNumber */
+/*! exports provided: hexToRgb, rgbToHex, hslToRgb, decomposeColor, recomposeColor, getContrastRatio, getLuminance, emphasize, fade, darken, lighten, createMuiTheme, createStyles, makeStyles, MuiThemeProvider, responsiveFontSizes, styled, easing, duration, formatMs, isString, isNumber, useTheme, withStyles, withTheme */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

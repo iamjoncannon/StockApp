@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -53,16 +52,20 @@ func FetchOpeningPrice() http.HandlerFunc {
 
 		err = json.Unmarshal(body, &f)
 
-		theJason := f.(map[string]interface{})
+		// this is how you would process the data on the
+		// server- I"m going to send the whole JSON
+		// back to the client app to process there
 
-		fmt.Println(theJason["previousClose"])
+		// theJason := f.(map[string]interface{})
 
-		previousClose := theJason["previousClose"]
+		// fmt.Println(theJason["previousClose"])
 
-		returnJason := make(map[string]interface{})
+		// previousClose := theJason["previousClose"]
 
-		returnJason[param] = previousClose
+		// returnJason := make(map[string]interface{})
 
-		utils.ResponseJSON(w, returnJason)
+		// returnJason[param] = previousClose
+
+		utils.ResponseJSON(w, f)
 	}
 }
