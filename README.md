@@ -25,4 +25,4 @@ In order to complete the last user story, data for the opening price must be obt
 
 Deployed: 
 
-ec2-34-214-1-49.us-west-2.compute.amazonaws.com
+ttp.joncannon.codes
