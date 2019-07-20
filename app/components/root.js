@@ -75,6 +75,7 @@ export default class Root extends React.Component {
 			}
 
 			if(!updatedOpeningPriceCache[stock]){
+				
 				updatedOpeningPriceCache[stock] = await asyncGetOpeningPrice(stock, this.state.profile.token)
 			}
 		} 

@@ -8,7 +8,7 @@
     "start-server": "go run main.go",
     "build": "webpack -w --progress",
     "compile": "NODE_ENV=production webpack -p --progress",
-    "go-compile": "GOOS=linux GOARACH=amd64 go build"
+    "go-compile": "GOOS=linux GOARACH=amd64 go build -o binForUbuntu"
   },
   "keywords": [],
   "author": "",

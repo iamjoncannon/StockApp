@@ -1620,7 +1620,11 @@ var asyncGetOpeningPrice = exports.asyncGetOpeningPrice = function () {
 
           case 11:
 
-            console.log(data.data);
+            // populated by redis cache
+            if (typeof data.data === "string") {
+
+              data.data = JSON.parse(data.data);
+            }
 
             if (data.data["open"]) {
               _context6.next = 14;

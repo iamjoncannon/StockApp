@@ -108,16 +108,21 @@ export const asyncGetOpeningPrice = async (symbol, token) => {
 
   try {
 
-    data = await axios.post(url, {}, makeHeader(token)) 
+    data = await axios.post(url, {}, makeHeader(token))
 
   }
   catch(error){
     console.log(error)
   }
 
-  console.log(data.data)
+  // populated by redis cache
+  if(typeof data.data === "string"){
 
+    data.data = JSON.parse(data.data)
+  }
+  
   if(!data.data["open"]){
+    
     return data.data["previousClose"]
   }
 
