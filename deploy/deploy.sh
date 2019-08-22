@@ -7,7 +7,9 @@ git commit -m "Deploy 8/21/2019"
 git push origin deploy
 
 ssh -T -i $key ubuntu@$stock_app_ec2 << 'ENDSSH'
-
+cd TTP
+git pull origin master
+./binForUbuntu &
 exit
 
 ENDSSH
