@@ -1,15 +1,15 @@
 import React from 'react'
-import LogIn  from './Login'
-import SignUp from './SignUp'
-import Portfolio from './Portfolio'
-import TransactionHistory from './TransactionHistory'
-import MakeTrade from './MakeTrade'
+import LogIn  from './landing/Login'
+import SignUp from './landing/SignUp'
+import Portfolio from './dashboard/portfolio/Portfolio'
+import TransactionHistory from './transhistory/TransactionHistory'
+import MakeTrade from './dashboard/maketrade/MakeTrade'
 import Socket from './Socket'
 import { asyncLogInCall, asyncSignUpCall, asyncMakeTrade, asyncGetOpeningPrice } from './asyncCalls'
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabContainer from './DashTab'
+import TabContainer from './dashboard/DashTab'
 
 export default class Root extends React.Component {
 
@@ -34,7 +34,7 @@ export default class Root extends React.Component {
 
 	handleSignUp = async ({ firstName, lastName, email, password }) => {
 
-		const name = firstName + lastName
+		const name = firstName + " " + lastName
 
 		const data = await asyncSignUpCall(name, email, password)
 
@@ -129,7 +129,7 @@ export default class Root extends React.Component {
 		return ( 
 
 
-		    <div> 
+		    <div style={{width: "80vw"}}> 
 
 		    	{ this.state.hasLoadedData ? <Socket portfolio={portfolio} 
 		    									 handleSocketMessage={this.handleSocketMessage}
@@ -156,9 +156,11 @@ export default class Root extends React.Component {
 					</div>
 					
 					    : 
+
 					<div>    
 
 			    	<div>
+						
 				      <AppBar position="static">
 				          <Tab label={this.state.profile.Name + "   Balance: $" + this.state.profile.Balance} />
 				        <Tabs value={this.state.tab} onChange={(x, y)=> this.setState({tab: y})}>

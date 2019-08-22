@@ -1,0 +1,29 @@
+#root{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+table.make-trade {
+
+    margin-top: 2vh;
+
+}
+
+.make-trade th {
+
+    font-size: 2rem;
+    padding-right: 2vh;
+    padding-bottom: 5px;
+    border-bottom: solid black 1px;
+    border-bottom-width: thin;
+    border-right: solid black 1px;
+    border-right-width: thin;
+}
+
+.make-trade td {
+    font-size: 1.75rem;
+    padding-left: 2vh;
+}

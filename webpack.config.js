@@ -9,7 +9,7 @@ module.exports = {
     path: resolve(__dirname, './public'),
     filename: './modules/bundle.js'
   },
-  mode: 'production',
+  mode: 'development',
   context: __dirname,
   devtool: 'source-map',
   resolve: {

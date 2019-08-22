@@ -73,6 +73,7 @@ export const asyncPopulateData = async (token, callback) => {
   
     callback({}, {1:{Symbol: "", Quantity: "", Date: ""}})
   }
+  
 }
 
 export const asyncMakeTrade = async (trade, token) => {
